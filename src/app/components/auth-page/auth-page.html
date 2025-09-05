@@ -1,6 +1,10 @@
 <div class="container mt-5">
   <div class="card p-3">
-    <app-login-form></app-login-form>
-    <app-register-form></app-register-form>
+    @if (isLogin()) {
+      <app-login-form></app-login-form>
+    }
+    @if (isRegister()) {
+      <app-register-form></app-register-form>
+    }
   </div>
 </div>
