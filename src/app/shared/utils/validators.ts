@@ -1,3 +1,4 @@
+import { inject } from "@angular/core";
 import { Auth, getAuth, validatePassword } from "@angular/fire/auth";
 import { AbstractControl, FormControl, ValidationErrors } from "@angular/forms";
 import { from, map, Observable } from "rxjs";
@@ -8,7 +9,8 @@ export interface PasswordErrors {
   minLength?: boolean;
 }
 
-export function firebasePasswordValidator(auth: Auth) {
+export function firebasePasswordValidator() {
+  const auth = inject(Auth);
   return (control: AbstractControl): Observable<ValidationErrors | null> => {
     const password = control.value || '';
     if (!password) return from([null]);
@@ -17,7 +19,7 @@ export function firebasePasswordValidator(auth: Auth) {
       map(status => {
         if (status.isValid) return null;
 
-        const errors: any = {};
+        const errors: PasswordErrors = {};
         if (!status.containsLowercaseLetter) errors.lowercase = true;
         if (!status.containsNumericCharacter) errors.number = true;
         if (!status.meetsMinPasswordLength) errors.minLength = true;

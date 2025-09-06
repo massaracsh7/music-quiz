@@ -2,7 +2,7 @@ import type { FirebaseError } from 'firebase/app';
 
 export function getAuthError(err: FirebaseError): string {
   switch (err.code) {
-    case 'auth/email-already-exists':
+    case 'auth/email-already-in-use':
       return 'This email is already in use';
     case 'auth/invalid-email':
       return 'Invalid email address';

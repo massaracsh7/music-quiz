@@ -3,7 +3,6 @@ import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } 
 import { AuthService } from '../../../shared/services/auth-service';
 import { firebasePasswordValidator } from '../../../shared/utils/validators';
 import { getErrorMessage } from '../../../shared/utils/getErrorMessage';
-import { Auth } from '@angular/fire/auth';
 import { getAuthError } from '../../../shared/utils/getAuthError';
 @Component({
   selector: 'app-login-form',
@@ -14,13 +13,12 @@ import { getAuthError } from '../../../shared/utils/getAuthError';
 })
 export class LoginForm {
   auth = inject(AuthService);
-  authFirebase = inject(Auth);
   error = signal('');
   form = new FormGroup({
     email: new FormControl('', [Validators.required, Validators.email]),
     password: new FormControl('', {
       validators: [Validators.required],
-      asyncValidators: [firebasePasswordValidator(this.authFirebase)],
+      asyncValidators: [firebasePasswordValidator()],
       updateOn: 'blur'
     })
   });
