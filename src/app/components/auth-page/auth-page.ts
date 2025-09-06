@@ -15,7 +15,8 @@ import { toSignal } from '@angular/core/rxjs-interop';
 })
 export class AuthPage {
   private router = inject(Router);
-    currentPath = toSignal(
+  
+  currentPath = toSignal(
     this.router.events.pipe(
       filter((e): e is NavigationEnd => e instanceof NavigationEnd),
       map(e => e.urlAfterRedirects)

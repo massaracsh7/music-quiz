@@ -1,6 +1,4 @@
-import { FirebaseOptions } from "@angular/fire/app";
-
-export const firebaseConfig: FirebaseOptions = {
+export const firebaseConfig = {
   apiKey: "AIzaSyDo8yYcAXjqK_5OfK8T6LluKTnNSxrExqU",
   authDomain: "music-quiz-e4a06.firebaseapp.com",
   projectId: "music-quiz-e4a06",
