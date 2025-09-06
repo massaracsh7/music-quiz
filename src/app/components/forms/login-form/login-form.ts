@@ -1,15 +1,13 @@
-import { Component, inject, signal } from '@angular/core';
-import {
-  FormBuilder,
-  FormControl,
-  FormGroup,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
+import { Component, DestroyRef, inject, signal } from '@angular/core';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthService } from '../../../shared/services/auth-service';
 import { firebasePasswordValidator } from '../../../shared/utils/validators';
 import { getErrorMessage } from '../../../shared/utils/get-error-message';
 import { getAuthError } from '../../../shared/utils/get-auth-error';
+import { catchError, of } from 'rxjs';
+import { Router } from '@angular/router';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+
 @Component({
   selector: 'app-login-form',
   standalone: true,
@@ -18,6 +16,8 @@ import { getAuthError } from '../../../shared/utils/get-auth-error';
   styleUrl: './login-form.scss',
 })
 export class LoginForm {
+  private destroyRef = inject(DestroyRef);
+  public router = inject(Router);
   public auth = inject(AuthService);
   public error = signal('');
   public form = new FormGroup({
@@ -37,12 +37,19 @@ export class LoginForm {
     const email = this.form.get('email')!.value!;
     const password = this.form.get('password')!.value!;
 
-    this.auth.login(email, password).subscribe({
-      next: () => {},
-      error: (error) => {
-        console.error('Login error:', error);
-        this.error.set(getAuthError(error));
-      },
-    });
+    this.auth.login(email, password)
+      .pipe(
+        takeUntilDestroyed(this.destroyRef),
+        catchError((error) => {
+          console.error('Login error:', error);
+          this.error.set(getAuthError(error));
+          return of(null);
+        })
+      )
+      .subscribe((user) => {
+        if (user) {
+          this.router.navigate(['/']);
+        }
+      });
   }
 }

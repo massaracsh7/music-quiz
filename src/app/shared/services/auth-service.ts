@@ -17,7 +17,7 @@ export class AuthService {
   currentUserName = signal<string | null>(null);
   idToken = signal<string | null>(null);
 
-  public login(email: string, password: string): Observable<void> {
+  public login(email: string, password: string): Observable<User> {
     return from(signInWithEmailAndPassword(this.auth, email, password)).pipe(
       switchMap(userCredential =>
         from(userCredential.user.getIdToken()).pipe(
@@ -29,13 +29,13 @@ export class AuthService {
               token: this.idToken(),
             });
           }),
-          map(() => undefined)
+          map(() => userCredential.user)
         )
       )
     );
   }
 
-  public register(email: string, password: string, username: string): Observable<void> {
+  public register(email: string, password: string, username: string): Observable<User> {
     return from(createUserWithEmailAndPassword(this.auth, email, password)).pipe(
       switchMap(userCredential =>
         from(updateProfile(userCredential.user, { displayName: username })).pipe(
@@ -48,7 +48,7 @@ export class AuthService {
               token: this.idToken(),
             });
           }),
-          map(() => undefined)
+          map(() => userCredential.user)
         )
       )
     );
