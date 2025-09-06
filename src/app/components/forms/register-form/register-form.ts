@@ -2,6 +2,8 @@ import { Component, inject, signal } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthService } from '../../../shared/services/auth-service';
 import { firebasePasswordValidator } from '../../../shared/utils/validators';
+import { getErrorMessage } from '../../../shared/utils/getErrorMessage';
+
 
 @Component({
   selector: 'app-register-form',
@@ -39,4 +41,6 @@ export class RegisterForm {
       }
     });
   }
+
+  getErrorMessage = getErrorMessage;
 }
