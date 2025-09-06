@@ -1,6 +1,8 @@
-import { Component, inject } from '@angular/core';
-import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { Component, inject, signal } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthService } from '../../../shared/services/auth-service';
+import { firebasePasswordValidator } from '../../../shared/utils/validators';
+import { getErrorMessage } from '../../../shared/utils/getErrorMessage';
 @Component({
   selector: 'app-login-form',
   standalone: true,
@@ -9,27 +11,34 @@ import { AuthService } from '../../../shared/services/auth-service';
   styleUrl: './login-form.scss'
 })
 export class LoginForm {
-  private fb = inject(FormBuilder);
   auth = inject(AuthService)
-
-  form = this.fb.group({
-    email: [''],
-    password: ['']
+  error = signal('');
+  form = new FormGroup({
+    email: new FormControl('', [Validators.required, Validators.email]),
+    password: new FormControl('', {
+      validators: [Validators.required],
+      asyncValidators: [firebasePasswordValidator()],
+      updateOn: 'blur'
+    })
   });
 
-submit() {
+  submit() {
     if (this.form.invalid) return;
 
     const email = this.form.get('email')!.value!;
     const password = this.form.get('password')!.value!;
 
-     this.auth.login(email, password).subscribe({
+    this.auth.login(email, password).subscribe({
       next: (userCredential) => {
         console.log('Signed in user:', userCredential.user);
       },
       error: (err) => {
         console.error('Login error:', err);
+        this.error.set('Login failed: ' + err.message);
+
       }
     });
   }
+
+  getErrorMessage = getErrorMessage;
 }
