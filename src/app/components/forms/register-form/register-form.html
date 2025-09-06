@@ -1,20 +1,33 @@
 <form [formGroup]="form" (ngSubmit)="submit()" class="p-3 border rounded">
+  <div class="mb-3">
+    <label>Name</label>
+    <input formControlName="name" class="form-control" />
+  </div>
 
-      <div class="mb-3">
-        <label>Name</label>
-        <input formControlName="name" class="form-control" />
-      </div>
+  <div class="mb-3">
+    <label>Email</label>
+    <input formControlName="email" class="form-control" />
+  </div>
 
-      <div class="mb-3">
-        <label>Email</label>
-        <input formControlName="email" class="form-control" />
-      </div>
+  <div class="mb-3">
+    <label>Password</label>
+    <input type="password" formControlName="password" class="form-control" />
+  </div>
 
-      <div class="mb-3">
-        <label>Password</label>
-        <input type="password" formControlName="password" class="form-control" />
-      </div>
+  <button class="btn btn-primary w-100">Register</button>
 
-      <button class="btn btn-primary w-100">Register</button>
-
-    </form>
+  @if (form.controls.password.touched && form.controls.password.invalid) {
+    @if (form.controls.password.hasError('required')) {
+      <div class="text-danger">Password is required</div>
+    }
+    @if (form.controls.password.errors?.['lowercase']) {
+      <div class="text-danger">Password must contain a lowercase letter</div>
+    }
+    @if (form.controls.password.errors?.['number']) {
+      <div class="text-danger">Password must contain a number</div>
+    }
+    @if (form.controls.password.errors?.['minLength']) {
+      <div class="text-danger">Password must be at least 6 characters</div>
+    }
+  }
+</form>

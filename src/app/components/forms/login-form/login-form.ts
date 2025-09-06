@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
-import { AuthService } from '../../../shared/auth-service';
+import { AuthService } from '../../../shared/services/auth-service';
 @Component({
   selector: 'app-login-form',
   standalone: true,

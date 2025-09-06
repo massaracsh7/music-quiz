@@ -1,6 +1,7 @@
-import { Component, inject } from '@angular/core';
-import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
-import { AuthService } from '../../../shared/auth-service';
+import { Component, inject, signal } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { AuthService } from '../../../shared/services/auth-service';
+import { firebasePasswordValidator } from '../../../shared/utils/validators';
 
 @Component({
   selector: 'app-register-form',
@@ -10,21 +11,23 @@ import { AuthService } from '../../../shared/auth-service';
   styleUrl: './register-form.scss'
 })
 export class RegisterForm {
-  private fb = inject(FormBuilder);
   auth = inject(AuthService);
-
-  form = this.fb.group({
-    name: [''],
-    email: [''],
-    password: ['']
+  form = new FormGroup({
+    name: new FormControl('', Validators.required),
+    email: new FormControl('', Validators.required),
+    password: new FormControl('', {
+      validators: [Validators.required],
+      asyncValidators: [firebasePasswordValidator()],
+      updateOn: 'blur'
+    })
   });
 
   submit() {
     if (this.form.invalid) return;
+
     const email = this.form.get('email')!.value!;
     const password = this.form.get('password')!.value!;
     const name = this.form.get('name')!.value!;
-    // console.log(name, email, password);
     this.auth.register(email, password, name).subscribe({
       next: (userCredential) => {
         console.log('Signed in user:', userCredential.displayName);
@@ -33,6 +36,5 @@ export class RegisterForm {
         console.error('Register error:', err);
       }
     });
-
   }
 }
