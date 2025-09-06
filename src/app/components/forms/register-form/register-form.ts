@@ -16,7 +16,6 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
   styleUrl: './register-form.scss',
 })
 export class RegisterForm {
-  private destroyRef = inject(DestroyRef);
   public router = inject(Router);
   public auth = inject(AuthService);
   public error = signal('');
@@ -32,6 +31,8 @@ export class RegisterForm {
 
   public getErrorMessage = getErrorMessage;
 
+  private destroyRef = inject(DestroyRef);
+
   public submit(): void {
     if (this.form.invalid) return;
     this.error.set('');
@@ -40,14 +41,15 @@ export class RegisterForm {
     const password = this.form.get('password')!.value!;
     const name = this.form.get('name')!.value!;
 
-    this.auth.register(email, password, name)
+    this.auth
+      .register(email, password, name)
       .pipe(
         takeUntilDestroyed(this.destroyRef),
         catchError((error) => {
           console.error('Register error:', error);
           this.error.set(getAuthError(error));
           return of(null);
-        })
+        }),
       )
       .subscribe((user) => {
         if (user) {

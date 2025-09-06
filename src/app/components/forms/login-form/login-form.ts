@@ -16,7 +16,6 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
   styleUrl: './login-form.scss',
 })
 export class LoginForm {
-  private destroyRef = inject(DestroyRef);
   public router = inject(Router);
   public auth = inject(AuthService);
   public error = signal('');
@@ -30,6 +29,7 @@ export class LoginForm {
   });
 
   public getErrorMessage = getErrorMessage;
+  private destroyRef = inject(DestroyRef);
 
   public submit(): void {
     if (this.form.invalid) return;
@@ -37,14 +37,15 @@ export class LoginForm {
     const email = this.form.get('email')!.value!;
     const password = this.form.get('password')!.value!;
 
-    this.auth.login(email, password)
+    this.auth
+      .login(email, password)
       .pipe(
         takeUntilDestroyed(this.destroyRef),
         catchError((error) => {
           console.error('Login error:', error);
           this.error.set(getAuthError(error));
           return of(null);
-        })
+        }),
       )
       .subscribe((user) => {
         if (user) {
