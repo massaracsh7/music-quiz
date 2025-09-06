@@ -1,29 +1,37 @@
 import { Component, inject, signal } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { AuthService } from '../../../shared/services/auth-service';
 import { firebasePasswordValidator } from '../../../shared/utils/validators';
-import { getErrorMessage } from '../../../shared/utils/getErrorMessage';
-import { getAuthError } from '../../../shared/utils/getAuthError';
+import { getErrorMessage } from '../../../shared/utils/get-error-message';
+import { getAuthError } from '../../../shared/utils/get-auth-error';
 @Component({
   selector: 'app-login-form',
   standalone: true,
   imports: [ReactiveFormsModule],
   templateUrl: './login-form.html',
-  styleUrl: './login-form.scss'
+  styleUrl: './login-form.scss',
 })
 export class LoginForm {
-  auth = inject(AuthService);
-  error = signal('');
-  form = new FormGroup({
+  public auth = inject(AuthService);
+  public error = signal('');
+  public form = new FormGroup({
     email: new FormControl('', [Validators.required, Validators.email]),
     password: new FormControl('', {
       validators: [Validators.required],
       asyncValidators: [firebasePasswordValidator()],
-      updateOn: 'blur'
-    })
+      updateOn: 'blur',
+    }),
   });
 
-  submit() {
+  public getErrorMessage = getErrorMessage;
+
+  public submit(): void {
     if (this.form.invalid) return;
 
     const email = this.form.get('email')!.value!;
@@ -33,14 +41,10 @@ export class LoginForm {
       next: (userCredential) => {
         console.log('Signed in user:', userCredential.user);
       },
-      error: (err) => {
-        console.error('Login error:', err);
-        this.error.set(getAuthError(err));
-        
-
-      }
+      error: (error) => {
+        console.error('Login error:', error);
+        this.error.set(getAuthError(error));
+      },
     });
   }
-
-  getErrorMessage = getErrorMessage;
 }

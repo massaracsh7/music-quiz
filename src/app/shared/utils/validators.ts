@@ -1,13 +1,13 @@
-import { inject } from "@angular/core";
-import { Auth, getAuth, validatePassword } from "@angular/fire/auth";
-import { AbstractControl, FormControl, ValidationErrors } from "@angular/forms";
-import { from, map, Observable } from "rxjs";
+import { inject } from '@angular/core';
+import { Auth, getAuth, validatePassword } from '@angular/fire/auth';
+import { AbstractControl, FormControl, ValidationErrors } from '@angular/forms';
+import { from, map, Observable } from 'rxjs';
 
-export interface PasswordErrors {
+export type PasswordErrors = {
   lowercase?: boolean;
   number?: boolean;
   minLength?: boolean;
-}
+};
 
 export function firebasePasswordValidator() {
   const auth = inject(Auth);
@@ -16,7 +16,7 @@ export function firebasePasswordValidator() {
     if (!password) return from([null]);
 
     return from(validatePassword(auth, password)).pipe(
-      map(status => {
+      map((status) => {
         if (status.isValid) return null;
 
         const errors: PasswordErrors = {};
@@ -25,7 +25,7 @@ export function firebasePasswordValidator() {
         if (!status.meetsMinPasswordLength) errors.minLength = true;
 
         return errors;
-      })
+      }),
     );
   };
 }

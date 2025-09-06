@@ -1,33 +1,39 @@
 import { Component, inject, signal } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { AuthService } from '../../../shared/services/auth-service';
 import { firebasePasswordValidator } from '../../../shared/utils/validators';
-import { getErrorMessage } from '../../../shared/utils/getErrorMessage';
-import { getAuthError } from '../../../shared/utils/getAuthError';
-
+import { getErrorMessage } from '../../../shared/utils/get-error-message';
+import { getAuthError } from '../../../shared/utils/get-auth-error';
 
 @Component({
   selector: 'app-register-form',
   standalone: true,
   imports: [ReactiveFormsModule],
   templateUrl: './register-form.html',
-  styleUrl: './register-form.scss'
+  styleUrl: './register-form.scss',
 })
 export class RegisterForm {
-  auth = inject(AuthService);
-
-  error = signal('');
-  form = new FormGroup({
+  public auth = inject(AuthService);
+  public error = signal('');
+  public form = new FormGroup({
     name: new FormControl('', [Validators.required, Validators.minLength(2)]),
     email: new FormControl('', [Validators.required, Validators.email]),
     password: new FormControl('', {
       validators: [Validators.required],
       asyncValidators: [firebasePasswordValidator()],
-      updateOn: 'blur'
-    })
+      updateOn: 'blur',
+    }),
   });
 
-  submit() {
+  public getErrorMessage = getErrorMessage;
+
+  public submit(): void {
     if (this.form.invalid) return;
     this.error.set('');
     const email = this.form.get('email')!.value!;
@@ -37,12 +43,10 @@ export class RegisterForm {
       next: (userCredential) => {
         console.log('Signed in user:', userCredential.displayName);
       },
-      error: (err) => {
-        console.error('Register error:', err);
-        this.error.set(getAuthError(err));
-      }
+      error: (error) => {
+        console.error('Register error:', error);
+        this.error.set(getAuthError(error));
+      },
     });
   }
-
-  getErrorMessage = getErrorMessage;
 }

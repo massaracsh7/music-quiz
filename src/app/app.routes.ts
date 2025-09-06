@@ -8,11 +8,11 @@ export const routes: Routes = [
   },
   {
     path: 'login',
-    loadComponent: () => import('./components/auth-page/auth-page').then(m => m.AuthPage),
+    loadComponent: () => import('./components/auth-page/auth-page').then((m) => m.AuthPage),
   },
   {
     path: 'register',
-    loadComponent: () => import('./components/auth-page/auth-page').then(m => m.AuthPage),
+    loadComponent: () => import('./components/auth-page/auth-page').then((m) => m.AuthPage),
   },
   {
     path: '404',
