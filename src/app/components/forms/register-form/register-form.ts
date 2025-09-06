@@ -40,9 +40,7 @@ export class RegisterForm {
     const password = this.form.get('password')!.value!;
     const name = this.form.get('name')!.value!;
     this.auth.register(email, password, name).subscribe({
-      next: (userCredential) => {
-        console.log('Signed in user:', userCredential.displayName);
-      },
+      next: () => {},
       error: (error) => {
         console.error('Register error:', error);
         this.error.set(getAuthError(error));

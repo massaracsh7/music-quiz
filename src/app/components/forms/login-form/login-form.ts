@@ -38,9 +38,7 @@ export class LoginForm {
     const password = this.form.get('password')!.value!;
 
     this.auth.login(email, password).subscribe({
-      next: (userCredential) => {
-        console.log('Signed in user:', userCredential.user);
-      },
+      next: () => {},
       error: (error) => {
         console.error('Login error:', error);
         this.error.set(getAuthError(error));
