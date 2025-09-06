@@ -12,9 +12,10 @@ import { firebasePasswordValidator } from '../../../shared/utils/validators';
 })
 export class RegisterForm {
   auth = inject(AuthService);
+  error = signal('');
   form = new FormGroup({
-    name: new FormControl('', Validators.required),
-    email: new FormControl('', Validators.required),
+    name: new FormControl('', [Validators.required, Validators.minLength(2)]),
+    email: new FormControl('', [Validators.required, Validators.email]),
     password: new FormControl('', {
       validators: [Validators.required],
       asyncValidators: [firebasePasswordValidator()],
@@ -24,7 +25,7 @@ export class RegisterForm {
 
   submit() {
     if (this.form.invalid) return;
-
+    this.error.set('');
     const email = this.form.get('email')!.value!;
     const password = this.form.get('password')!.value!;
     const name = this.form.get('name')!.value!;
@@ -34,6 +35,7 @@ export class RegisterForm {
       },
       error: (err) => {
         console.error('Register error:', err);
+        this.error.set('Registration failed: ' + err.message);
       }
     });
   }
