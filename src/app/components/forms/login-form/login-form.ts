@@ -3,6 +3,8 @@ import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } 
 import { AuthService } from '../../../shared/services/auth-service';
 import { firebasePasswordValidator } from '../../../shared/utils/validators';
 import { getErrorMessage } from '../../../shared/utils/getErrorMessage';
+import { Auth } from '@angular/fire/auth';
+import { getAuthError } from '../../../shared/utils/getAuthError';
 @Component({
   selector: 'app-login-form',
   standalone: true,
@@ -11,13 +13,14 @@ import { getErrorMessage } from '../../../shared/utils/getErrorMessage';
   styleUrl: './login-form.scss'
 })
 export class LoginForm {
-  auth = inject(AuthService)
+  auth = inject(AuthService);
+  authFirebase = inject(Auth);
   error = signal('');
   form = new FormGroup({
     email: new FormControl('', [Validators.required, Validators.email]),
     password: new FormControl('', {
       validators: [Validators.required],
-      asyncValidators: [firebasePasswordValidator()],
+      asyncValidators: [firebasePasswordValidator(this.authFirebase)],
       updateOn: 'blur'
     })
   });
@@ -34,7 +37,8 @@ export class LoginForm {
       },
       error: (err) => {
         console.error('Login error:', err);
-        this.error.set('Login failed: ' + err.message);
+        this.error.set(getAuthError(err));
+        
 
       }
     });

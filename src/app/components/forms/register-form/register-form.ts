@@ -3,6 +3,8 @@ import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } 
 import { AuthService } from '../../../shared/services/auth-service';
 import { firebasePasswordValidator } from '../../../shared/utils/validators';
 import { getErrorMessage } from '../../../shared/utils/getErrorMessage';
+import { Auth } from '@angular/fire/auth';
+import { getAuthError } from '../../../shared/utils/getAuthError';
 
 
 @Component({
@@ -14,13 +16,15 @@ import { getErrorMessage } from '../../../shared/utils/getErrorMessage';
 })
 export class RegisterForm {
   auth = inject(AuthService);
+  authFirebase = inject(Auth);
+
   error = signal('');
   form = new FormGroup({
     name: new FormControl('', [Validators.required, Validators.minLength(2)]),
     email: new FormControl('', [Validators.required, Validators.email]),
     password: new FormControl('', {
       validators: [Validators.required],
-      asyncValidators: [firebasePasswordValidator()],
+      asyncValidators: [firebasePasswordValidator(this.authFirebase)],
       updateOn: 'blur'
     })
   });
@@ -37,7 +41,7 @@ export class RegisterForm {
       },
       error: (err) => {
         console.error('Register error:', err);
-        this.error.set('Registration failed: ' + err.message);
+        this.error.set(getAuthError(err));
       }
     });
   }
