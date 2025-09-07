@@ -1,4 +1,4 @@
-import { Component, computed, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
 import { LoginForm } from '../forms/login-form/login-form';
 import { RegisterForm } from '../forms/register-form/register-form';
 import { NavigationEnd, Router } from '@angular/router';
@@ -11,6 +11,7 @@ import { toSignal } from '@angular/core/rxjs-interop';
   imports: [LoginForm, RegisterForm],
   templateUrl: './auth-page.html',
   styleUrl: './auth-page.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AuthPage {
   public router = inject(Router);

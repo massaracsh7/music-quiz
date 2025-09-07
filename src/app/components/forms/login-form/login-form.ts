@@ -1,4 +1,4 @@
-import { Component, DestroyRef, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, inject, signal } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthService } from '../../../core/services/auth-service';
 import { firebasePasswordValidator } from '../../../shared/utils/validators';
@@ -16,6 +16,7 @@ import { CommonModule } from '@angular/common';
   imports: [ReactiveFormsModule, ShowPasswordPipe, CommonModule],
   templateUrl: './login-form.html',
   styleUrl: './login-form.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LoginForm {
   public router = inject(Router);
@@ -33,7 +34,7 @@ export class LoginForm {
   public getErrorMessage = getErrorMessage;
   private destroyRef = inject(DestroyRef);
 
-    public showPassword = signal(false);
+  public showPassword = signal(false);
 
   public togglePassword(): void {
     this.showPassword.set(!this.showPassword());
