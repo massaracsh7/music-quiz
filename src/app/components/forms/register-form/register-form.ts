@@ -9,11 +9,12 @@ import { catchError, of } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ShowPasswordPipe } from '../../../shared/pipes/show-password-pipe';
 import { CommonModule } from '@angular/common';
+import { InputPassword } from '../input-password/input-password';
 
 @Component({
   selector: 'app-register-form',
   standalone: true,
-  imports: [ReactiveFormsModule, ShowPasswordPipe, CommonModule],
+  imports: [ReactiveFormsModule, CommonModule, InputPassword],
   templateUrl: './register-form.html',
   styleUrl: './register-form.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -35,12 +36,6 @@ export class RegisterForm {
   public getErrorMessage = getErrorMessage;
 
   private destroyRef = inject(DestroyRef);
-
-  public showPassword = signal(false);
-
-  public togglePassword(): void {
-    this.showPassword.set(!this.showPassword());
-  }
 
   public submit(): void {
     if (this.form.invalid) return;

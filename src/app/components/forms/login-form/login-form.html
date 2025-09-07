@@ -10,7 +10,7 @@
       required
     />
     @if (form.controls.email.touched && form.controls.email.invalid) {
-      <div id="email-error" class="text-danger"  role="alert">
+      <div id="email-error" class="text-danger" role="alert">
         {{ getErrorMessage(form.controls.email, 'Email') }}
       </div>
     }
@@ -18,34 +18,10 @@
 
   <div class="mb-3">
     <label for="password">Password</label>
-  <div class="input-group">
-    <input
-      id="password"
-      [type]="'password' | showPassword: showPassword()"
-      formControlName="password"
-      class="form-control"
-      aria-describedby="password-error"
-      required
-    />
-    <button
-      type="button"
-      class="btn btn-outline-secondary input-group-text"
-      (click)="togglePassword()"
-      tabindex="-1"
-    >
-      <i class="bi" [ngClass]="showPassword() ? 'bi-eye-slash' : 'bi-eye'"></i>
-    </button>
-  </div>
-    @if (form.controls.password.touched && form.controls.password.invalid) {
-      <div id="password-error" class="text-danger" role="alert">
-        {{ getErrorMessage(form.controls.password, 'Password') }}
-      </div>
-    }
+    <app-input-password [control]="form.controls.password"></app-input-password>
   </div>
 
-  <button type="submit" class="btn btn-primary w-100" [disabled]="form.invalid">
-    Login
-  </button>
+  <button type="submit" class="btn btn-primary w-100" [disabled]="form.invalid">Login</button>
 
   @if (error()) {
     <div class="text-danger mb-3" role="alert">

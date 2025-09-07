@@ -35,7 +35,7 @@
 
   <div class="mb-3">
     <label for="password">Password</label>
-  <div class="input-group">
+  <!-- <div class="input-group">
     <input
       id="password"
       [type]="'password' | showPassword: showPassword()"
@@ -52,12 +52,13 @@
     >
       <i class="bi" [ngClass]="showPassword() ? 'bi-eye-slash' : 'bi-eye'"></i>
     </button>
-  </div>
-    @if (form.controls.password.touched && form.controls.password.invalid) {
+  </div> -->
+    <app-input-password [control]="form.controls.password"></app-input-password>
+    <!-- @if (form.controls.password.touched && form.controls.password.invalid) {
       <div id="password-error" class="text-danger" role="alert">
         {{ getErrorMessage(form.controls.password, 'Password') }}
       </div>
-    }
+    } -->
   </div>
 
   <button type="submit" class="btn btn-primary w-100" [disabled]="form.invalid">
