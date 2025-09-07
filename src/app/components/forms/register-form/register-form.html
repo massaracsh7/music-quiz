@@ -6,6 +6,7 @@
       type="text"
       formControlName="name"
       class="form-control"
+      placeholder="Enter your name (min 2 chars)"
       aria-describedby="name-error"
       required
     />
@@ -23,6 +24,7 @@
       type="email"
       formControlName="email"
       class="form-control"
+      placeholder="Enter a valid email"
       aria-describedby="email-error"
       required
     />
@@ -35,30 +37,7 @@
 
   <div class="mb-3">
     <label for="password">Password</label>
-  <!-- <div class="input-group">
-    <input
-      id="password"
-      [type]="'password' | showPassword: showPassword()"
-      formControlName="password"
-      class="form-control"
-      aria-describedby="password-error"
-      required
-    />
-    <button
-      type="button"
-      class="btn btn-outline-secondary input-group-text"
-      (click)="togglePassword()"
-      tabindex="-1"
-    >
-      <i class="bi" [ngClass]="showPassword() ? 'bi-eye-slash' : 'bi-eye'"></i>
-    </button>
-  </div> -->
     <app-input-password [control]="form.controls.password"></app-input-password>
-    <!-- @if (form.controls.password.touched && form.controls.password.invalid) {
-      <div id="password-error" class="text-danger" role="alert">
-        {{ getErrorMessage(form.controls.password, 'Password') }}
-      </div>
-    } -->
   </div>
 
   <button type="submit" class="btn btn-primary w-100" [disabled]="form.invalid">
