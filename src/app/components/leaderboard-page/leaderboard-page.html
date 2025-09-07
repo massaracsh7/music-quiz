@@ -1,1 +1,141 @@
-<p>leaderboard-page works!</p>
+<div class="container-fluid">
+  <div class="row">
+    <div>
+      <div class="d-flex justify-content-center align-items-center gap-5">
+        <h1>
+          <span class="bi bi-trophy-fill text-primary"></span>
+          Leaderboard
+        </h1>
+        <span class="badge bg-light text-dark fs-6 m-0">
+          <span class="bi bi-person-arms-up me-1"></span>
+          Players: {{ statistics().totalPlayers }}
+        </span>
+      </div>
+
+      <div class="card">
+        <div class="card-body">
+          <div class="d-flex flex-wrap gap-2">
+            @for (category of categories; track category.id) {
+              <button class="btn btn-outline-primary" [class.active]="currentFilter() === category.id"
+                      (click)="changeFilterCategory(category.id)">
+                {{ category.name }}
+              </button>
+            }
+          </div>
+        </div>
+      </div>
+
+      <div class="card mb-3">
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="table table-hover">
+              <thead>
+              <tr>
+                <th class="text-center" style="width: 5%;">
+                  #
+                </th>
+                <th (click)="toggleSort('username')" style="width: 31%;">
+                  Player
+                  @if (sortField() === 'username') {
+                    <span [class.bi-sort-alpha-down-alt]="sortDirection() === 'desc'"
+                          [class.bi-sort-alpha-up]="sortDirection() === 'asc'">
+                    </span>
+                  } @else {
+                    <span class="bi bi-arrow-down-up"></span>
+                  }
+                </th>
+                <th style="width: 31%;" (click)="toggleSort('score')">
+                  Score
+                  @if (sortField() === 'score') {
+                    <span [class.bi-sort-numeric-down]="sortDirection() === 'asc'"
+                          [class.bi-sort-numeric-up-alt]="sortDirection() === 'desc'">
+                    </span>
+                  } @else {
+                    <span class="bi bi-arrow-down-up"></span>
+                  }
+                </th>
+                <th style="width: 31%;" (click)="toggleSort('category')">
+                  Category
+                  @if (sortField() === 'category') {
+                    <span [class.bi-sort-alpha-down-alt]="sortDirection() === 'desc'"
+                          [class.bi-sort-alpha-up]="sortDirection() === 'asc'">
+                    </span>
+                  } @else {
+                    <span class="bi bi-arrow-down-up"></span>
+                  }
+                </th>
+              </tr>
+              </thead>
+
+              <tbody>
+                @if (filteredLeaderboard().length > 0) {
+                  @for (entry of filteredLeaderboard(); track entry.id; let i = $index) {
+                    <tr>
+                      <td class="text-center">
+                        {{ i + 1 }}
+                      </td>
+                      <td>
+                        {{ entry.username }}
+                      </td>
+                      <td>
+                        {{ entry.score }}s
+                      </td>
+                      <td>
+                        {{ entry.category }}
+                      </td>
+                    </tr>
+                  }
+                } @else {
+                  <tr>
+                    <td colspan="5" class="text-center">
+                      <div>
+                        <span class="bi bi-universal-access display-4 d-block mb-2"></span>
+                        <p class="h5">No one has played in this category yet.</p>
+                        <p class="text-muted">Choose a different category</p>
+                      </div>
+                    </td>
+                  </tr>
+                }
+
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      @if (filteredLeaderboard().length > 0) {
+        <div class="row">
+          <div class="col-md-4">
+            <div class="card bg-primary text-white">
+              <div class="card-body text-center">
+                <h3 class="card-title display-5 fw-bold"> {{ statistics().currentDataCount }} </h3>
+                <p class="card-text fs-5"> Players in the category </p>
+                <i class="bi bi-people-fill display-2"></i>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-4">
+            <div class="card bg-success text-white">
+              <div class="card-body text-center">
+                <h3 class="card-title display-5 fw-bold"> {{ statistics().successRate }}% </h3>
+                <p class="card-text fs-5"> Success rate </p>
+                <i class="bi bi-graph-up display-2"></i>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-4">
+            <div class="card bg-info text-white">
+              <div class="card-body text-center">
+                <h3 class="card-title display-5 fw-bold"> {{ statistics().currentAverage }} / {{ maxScore }} </h3>
+                <p class="card-text fs-5"> Average score </p>
+                <i class="bi bi-bar-chart-fill display-2"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+</div>
