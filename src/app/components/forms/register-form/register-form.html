@@ -1,0 +1,62 @@
+<form [formGroup]="form" (ngSubmit)="submit()" class="p-3 border rounded">
+  <div class="mb-3">
+    <label for="name">Name</label>
+    <input
+      id="name"
+      type="text"
+      formControlName="name"
+      class="form-control"
+      aria-describedby="name-error"
+      required
+    />
+    @if (form.controls.name.touched && form.controls.name.invalid) {
+      <div id="name-error" class="text-danger"  role="alert">
+        {{ getErrorMessage(form.controls.name, 'Name') }}
+      </div>
+    }
+  </div>
+
+  <div class="mb-3">
+    <label for="email">Email</label>
+    <input
+      id="email"
+      type="email"
+      formControlName="email"
+      class="form-control"
+      aria-describedby="email-error"
+      required
+    />
+    @if (form.controls.email.touched && form.controls.email.invalid) {
+      <div id="email-error" class="text-danger"  role="alert">
+        {{ getErrorMessage(form.controls.email, 'Email') }}
+      </div>
+    }
+  </div>
+
+  <div class="mb-3">
+    <label for="password">Password</label>
+    <input
+      id="password"
+      type="password"
+      formControlName="password"
+      class="form-control"
+      aria-describedby="password-error"
+      required
+    />
+    @if (form.controls.password.touched && form.controls.password.invalid) {
+      <div id="password-error" class="text-danger" role="alert">
+        {{ getErrorMessage(form.controls.password, 'Password') }}
+      </div>
+    }
+  </div>
+
+  <button type="submit" class="btn btn-primary w-100" [disabled]="form.invalid">
+    Register
+  </button>
+
+  @if (error()) {
+    <div class="text-danger mb-3" role="alert">
+      {{ error() }}
+    </div>
+  }
+</form>
