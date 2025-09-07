@@ -1,17 +1,19 @@
 import { Component, DestroyRef, inject, signal } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { AuthService } from '../../../shared/services/auth-service';
+import { AuthService } from '../../../core/services/auth-service';
 import { firebasePasswordValidator } from '../../../shared/utils/validators';
 import { getErrorMessage } from '../../../shared/utils/get-error-message';
 import { getAuthError } from '../../../shared/utils/get-auth-error';
 import { Router } from '@angular/router';
 import { catchError, of } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { ShowPasswordPipe } from '../../../shared/pipes/show-password-pipe';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-register-form',
   standalone: true,
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, ShowPasswordPipe, CommonModule],
   templateUrl: './register-form.html',
   styleUrl: './register-form.scss',
 })
@@ -32,6 +34,12 @@ export class RegisterForm {
   public getErrorMessage = getErrorMessage;
 
   private destroyRef = inject(DestroyRef);
+
+  public showPassword = signal(false);
+
+  public togglePassword(): void {
+    this.showPassword.set(!this.showPassword());
+  }
 
   public submit(): void {
     if (this.form.invalid) return;

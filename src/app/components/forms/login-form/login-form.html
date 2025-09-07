@@ -18,14 +18,24 @@
 
   <div class="mb-3">
     <label for="password">Password</label>
+  <div class="input-group">
     <input
       id="password"
-      type="password"
+      [type]="'password' | showPassword: showPassword()"
       formControlName="password"
       class="form-control"
       aria-describedby="password-error"
       required
     />
+    <button
+      type="button"
+      class="btn btn-outline-secondary input-group-text"
+      (click)="togglePassword()"
+      tabindex="-1"
+    >
+      <i class="bi" [ngClass]="showPassword() ? 'bi-eye-slash' : 'bi-eye'"></i>
+    </button>
+  </div>
     @if (form.controls.password.touched && form.controls.password.invalid) {
       <div id="password-error" class="text-danger" role="alert">
         {{ getErrorMessage(form.controls.password, 'Password') }}
