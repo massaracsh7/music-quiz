@@ -1,5 +1,10 @@
-import { Component, computed, signal } from '@angular/core';
-import { getScoresByCategory, LeaderboardEntry, MOCK_LEADERBOARD } from '../../shared/data/leaderboard-data';
+import { Component, computed, OnInit, signal } from '@angular/core';
+import {
+  getLeaderboard,
+  getScoresByCategory,
+  LeaderboardEntry,
+  MOCK_LEADERBOARD
+} from '../../shared/data/leaderboard-data';
 import { MUSIC_CATEGORIES } from '../../shared/utils/music-categories';
 
 @Component({
@@ -8,7 +13,7 @@ import { MUSIC_CATEGORIES } from '../../shared/utils/music-categories';
   templateUrl: './leaderboard-page.html',
   styleUrl: './leaderboard-page.scss'
 })
-export class LeaderboardPage {
+export class LeaderboardPage implements OnInit{
   public leaderboard = signal<LeaderboardEntry[]>([]);
   public currentFilter = signal<string>('all');
   public sortField = signal<string>('score');
@@ -52,6 +57,27 @@ export class LeaderboardPage {
       successRate,
     };
   });
+
+  public ngOnInit(): void {
+    this.loadLeaderboard();
+  }
+
+  public loadLeaderboard(): void {
+    this.leaderboard.set(getLeaderboard());
+  }
+
+  public changeFilterCategory(category: string): void {
+    this.currentFilter.set(category);
+  }
+
+  public toggleSort(field: string): void {
+    if (this.sortField() === field) {
+      this.sortDirection.set(this.sortDirection() === 'desc' ? 'asc' : 'desc');
+    } else {
+      this.sortField.set(field);
+      this.sortDirection.set('desc');
+    }
+  }
 
   public sortData(
     data: LeaderboardEntry[],
