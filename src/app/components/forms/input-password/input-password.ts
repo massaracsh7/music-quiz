@@ -6,6 +6,7 @@ import { ShowPasswordPipe } from '../../../shared/pipes/show-password-pipe';
 
 @Component({
   selector: 'app-input-password',
+  standalone: true,
   imports: [CommonModule, ReactiveFormsModule, ShowPasswordPipe],
   templateUrl: './input-password.html',
   styleUrl: './input-password.scss',

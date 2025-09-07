@@ -1,4 +1,4 @@
-import { inject, Injectable, signal } from '@angular/core';
+import { inject, Injectable, signal, computed, effect } from '@angular/core';
 import {
   Auth,
   createUserWithEmailAndPassword,
@@ -6,16 +6,22 @@ import {
   signOut,
   updateProfile,
   User,
-  UserCredential,
 } from '@angular/fire/auth';
-import { from, map, switchMap, Observable, tap } from 'rxjs';
+import { from, switchMap, tap, map, Observable } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-  public auth = inject(Auth);
+  private auth = inject(Auth);
 
-  public currentUserName = signal<string | null>(null);
-  public idToken = signal<string | null>(null);
+  public idToken = signal<string | null>(localStorage.getItem('idToken'));
+  public currentUserName = signal<string | null>(localStorage.getItem('currentUserName'));
+
+  public isLoggedIn = computed(() => !!this.idToken());
+
+  private _storageEffect = effect(() => {
+    localStorage.setItem('idToken', this.idToken() ?? '');
+    localStorage.setItem('currentUserName', this.currentUserName() ?? '');
+  });
 
   public login(email: string, password: string): Observable<User> {
     return from(signInWithEmailAndPassword(this.auth, email, password)).pipe(
@@ -24,10 +30,6 @@ export class AuthService {
           tap((token) => {
             this.idToken.set(token);
             this.currentUserName.set(userCredential.user.displayName);
-            console.log('Login success:', {
-              name: this.currentUserName(),
-              token: this.idToken(),
-            });
           }),
           map(() => userCredential.user),
         ),
@@ -43,10 +45,6 @@ export class AuthService {
           tap((token) => {
             this.idToken.set(token);
             this.currentUserName.set(username);
-            console.log('Register success:', {
-              name: this.currentUserName(),
-              token: this.idToken(),
-            });
           }),
           map(() => userCredential.user),
         ),
@@ -59,7 +57,8 @@ export class AuthService {
       tap(() => {
         this.idToken.set(null);
         this.currentUserName.set(null);
-        console.log('Logged out, signals cleared');
+        localStorage.removeItem('idToken');
+        localStorage.removeItem('currentUserName');
       }),
     );
   }
