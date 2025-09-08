@@ -16,11 +16,30 @@
       <h6>What's the name of this song?</h6>
       <div class="list-group">
         @for (variant of namesVariants; track variant) {
-          <button class="list-group-item list-group-item-action">
+          <button class="list-group-item list-group-item-action" (click)="onAnswerSelected(variant)">
             {{ variant }}
           </button>
         }
       </div>
     </div>
+  }
+
+  <div class="modal fade" #resultModal tabindex="-1" [class.show]="showResultDialog()" [style.display]="showResultDialog() ? 'block' : 'none'">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">{{ resultMessage().includes('Correct') ? 'Correct!' : 'Incorrect' }}</h5>
+        </div>
+        <div class="modal-body">
+          <p>{{ resultMessage() }}</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" (click)="closeDialog()">OK</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  @if (showResultDialog()) {
+    <div class="modal-backdrop fade show"></div>
   }
 </div>
