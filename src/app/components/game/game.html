@@ -1,45 +1,63 @@
 <div class="container py-4">
-  <div class="text-center mb-3">
-    <h5>Song <span id="current">3</span> / <span id="total">10</span></h5>
-  </div>
+    <h5 class="text-center mb-3">
+      <span class="text-primary">Song </span>
+      <span class="text-dark"> <span>3</span> / <span>10</span></span>
+    </h5>
   <div id="waveform" class="waveform"></div>
-  <div class="mt-4 text-center">
-    <button class="btn btn-primary me-2" (click)="onPlayPause()">
-      {{ isPlaying() ? 'Pause' : 'Play' }}
-    </button>
-    <button class="btn btn-success me-2" (click)="onKnowClick()">I know</button>
-    <button class="btn btn-danger" (click)="onDontKnowClick()">I don't know</button>
-  </div>
-
-  @if (showVariants()) {
-    <div class="mt-4">
-      <h6>What's the name of this song?</h6>
-      <div class="list-group">
-        @for (variant of namesVariants; track variant) {
-          <button class="list-group-item list-group-item-action" (click)="onAnswerSelected(variant)">
-            {{ variant }}
-          </button>
-        }
-      </div>
+  <div class="text-center mb-3">
+    <div class="text-center mb-3">
+      <span class="text-primary">⏱ Current time:</span>
+      <span class="text-dark"> {{ currentTime() }}s</span>
     </div>
-  }
+    <div class="mt-4 text-center">
+      <button class="btn btn-primary me-2" (click)="onPlayPause()">
+        {{ isPlaying() ? 'Pause' : 'Play' }}
+      </button>
+      <button class="btn btn-success me-2" (click)="onKnowClick()">I know</button>
+      <button class="btn btn-danger" (click)="onDontKnowClick()">I don't know</button>
+    </div>
 
-  <div class="modal fade" #resultModal tabindex="-1" [class.show]="showResultDialog()" [style.display]="showResultDialog() ? 'block' : 'none'">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title">{{ resultMessage().includes('Correct') ? 'Correct!' : 'Incorrect' }}</h5>
-        </div>
-        <div class="modal-body">
-          <p>{{ resultMessage() }}</p>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-primary" (click)="closeDialog()">OK</button>
+    @if (showVariants()) {
+      <div class="mt-4">
+        <h6>What's the name of this song?</h6>
+        <div class="list-group">
+          @for (variant of namesVariants; track variant) {
+            <button
+              class="list-group-item list-group-item-action"
+              (click)="onAnswerSelected(variant)"
+            >
+              {{ variant }}
+            </button>
+          }
         </div>
       </div>
+    }
+
+    <div
+      class="modal fade"
+      #resultModal
+      tabindex="-1"
+      [class.show]="showResultDialog()"
+      [style.display]="showResultDialog() ? 'block' : 'none'"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">
+              {{ resultMessage().includes('Correct') ? 'Correct!' : 'Incorrect' }}
+            </h5>
+          </div>
+          <div class="modal-body">
+            <p>{{ resultMessage() }}</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary" (click)="closeDialog()">OK</button>
+          </div>
+        </div>
+      </div>
     </div>
+    @if (showResultDialog()) {
+      <div class="modal-backdrop fade show"></div>
+    }
   </div>
-  @if (showResultDialog()) {
-    <div class="modal-backdrop fade show"></div>
-  }
 </div>

@@ -19,6 +19,7 @@ export class Game {
   public showVariants = signal(false);
   public showResultDialog = signal(false);
   public resultMessage = signal('');
+  public currentTime = signal(0);
 
   private wavesurfer: WaveSurfer | null = null;
   private destroyed = signal(false);
@@ -74,7 +75,9 @@ export class Game {
     });
 
     this.wavesurfer.load(this.song.url);
-    this.wavesurfer.on('audioprocess', () => {});
+    this.wavesurfer.on('audioprocess', (currentTime) => {
+      this.currentTime.set(Math.floor(currentTime));
+    });
     this.wavesurfer.on('finish', () => {
       this.isPlaying.set(false);
     });
