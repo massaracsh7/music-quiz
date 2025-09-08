@@ -15,6 +15,10 @@ export const routes: Routes = [
     loadComponent: () => import('./components/auth-page/auth-page').then((m) => m.AuthPage),
   },
   {
+    path: 'leaderboard',
+    loadComponent: () => import('./components/leaderboard-page/leaderboard-page').then((m) => m.LeaderboardPage),
+  },
+  {
     path: '404',
     loadComponent: () =>
       import('./components/not-found-page/not-found-page').then((m) => m.NotFoundPage),
