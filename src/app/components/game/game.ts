@@ -10,7 +10,6 @@ import WaveSurfer from 'wavesurfer.js';
   imports: [CommonModule],
 })
 export class Game {
-  @ViewChild('resultDialog') resultDialog!: ElementRef<HTMLDialogElement>;
   public song = {
     name: 'song1',
     url: 'assets/track.mp3',
