@@ -1,4 +1,4 @@
-import { Component, inject, effect, signal } from '@angular/core';
+import { Component, effect, signal } from '@angular/core';
 import WaveSurfer from 'wavesurfer.js';
 
 @Component({
