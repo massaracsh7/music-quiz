@@ -1,5 +1,5 @@
 import { inject, Injectable, Signal, effect } from '@angular/core';
-import { Firestore, collection, collectionData } from '@angular/fire/firestore';
+import { Firestore, collection, collectionData, doc, setDoc } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 import { LeaderboardCategory, LeaderboardUser } from '../../models/leaderboard.model';
 import { toSignal } from '@angular/core/rxjs-interop';
@@ -21,5 +21,10 @@ export class LeaderboardService {
     const usersCol = collection(this.firestore, `leaderboardCategories/${categoryId}/users`);
     const users$ = collectionData(usersCol, { idField: 'email' }) as Observable<LeaderboardUser[]>;
     return toSignal(users$, { initialValue: [] });
+  }
+
+  public setUserScore(categoryId: string, userEmail: string, score: number): Promise<void> {
+    const userDoc = doc(this.firestore, `leaderboardCategories/${categoryId}/users/${userEmail}`);
+    return setDoc(userDoc, { score }, { merge: true });
   }
 }
