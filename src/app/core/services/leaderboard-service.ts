@@ -6,16 +6,18 @@ import { toSignal } from '@angular/core/rxjs-interop';
 
 @Injectable({ providedIn: 'root' })
 export class LeaderboardService {
-  private firestore = inject(Firestore);
+  public firestore = inject(Firestore);
   public leaderboards: Signal<LeaderboardCategory[]>;
 
   constructor() {
     const leaderboardCollection = collection(this.firestore, 'leaderboardCategories');
-    const leaderboards$ = collectionData(leaderboardCollection, { idField: 'id' }) as Observable<LeaderboardCategory[]>;
+    const leaderboards$ = collectionData(leaderboardCollection, { idField: 'id' }) as Observable<
+      LeaderboardCategory[]
+    >;
     this.leaderboards = toSignal(leaderboards$, { initialValue: [] });
   }
 
-  getUsersForCategory(categoryId: string): Signal<LeaderboardUser[]> {
+  public getUsersForCategory(categoryId: string): Signal<LeaderboardUser[]> {
     const usersCol = collection(this.firestore, `leaderboardCategories/${categoryId}/users`);
     const users$ = collectionData(usersCol, { idField: 'email' }) as Observable<LeaderboardUser[]>;
     return toSignal(users$, { initialValue: [] });

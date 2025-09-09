@@ -6,7 +6,7 @@ import { Category } from '../../models/category.model';
 
 @Injectable({ providedIn: 'root' })
 export class CategoryService {
-  private firestore = inject(Firestore);
+  public firestore = inject(Firestore);
 
   public categories: Signal<Category[]>;
 
@@ -16,7 +16,5 @@ export class CategoryService {
     const categories$ = collectionData(categoriesCollection) as Observable<Category[]>;
 
     this.categories = toSignal(categories$, { initialValue: [] });
-
   }
-
 }

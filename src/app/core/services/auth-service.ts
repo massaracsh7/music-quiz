@@ -11,7 +11,7 @@ import { from, switchMap, tap, map, Observable } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-  private auth = inject(Auth);
+  public auth = inject(Auth);
 
   public idToken = signal<string | null>(localStorage.getItem('idToken'));
   public currentUserName = signal<string | null>(localStorage.getItem('currentUserName'));

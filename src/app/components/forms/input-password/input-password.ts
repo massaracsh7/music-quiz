@@ -10,17 +10,17 @@ import { ShowPasswordPipe } from '../../../shared/pipes/show-password-pipe';
   imports: [CommonModule, ReactiveFormsModule, ShowPasswordPipe],
   templateUrl: './input-password.html',
   styleUrl: './input-password.scss',
-    changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class InputPassword {
-  @Input({ required: true }) control!: FormControl;
+  @Input({ required: true }) public control!: FormControl;
 
   public showPassword = signal(false);
   public errorId = 'password-error';
 
-  togglePassword() {
+  public getErrorMessage = getErrorMessage;
+
+  public togglePassword(): void {
     this.showPassword.set(!this.showPassword());
   }
-
-  public getErrorMessage = getErrorMessage;
 }

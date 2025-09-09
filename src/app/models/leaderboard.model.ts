@@ -1,11 +1,10 @@
-export interface LeaderboardUser {
-    email: string;
-    score: number;
-}
+export type LeaderboardUser = {
+  email: string;
+  score: number;
+};
 
-export interface LeaderboardCategory {
-    id: string;
-    title: string;
-    users: LeaderboardUser[];
-}
-
+export type LeaderboardCategory = {
+  id: string;
+  title: string;
+  users: LeaderboardUser[];
+};
