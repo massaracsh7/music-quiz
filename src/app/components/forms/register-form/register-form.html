@@ -11,7 +11,7 @@
       required
     />
     @if (form.controls.name.touched && form.controls.name.invalid) {
-      <div id="name-error" class="text-danger"  role="alert">
+      <div id="name-error" class="text-danger" role="alert">
         {{ getErrorMessage(form.controls.name, 'Name') }}
       </div>
     }
@@ -29,7 +29,7 @@
       required
     />
     @if (form.controls.email.touched && form.controls.email.invalid) {
-      <div id="email-error" class="text-danger"  role="alert">
+      <div id="email-error" class="text-danger" role="alert">
         {{ getErrorMessage(form.controls.email, 'Email') }}
       </div>
     }
@@ -40,9 +40,7 @@
     <app-input-password [control]="form.controls.password"></app-input-password>
   </div>
 
-  <button type="submit" class="btn btn-primary w-100" [disabled]="form.invalid">
-    Register
-  </button>
+  <button type="submit" class="btn btn-primary w-100" [disabled]="form.invalid">Register</button>
 
   @if (error()) {
     <div class="text-danger mb-3" role="alert">
