@@ -10,7 +10,7 @@
       required
     />
     @if (form.controls.email.touched && form.controls.email.invalid) {
-      <div id="email-error" class="text-danger"  role="alert">
+      <div id="email-error" class="text-danger" role="alert">
         {{ getErrorMessage(form.controls.email, 'Email') }}
       </div>
     }
@@ -33,9 +33,7 @@
     }
   </div>
 
-  <button type="submit" class="btn btn-primary w-100" [disabled]="form.invalid">
-    Login
-  </button>
+  <button type="submit" class="btn btn-primary w-100" [disabled]="form.invalid">Login</button>
 
   @if (error()) {
     <div class="text-danger mb-3" role="alert">
