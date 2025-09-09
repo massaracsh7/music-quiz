@@ -1,19 +1,23 @@
-import { Component, DestroyRef, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, inject, signal } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { AuthService } from '../../../shared/services/auth-service';
+import { AuthService } from '../../../core/services/auth-service';
 import { firebasePasswordValidator } from '../../../shared/utils/validators';
 import { getErrorMessage } from '../../../shared/utils/get-error-message';
 import { getAuthError } from '../../../shared/utils/get-auth-error';
 import { catchError, of } from 'rxjs';
 import { Router } from '@angular/router';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { ShowPasswordPipe } from '../../../shared/pipes/show-password-pipe';
+import { CommonModule } from '@angular/common';
+import { InputPassword } from '../input-password/input-password';
 
 @Component({
   selector: 'app-login-form',
   standalone: true,
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, CommonModule, InputPassword],
   templateUrl: './login-form.html',
   styleUrl: './login-form.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LoginForm {
   public router = inject(Router);
