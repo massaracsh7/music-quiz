@@ -1,6 +1,5 @@
-import { Component, effect, signal } from '@angular/core';
+import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import WaveSurfer from 'wavesurfer.js';
 import { GameField } from '../game-field/game-field';
 
 @Component({
