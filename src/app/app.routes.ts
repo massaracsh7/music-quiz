@@ -7,6 +7,10 @@ export const routes: Routes = [
     loadComponent: () => import('./components/home-page/home-page').then((m) => m.HomePage),
   },
   {
+    path: 'game',
+    loadComponent: () => import('./components/game-page/game-page').then((m) => m.GamePage),
+  },
+  {
     path: 'login',
     loadComponent: () => import('./components/auth-page/auth-page').then((m) => m.AuthPage),
   },

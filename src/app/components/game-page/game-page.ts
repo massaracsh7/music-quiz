@@ -3,13 +3,13 @@ import { CommonModule } from '@angular/common';
 import WaveSurfer from 'wavesurfer.js';
 
 @Component({
-  selector: 'app-game',
-  templateUrl: './game.html',
-  styleUrls: ['./game.scss'],
+  selector: 'app-game-page',
+  templateUrl: './game-page.html',
+  styleUrls: ['./game-page.scss'],
   standalone: true,
   imports: [CommonModule],
 })
-export class Game {
+export class GamePage {
   public song = {
     name: 'song1',
     url: 'assets/track.mp3',
