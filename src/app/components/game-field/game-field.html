@@ -13,26 +13,24 @@
       <button class="btn btn-primary me-2" (click)="onPlayPause()">
         {{ wavesurfer.isPlaying() ? 'Pause' : 'Play' }}
       </button>
-      <button class="btn btn-success me-2" (click)="onKnowClick()">I know</button>
-      <button class="btn btn-danger" (click)="onDontKnowClick()">I don't know</button>
     </div>
 
-    @if (showVariants()) {
-      <div class="mt-4">
-        <h6>What's the name of this song?</h6>
-        <div class="list-group">
-          @for (variant of namesVariants; track variant) {
-            <button
-              class="list-group-item list-group-item-action"
-              (click)="onAnswerSelected(variant)"
-            >
-              {{ variant }}
-            </button>
-          }
-        </div>
+    <div class="mt-4 text-center">
+      <h6>What's the name of this song?</h6>
+      <div class="d-flex justify-content-center gap-2 flex-wrap">
+        @for (variant of namesVariants; track variant) {
+          <button
+            class="btn btn-outline-primary"
+            (click)="onAnswerSelected(variant)"
+          >
+            {{ variant }}
+          </button>
+        }
       </div>
-    }
-
+    </div>
+    <div class="mt-4 text-center">
+      <button class="btn btn-danger" (click)="onDontKnowClick()">I don't know</button>
+    </div>
     <div
       class="modal fade"
       #resultModal

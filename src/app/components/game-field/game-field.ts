@@ -13,7 +13,6 @@ export class GameField {
     url: 'assets/track.mp3',
   };
   public namesVariants: string[] = ['song1', 'song2', 'song3', 'song4'];
-  public showVariants = signal(false);
   public showResultDialog = signal(false);
   public resultMessage = signal('');
 
@@ -33,10 +32,6 @@ export class GameField {
 
   public onPlayPause(): void {
     this.wavesurfer.playPause();
-  }
-
-  public onKnowClick(): void {
-    this.showVariants.set(true);
   }
 
   public onDontKnowClick(): void {}
