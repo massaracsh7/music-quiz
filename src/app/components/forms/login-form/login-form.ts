@@ -1,4 +1,11 @@
-import { ChangeDetectionStrategy, Component, DestroyRef, inject, signal, viewChild } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  DestroyRef,
+  inject,
+  signal,
+  viewChild,
+} from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthService } from '../../../core/services/auth-service';
 import { firebasePasswordValidator } from '../../../shared/utils/validators';
@@ -46,7 +53,6 @@ export class LoginForm {
       .pipe(
         takeUntilDestroyed(this.destroyRef),
         catchError((error) => {
-          console.error('Login error:', error);
           this.error.set(getAuthError(error));
           this.toast.show(getAuthError(error), 'error');
           return of(null);

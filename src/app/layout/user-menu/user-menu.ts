@@ -6,13 +6,12 @@ import { RouterModule } from '@angular/router';
   selector: 'app-user-menu',
   imports: [RouterModule],
   templateUrl: './user-menu.html',
-  styleUrl: './user-menu.scss'
+  styleUrl: './user-menu.scss',
 })
 export class UserMenu {
-  auth = inject(AuthService);
+  private auth = inject(AuthService);
 
-  logout() {
+  public logout(): void {
     this.auth.logout().subscribe();
   }
-
 }

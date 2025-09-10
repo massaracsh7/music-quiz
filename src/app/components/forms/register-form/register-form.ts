@@ -52,7 +52,6 @@ export class RegisterForm {
       .pipe(
         takeUntilDestroyed(this.destroyRef),
         catchError((error) => {
-          console.error('Register error:', error);
           this.error.set(getAuthError(error));
           this.toast.show(getAuthError(error), 'error');
           return of(null);

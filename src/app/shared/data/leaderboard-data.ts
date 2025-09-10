@@ -1,9 +1,9 @@
-export interface LeaderboardEntry {
+export type LeaderboardEntry = {
   id: string;
   username: string;
   score: number;
   category: string;
-}
+};
 
 export const MOCK_LEADERBOARD: LeaderboardEntry[] = [
   {

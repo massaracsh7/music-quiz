@@ -6,8 +6,6 @@ import { RouterModule } from '@angular/router';
   imports: [RouterModule],
   templateUrl: './nav-menu.html',
   styleUrl: './nav-menu.scss',
-  standalone: true
+  standalone: true,
 })
-export class NavMenu {
-
-}
+export class NavMenu {}

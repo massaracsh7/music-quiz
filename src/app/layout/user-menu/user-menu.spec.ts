@@ -8,9 +8,8 @@ describe('UserMenu', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [UserMenu]
-    })
-    .compileComponents();
+      imports: [UserMenu],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(UserMenu);
     component = fixture.componentInstance;

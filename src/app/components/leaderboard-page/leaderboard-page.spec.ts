@@ -8,9 +8,8 @@ describe('LeaderboardPage', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [LeaderboardPage]
-    })
-    .compileComponents();
+      imports: [LeaderboardPage],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(LeaderboardPage);
     component = fixture.componentInstance;

@@ -8,8 +8,6 @@ import { UserMenu } from '../user-menu/user-menu';
   imports: [RouterModule, NavMenu, UserMenu],
   templateUrl: './header.html',
   styleUrl: './header.scss',
-   standalone: true
+  standalone: true,
 })
-export class Header {
-
-}
+export class Header {}

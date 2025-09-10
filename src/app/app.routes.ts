@@ -20,7 +20,8 @@ export const routes: Routes = [
   },
   {
     path: 'leaderboard',
-    loadComponent: () => import('./components/leaderboard-page/leaderboard-page').then((m) => m.LeaderboardPage),
+    loadComponent: () =>
+      import('./components/leaderboard-page/leaderboard-page').then((m) => m.LeaderboardPage),
   },
   {
     path: '404',

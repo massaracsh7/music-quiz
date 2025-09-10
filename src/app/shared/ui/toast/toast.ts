@@ -9,9 +9,9 @@ import { Toast as BsToast } from 'bootstrap';
   styleUrl: './toast.scss',
 })
 export class Toast {
-  toastService = inject(ToastService);
+  public toastService = inject(ToastService);
 
-  toastEl = viewChild<ElementRef<HTMLDivElement>>('toastEl');
+  public toastEl = viewChild<ElementRef<HTMLDivElement>>('toastEl');
 
   constructor() {
     effect(() => {
@@ -22,9 +22,13 @@ export class Toast {
           autohide: true,
           delay: 3000,
         });
-        this.toastEl()!.nativeElement.addEventListener('hidden.bs.toast', () => {
-          this.toastService.clear();
-        }, { once: true });
+        this.toastEl()!.nativeElement.addEventListener(
+          'hidden.bs.toast',
+          () => {
+            this.toastService.clear();
+          },
+          { once: true },
+        );
         bsToast.show();
       }
     });

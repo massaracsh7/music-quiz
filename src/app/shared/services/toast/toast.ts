@@ -1,19 +1,19 @@
 import { Injectable, signal } from '@angular/core';
 
-export interface ToastItem {
+export type ToastItem = {
   message: string;
   type: 'success' | 'error';
-}
+};
 
 @Injectable({ providedIn: 'root' })
 export class ToastService {
-  toast = signal<ToastItem | null>(null);
+  public toast = signal<ToastItem | null>(null);
 
-  show(message: string, type: 'success' | 'error' = 'error') {
+  public show(message: string, type: 'success' | 'error' = 'error'): void {
     this.toast.set({ message, type });
   }
 
-  clear() {
+  public clear(): void {
     this.toast.set(null);
   }
 }

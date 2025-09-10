@@ -24,7 +24,10 @@ export class LeaderboardService {
   }
 
   public setUserScore(categoryId: string, userEmail: string, score: number): Promise<void> {
-    const userDoc = doc(this.firestore, `leaderboardCategories/${categoryId}/users/${userEmail}`);
-    return setDoc(userDoc, { score }, { merge: true });
+    const userDocument = doc(
+      this.firestore,
+      `leaderboardCategories/${categoryId}/users/${userEmail}`,
+    );
+    return setDoc(userDocument, { score }, { merge: true });
   }
 }
