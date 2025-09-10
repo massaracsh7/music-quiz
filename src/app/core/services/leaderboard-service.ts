@@ -17,10 +17,9 @@ export class LeaderboardService {
     this.leaderboards = toSignal(leaderboards$, { initialValue: [] });
   }
 
-  public getUsersForCategory(categoryId: string): Signal<LeaderboardUser[]> {
+  public getUsersForCategory(categoryId: string): Observable<LeaderboardUser[]> {
     const usersCol = collection(this.firestore, `leaderboardCategories/${categoryId}/users`);
-    const users$ = collectionData(usersCol, { idField: 'email' }) as Observable<LeaderboardUser[]>;
-    return toSignal(users$, { initialValue: [] });
+    return collectionData(usersCol, { idField: 'email' }) as Observable<LeaderboardUser[]>;
   }
 
   public setUserScore(categoryId: string, userEmail: string, score: number): Promise<void> {
