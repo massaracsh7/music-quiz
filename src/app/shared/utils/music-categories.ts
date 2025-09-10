@@ -1,8 +1,8 @@
-export interface SongCategory {
+export type SongCategory = {
   id: string;
   name: string;
   songsId: string[];
-}
+};
 
 export const MUSIC_CATEGORIES: SongCategory[] = [
   {

@@ -19,10 +19,7 @@
       <h6>What's the name of this song?</h6>
       <div class="d-flex justify-content-center gap-2 flex-wrap">
         @for (variant of namesVariants; track variant) {
-          <button
-            class="btn btn-outline-primary"
-            (click)="onAnswerSelected(variant)"
-          >
+          <button class="btn btn-outline-primary" (click)="onAnswerSelected(variant)">
             {{ variant }}
           </button>
         }

@@ -1,17 +1,17 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { LeaderboardPage } from './leaderboard-page';
+import { UserMenu } from './user-menu';
 
-describe('LeaderboardPage', () => {
-  let component: LeaderboardPage;
-  let fixture: ComponentFixture<LeaderboardPage>;
+describe('UserMenu', () => {
+  let component: UserMenu;
+  let fixture: ComponentFixture<UserMenu>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [LeaderboardPage],
+      imports: [UserMenu],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(LeaderboardPage);
+    fixture = TestBed.createComponent(UserMenu);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -1,0 +1,9 @@
+<div class="d-flex align-items-center">
+  @if (auth.isLoggedIn()) {
+    <span class="me-2">Hello, {{ auth.currentUserName() }}</span>
+    <button type="button" class="btn btn-outline-danger" (click)="logout()">Logout</button>
+  } @else {
+    <button type="button" class="btn btn-outline-primary me-2" routerLink="/login">Login</button>
+    <button type="button" class="btn btn-primary" routerLink="/register">Sign-up</button>
+  }
+</div>

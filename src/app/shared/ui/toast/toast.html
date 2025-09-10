@@ -1,0 +1,26 @@
+<div class="toast-container position-fixed top-0 end-0 p-3">
+  @if (toastService.toast()) {
+    <div
+      #toastEl
+      class="toast align-items-center border-0 mb-2"
+      role="alert"
+      aria-live="assertive"
+      aria-atomic="true"
+      data-bs-animation="true"
+      data-bs-autohide="true"
+      data-bs-delay="3000"
+      [class.text-bg-success]="toastService.toast()?.type === 'success'"
+      [class.text-bg-danger]="toastService.toast()?.type === 'error'"
+    >
+      <div class="d-flex">
+        <div class="toast-body">{{ toastService.toast()?.message }}</div>
+        <button
+          type="button"
+          class="btn-close btn-close-white me-2 m-auto"
+          data-bs-dismiss="toast"
+          aria-label="Close"
+        ></button>
+      </div>
+    </div>
+  }
+</div>

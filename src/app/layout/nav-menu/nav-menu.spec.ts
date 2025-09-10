@@ -1,17 +1,17 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { LeaderboardPage } from './leaderboard-page';
+import { NavMenu } from './nav-menu';
 
-describe('LeaderboardPage', () => {
-  let component: LeaderboardPage;
-  let fixture: ComponentFixture<LeaderboardPage>;
+describe('NavMenu', () => {
+  let component: NavMenu;
+  let fixture: ComponentFixture<NavMenu>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [LeaderboardPage],
+      imports: [NavMenu],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(LeaderboardPage);
+    fixture = TestBed.createComponent(NavMenu);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

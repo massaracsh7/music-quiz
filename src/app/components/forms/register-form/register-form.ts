@@ -10,6 +10,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ShowPasswordPipe } from '../../../shared/pipes/show-password-pipe';
 import { CommonModule } from '@angular/common';
 import { InputPassword } from '../input-password/input-password';
+import { ToastService } from '../../../shared/services/toast/toast';
 
 @Component({
   selector: 'app-register-form',
@@ -22,6 +23,7 @@ import { InputPassword } from '../input-password/input-password';
 export class RegisterForm {
   public router = inject(Router);
   public auth = inject(AuthService);
+  public toast = inject(ToastService);
   public error = signal('');
   public form = new FormGroup({
     name: new FormControl('', [Validators.required, Validators.minLength(2)]),
@@ -50,13 +52,14 @@ export class RegisterForm {
       .pipe(
         takeUntilDestroyed(this.destroyRef),
         catchError((error) => {
-          console.error('Register error:', error);
           this.error.set(getAuthError(error));
+          this.toast.show(getAuthError(error), 'error');
           return of(null);
         }),
       )
       .subscribe((user) => {
         if (user) {
+          this.toast.show(`Welcome, ${user.displayName}!`, 'success');
           this.router.navigate(['/']);
         }
       });

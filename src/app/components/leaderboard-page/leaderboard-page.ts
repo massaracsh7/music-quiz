@@ -3,7 +3,7 @@ import {
   getLeaderboard,
   getScoresByCategory,
   LeaderboardEntry,
-  MOCK_LEADERBOARD
+  MOCK_LEADERBOARD,
 } from '../../shared/data/leaderboard-data';
 import { MUSIC_CATEGORIES } from '../../shared/utils/music-categories';
 
@@ -11,9 +11,9 @@ import { MUSIC_CATEGORIES } from '../../shared/utils/music-categories';
   selector: 'app-leaderboard-page',
   imports: [],
   templateUrl: './leaderboard-page.html',
-  styleUrl: './leaderboard-page.scss'
+  styleUrl: './leaderboard-page.scss',
 })
-export class LeaderboardPage implements OnInit{
+export class LeaderboardPage implements OnInit {
   public leaderboard = signal<LeaderboardEntry[]>([]);
   public currentFilter = signal<string>('all');
   public sortField = signal<string>('score');
@@ -107,15 +107,15 @@ export class LeaderboardPage implements OnInit{
 
       if (field === 'score') {
         if (direction === 'desc') {
-          return secondValue > firstValue ? 1 : (secondValue < firstValue ? -1 : 0);
+          return secondValue > firstValue ? 1 : secondValue < firstValue ? -1 : 0;
         } else {
-          return firstValue > secondValue ? 1 : (firstValue < secondValue ? -1 : 0);
+          return firstValue > secondValue ? 1 : firstValue < secondValue ? -1 : 0;
         }
       } else {
         if (direction === 'desc') {
-          return secondValue > firstValue ? 1 : (secondValue < firstValue ? -1 : 0);
+          return secondValue > firstValue ? 1 : secondValue < firstValue ? -1 : 0;
         } else {
-          return firstValue > secondValue ? 1 : (firstValue < secondValue ? -1 : 0);
+          return firstValue > secondValue ? 1 : firstValue < secondValue ? -1 : 0;
         }
       }
     });
