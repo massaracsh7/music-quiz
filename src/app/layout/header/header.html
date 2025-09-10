@@ -1,0 +1,24 @@
+    <header class="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom">
+      <a
+        href="/"
+        class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none"
+      >
+        <span class="fs-4">Music Quiz</span>
+      </a>
+
+      <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
+        <li><a [routerLink]="['/home']" class="nav-link px-2">Home</a></li>
+        <li><a [routerLink]="['/game']" class="nav-link px-2">Game</a></li>
+        <li><a [routerLink]="['/leaderboard']" class="nav-link px-2">Leaderboard</a></li>
+        <li><a class="nav-link px-2">About Us</a></li>
+      </ul>
+
+      <div class="col-md-3 text-end">
+        <button type="button" class="btn btn-outline-primary me-2" [routerLink]="['/login']">
+          Login
+        </button>
+        <button type="button" class="btn btn-primary" [routerLink]="['/register']">
+          Sign-up
+        </button>
+      </div>
+    </header>
