@@ -9,7 +9,7 @@ import { RouterModule } from '@angular/router';
   styleUrl: './user-menu.scss',
 })
 export class UserMenu {
-  private auth = inject(AuthService);
+  public auth = inject(AuthService);
 
   public logout(): void {
     this.auth.logout().subscribe();
