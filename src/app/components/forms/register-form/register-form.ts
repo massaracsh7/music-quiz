@@ -54,6 +54,7 @@ export class RegisterForm {
         catchError((error) => {
           console.error('Register error:', error);
           this.error.set(getAuthError(error));
+          this.toast.show(getAuthError(error), 'error');
           return of(null);
         }),
       )

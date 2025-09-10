@@ -48,6 +48,7 @@ export class LoginForm {
         catchError((error) => {
           console.error('Login error:', error);
           this.error.set(getAuthError(error));
+          this.toast.show(getAuthError(error), 'error');
           return of(null);
         }),
       )
