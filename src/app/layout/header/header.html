@@ -1,4 +1,4 @@
-    <header class="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom">
+    <header class="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom gap-4">
       <a
         href="/"
         class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none"
@@ -7,13 +7,5 @@
       </a>
 
       <app-nav-menu></app-nav-menu>
-
-      <div class="col-md-3 text-end">
-        <button type="button" class="btn btn-outline-primary me-2" [routerLink]="['/login']">
-          Login
-        </button>
-        <button type="button" class="btn btn-primary" [routerLink]="['/register']">
-          Sign-up
-        </button>
-      </div>
+      <app-user-menu></app-user-menu>
     </header>
