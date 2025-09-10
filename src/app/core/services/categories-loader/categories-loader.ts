@@ -2,10 +2,10 @@ import { Injectable, inject, signal, effect, Signal } from '@angular/core';
 import { Firestore, collection, collectionData } from '@angular/fire/firestore';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { Observable } from 'rxjs';
-import { Category } from '../../models/category.model';
+import { Category } from '../../../models/category.model';
 
 @Injectable({ providedIn: 'root' })
-export class CategoryService {
+export class CategoriesLoader {
   public firestore = inject(Firestore);
 
   public categories: Signal<Category[]>;
