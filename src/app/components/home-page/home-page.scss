@@ -2,26 +2,17 @@
   font-size: 6rem;
 }
 
-  .rules {
-      color: white;
-    }
+.rule {
+  font-size: 1.5rem;
+  opacity: 0;
+  transform: translate(-80px, -80px);
+  animation: fadeSlide 0.8s forwards;
+  margin-bottom: 1rem;
+}
 
- .rules {
-      color: white;
-    }
-
-    .rule {
-      font-size: 1.5rem;
-      opacity: 0;
-      transform: translate(-80px, -80px);
-      animation: fadeSlide 0.8s forwards;
-      margin-bottom: 1rem;
-    }
-
-    @keyframes fadeSlide {
-      to {
-        opacity: 1;
-        transform: translate(0, 0);
-      }
-    
+@keyframes fadeSlide {
+  to {
+    opacity: 1;
+    transform: translate(0, 0);
+  }
 }
