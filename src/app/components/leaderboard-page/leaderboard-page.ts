@@ -1,11 +1,7 @@
-import { Component, computed, OnInit, signal } from '@angular/core';
-import {
-  getLeaderboard,
-  getScoresByCategory,
-  LeaderboardEntry,
-  MOCK_LEADERBOARD,
-} from '../../shared/data/leaderboard-data';
-import { MUSIC_CATEGORIES } from '../../shared/utils/music-categories';
+import { Component, computed, inject, OnInit, signal } from '@angular/core';
+import { LeaderboardService } from '../../core/services/leaderboard-service';
+import { LeaderboardUser } from '../../models/leaderboard.model';
+import { map } from 'rxjs';
 
 @Component({
   selector: 'app-leaderboard-page',
@@ -14,37 +10,36 @@ import { MUSIC_CATEGORIES } from '../../shared/utils/music-categories';
   styleUrl: './leaderboard-page.scss',
 })
 export class LeaderboardPage implements OnInit {
-  public leaderboard = signal<LeaderboardEntry[]>([]);
-  public currentFilter = signal<string>('all');
+  public leaderboardService = inject(LeaderboardService);
+
+  public leaderboard = signal<LeaderboardUser[]>([]);
+  public categories = this.leaderboardService.leaderboards;
+  public currentCategory = signal<string>(this.categories().map((data) => data.title)[0]);
+  public currentFilter = signal<string>(this.categories().map((data) => data.title)[0]);
   public sortField = signal<string>('score');
   public sortDirection = signal<'asc' | 'desc'>('asc');
 
   public maxScore = 240;
 
-  public categories = [
-    { id: 'all', name: 'All' },
-    ...MUSIC_CATEGORIES.map((category) => ({
-      id: category.name,
-      name: category.name,
-    })),
-  ];
-
   public filteredLeaderboard = computed(() => {
-    const filtered =
-      this.currentFilter() === 'all'
-        ? [...this.leaderboard()]
-        : getScoresByCategory(this.currentFilter());
+    let filtered: LeaderboardUser[];
+
+    this.currentFilter() === 'all'
+      ? (filtered = [...this.leaderboard()])
+      : (filtered = [...this.leaderboard()]);
 
     return this.sortData(filtered, this.sortField(), this.sortDirection());
   });
 
   public statistics = computed(() => {
-    const totalPlayers = MOCK_LEADERBOARD.length;
+    const totalPlayers = this.leaderboard().length;
     const currentData = this.filteredLeaderboard();
 
     const currentAverage =
       currentData.length > 0
-        ? Math.round(currentData.reduce((sum, entry) => sum + entry.score, 0) / currentData.length)
+        ? Math.round(
+          currentData.reduce((sum, entry) => sum + Number(entry.score), 0) / currentData.length
+        )
         : 0;
 
     const successRate =
@@ -63,11 +58,23 @@ export class LeaderboardPage implements OnInit {
   }
 
   public loadLeaderboard(): void {
-    this.leaderboard.set(getLeaderboard());
+    this.leaderboardService
+      .getUsersForCategory(this.categories().map((data) => data.title)[0])
+      .pipe(map((data) => data))
+      .subscribe((users) => {
+        this.leaderboard.set(users);
+      });
   }
 
-  public changeFilterCategory(category: string): void {
-    this.currentFilter.set(category);
+  public changeFilterCategory(categoryId: string, categoryName: string): void {
+    this.currentCategory.set(categoryName);
+    this.leaderboardService
+      .getUsersForCategory(categoryId)
+      .pipe(map((data) => data))
+      .subscribe((users) => {
+        this.leaderboard.set(users);
+        this.currentFilter.set(categoryId);
+      });
   }
 
   public toggleSort(field: string): void {
@@ -80,23 +87,18 @@ export class LeaderboardPage implements OnInit {
   }
 
   public sortData(
-    data: LeaderboardEntry[],
+    data: LeaderboardUser[],
     field: string,
     direction: 'desc' | 'asc',
-  ): LeaderboardEntry[] {
+  ): LeaderboardUser[] {
     return [...data].sort((a, b) => {
       let firstValue: string | number;
       let secondValue: string | number;
 
       switch (field) {
-        case 'username': {
-          firstValue = a.username.toLowerCase();
-          secondValue = b.username.toLowerCase();
-          break;
-        }
-        case 'category': {
-          firstValue = a.category.toLowerCase();
-          secondValue = b.category.toLowerCase();
+        case 'email': {
+          firstValue = a.email.toLowerCase();
+          secondValue = b.email.toLowerCase();
           break;
         }
         default: {
@@ -105,18 +107,10 @@ export class LeaderboardPage implements OnInit {
         }
       }
 
-      if (field === 'score') {
-        if (direction === 'desc') {
-          return secondValue > firstValue ? 1 : secondValue < firstValue ? -1 : 0;
-        } else {
-          return firstValue > secondValue ? 1 : firstValue < secondValue ? -1 : 0;
-        }
+      if (direction === 'desc') {
+        return secondValue > firstValue ? 1 : (secondValue < firstValue ? -1 : 0);
       } else {
-        if (direction === 'desc') {
-          return secondValue > firstValue ? 1 : secondValue < firstValue ? -1 : 0;
-        } else {
-          return firstValue > secondValue ? 1 : firstValue < secondValue ? -1 : 0;
-        }
+        return firstValue > secondValue ? 1 : (firstValue < secondValue ? -1 : 0);
       }
     });
   }
