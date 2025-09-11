@@ -10,11 +10,13 @@ import { provideAuth, getAuth } from '@angular/fire/auth';
 import { firebaseConfig } from './firebase';
 import { getFirestore } from 'firebase/firestore';
 import { provideFirestore } from '@angular/fire/firestore';
+import { provideHttpClient } from '@angular/common/http';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
     provideZoneChangeDetection({ eventCoalescing: true }),
+    provideHttpClient(),
     provideRouter(routes),
     provideFirebaseApp(() => initializeApp(firebaseConfig)),
     provideAuth(() => getAuth()),

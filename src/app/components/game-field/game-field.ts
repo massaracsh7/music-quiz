@@ -1,5 +1,9 @@
-import { Component, effect, signal } from '@angular/core';
+import { Component, effect, inject, signal, WritableSignal, computed } from '@angular/core';
 import { Wavesurfer } from '../../core/services/wavesurfer/wavesurfer';
+import { CategoriesLoader } from '../../core/services/categories-loader/categories-loader';
+import { Category } from '../../models/category.model';
+import { TracksLoader } from '../../core/services/tracks-loader/tracks-loader';
+import { Track } from '../../models/types/track.type';
 
 @Component({
   selector: 'app-game-page-field',
@@ -8,47 +12,111 @@ import { Wavesurfer } from '../../core/services/wavesurfer/wavesurfer';
   styleUrl: './game-field.scss',
 })
 export class GameField {
-  public song = {
-    name: 'song1',
-    url: 'assets/track.mp3',
-  };
-  public namesVariants: string[] = ['song1', 'song2', 'song3', 'song4'];
+  public categoriesLoader: CategoriesLoader = inject(CategoriesLoader);
+  public tracksLoader: TracksLoader = inject(TracksLoader);
+  public wavesurfer: Wavesurfer = inject(Wavesurfer);
+
   public showResultDialog = signal(false);
   public resultMessage = signal('');
+  public categories = this.categoriesLoader.categories;
+  public currentCategory: WritableSignal<Category | null> = signal(null);
+  public currentTracks = signal<Track[]>([]);
+  public currentTrackIndex = signal(0);
+  private trackTimeout: any = null;
+
+  public currentTrack = computed(() => {
+    const tracks = this.currentTracks();
+    const index = this.currentTrackIndex();
+    return tracks.length > 0 && index < tracks.length ? tracks[index] : null;
+  });
 
   private destroyed = signal(false);
 
-  constructor(public wavesurfer: Wavesurfer) {
+  constructor() {
+    effect(() => {
+      const categories = this.categories();
+      if (categories.length > 0 && !this.currentCategory()) {
+        this.currentCategory.set(categories[0]);
+      }
+    });
+
+    effect(() => {
+      const category = this.currentCategory();
+      if (category) {
+        this.tracksLoader.getTracksByIds(category.tracks).subscribe((tracks) => {
+          this.currentTracks.set(tracks);
+          this.currentTrackIndex.set(0);
+          this.initCurrentTrack();
+        });
+      }
+    });
+
     effect((onCleanup) => {
-      this.wavesurfer.init('#waveform', this.song.url);
-      onCleanup(() => {
+      return () => {
         if (this.wavesurfer) {
           this.wavesurfer.destroy();
         }
         this.destroyed.set(true);
-      });
+      };
     });
+  }
+
+  private initCurrentTrack(): void {
+    const track = this.currentTrack();
+    if (!track) return;
+    this.wavesurfer.init('#waveform', track.previewUrl);
+  }
+
+  private nextTrack(): void {
+    const nextIndex = this.currentTrackIndex() + 1;
+    if (nextIndex < this.currentTracks().length) {
+      this.currentTrackIndex.set(nextIndex);
+      this.initCurrentTrack();
+    }
   }
 
   public onPlayPause(): void {
     this.wavesurfer.playPause();
   }
 
-  public onDontKnowClick(): void {}
+  public onCategorySelected(category: Category): void {
+    this.currentCategory.set(category);
+    this.currentTrackIndex.set(0);
+  }
+
+  public onDontKnowClick(): void {
+    const currentTrack = this.currentTrack();
+    if (!currentTrack) return;
+
+    this.showResult(`The correct answer was: ${currentTrack.trackName}`);
+
+    if (this.wavesurfer) {
+      this.wavesurfer.stop();
+    }
+  }
 
   public onAnswerSelected(answer: string): void {
-    const isCorrect = answer === this.song.name;
-    this.showResult(isCorrect);
+    const currentTrack = this.currentTrack();
+    if (!currentTrack) return;
+
+    const isCorrect = answer === currentTrack.trackName;
+    this.showResult(
+      isCorrect
+        ? ` Correct! The song was: ${currentTrack.trackName}`
+        : ` Incorrect! The correct answer was: ${currentTrack.trackName}`,
+    );
+
+    if (this.wavesurfer) {
+      this.wavesurfer.stop();
+    }
   }
 
   public closeDialog(): void {
     this.showResultDialog.set(false);
+    this.nextTrack();
   }
 
-  private showResult(isCorrect: boolean): void {
-    const message = isCorrect
-      ? 'Correct! Well done!'
-      : `Incorrect! The correct answer was: ${this.song.name}`;
+  private showResult(message: string): void {
     this.resultMessage.set(message);
     this.showResultDialog.set(true);
   }
