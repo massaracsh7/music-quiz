@@ -1,7 +1,7 @@
-<div class="form-check form-switch d-flex align-items-center gap-2">
-  <i class="bi" [ngClass]="theme.theme() === 'dark' ? 'bi-moon-fill' : 'bi-sun-fill'"></i>
+<div class="form-check form-switch d-flex justify-content-center gap-2">
+  <i appThemeIcon></i>
   <input 
-    class="form-check-input"
+    class="form-check-input theme-toggle"
     type="checkbox"
     role="switch"
     [checked]="theme.theme() === 'dark'"
