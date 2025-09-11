@@ -6,6 +6,7 @@ import { Theme } from '../services/theme/theme';
 })
 export class ThemeIcon {
   private theme = inject(Theme);
+  ngOnInit() {}
 
   @HostBinding('class') 
   get iconClass(): string {

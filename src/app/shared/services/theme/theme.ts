@@ -2,7 +2,7 @@ import { Injectable, signal } from '@angular/core';
 
 @Injectable({ providedIn: 'root' })
 export class Theme {
-  theme = signal<'light' | 'dark'>('dark');
+  theme = signal<'light' | 'dark'>('light');
 
   setTheme(newTheme: 'light' | 'dark') {
     this.theme.set(newTheme);
