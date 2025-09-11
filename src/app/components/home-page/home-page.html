@@ -1,36 +1,21 @@
-<div class="px-4 py-5 my-5 text-center">
-  <section class="text-center bg-primary text-white py-5">
+<div class="text-center">
+  <section class="text-center text-white py-5">
     <h1 class="display-5 fw-bold">Music Quiz</h1>
     <p class="lead mb-4">Guess the song from the very first second!</p>
     <button class="btn btn-light btn-lg" [routerLink]="['/game']">Let's Play</button>
   </section>
 
   <section class="container py-5 text-center">
-    <h2 class="fw-bold mb-4">Game Rules</h2>
-    <p class="lead mb-5">
-      You have only a few seconds to guess the song. The faster you answer, the more points you
-      earn. Check your skills and see if you can top the leaderboard!
-    </p>
-
-    <div class="row g-4">
-      <div class="col-md-4">
-        <div class="p-4 bg-secondary text-white rounded h-100">
-          <i class="bi bi-music-note-beamed"></i>
-          <h5 class="mt-2">Various Music Categories</h5>
-        </div>
-      </div>
-      <div class="col-md-4">
-        <div class="p-4 bg-secondary text-white rounded h-100">
-          <i class="bi bi-trophy"></i>
-          <h5 class="mt-2">Leaderboard</h5>
-        </div>
-      </div>
-      <div class="col-md-4">
-        <div class="p-4 bg-secondary text-white rounded h-100">
-          <i class="bi bi-lightning-charge"></i>
-          <h5 class="mt-2">Quick Rounds</h5>
-        </div>
-      </div>
+    <div class="rules">
+      <p class="rule" style="animation-delay: 0s; margin-left: 0rem">
+        You have only a few seconds to guess the song.
+      </p>
+      <p class="rule" style="animation-delay: 0.5s; margin-left: 1rem">
+        The faster you answer, the more points you earn.
+      </p>
+      <p class="rule" style="animation-delay: 1s; margin-left: 2rem">
+        Check your skills and see if you can top the leaderboard!
+      </p>
     </div>
   </section>
 </div>

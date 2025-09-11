@@ -1,7 +1,12 @@
 <div class="container d-flex flex-column min-vh-100">
   <app-header></app-header>
   <main class="flex-grow-1"><router-outlet></router-outlet><app-toast></app-toast></main>
-  <div class="container">
     <app-footer></app-footer>
+    <div class="section-overlay"></div>
+    <div class="video-wrap">
+    <video autoplay loop muted class="custom-video" poster>
+      <source src="../../../assets/video/pexels-2022395.mp4" type="video/mp4" />
+      Your browser does not support the video tag.
+    </video>
   </div>
 </div>
