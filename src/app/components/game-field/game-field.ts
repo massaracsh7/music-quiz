@@ -22,7 +22,6 @@ export class GameField {
   public currentCategory: WritableSignal<Category | null> = signal(null);
   public currentTracks = signal<Track[]>([]);
   public currentTrackIndex = signal(0);
-  private trackTimeout: any = null;
 
   public currentTrack = computed(() => {
     const tracks = this.currentTracks();
@@ -51,7 +50,7 @@ export class GameField {
       }
     });
 
-    effect((onCleanup) => {
+    effect(() => {
       return () => {
         if (this.wavesurfer) {
           this.wavesurfer.destroy();
@@ -82,6 +81,7 @@ export class GameField {
   public onCategorySelected(category: Category): void {
     this.currentCategory.set(category);
     this.currentTrackIndex.set(0);
+    this.wavesurfer.stop();
   }
 
   public onDontKnowClick(): void {
