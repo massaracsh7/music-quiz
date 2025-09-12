@@ -18,7 +18,7 @@
             @for (category of categories(); track category.id) {
               <button
                 class="btn btn-outline-primary"
-                [class.active]="currentFilter() === category.id"
+                [class.active]="currentCategoryId() === category.id"
                 (click)="changeFilterCategory(category.id, category.title)"
               >
                 {{ category.title }}
@@ -80,7 +80,7 @@
                     <td colspan="5" class="text-center">
                       <div>
                         <span class="bi bi-universal-access display-4 d-block mb-2"></span>
-                        <p class="h5">No one has played in "{{ currentCategory() }}" category yet.</p>
+                        <p class="h5">No one has played in {{ currentCategoryTitle() }} category yet.</p>
                         <p class="text-muted">Choose a different category</p>
                       </div>
                     </td>

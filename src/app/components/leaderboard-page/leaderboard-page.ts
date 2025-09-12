@@ -1,34 +1,61 @@
 import { Component, computed, inject, OnInit, signal } from '@angular/core';
 import { LeaderboardService } from '../../core/services/leaderboard-service';
 import { LeaderboardUser } from '../../models/leaderboard.model';
-import { map } from 'rxjs';
+import { switchMap } from 'rxjs';
+import { takeUntilDestroyed, toObservable, toSignal } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-leaderboard-page',
+  standalone: true,
   imports: [],
+  providers: [LeaderboardService],
   templateUrl: './leaderboard-page.html',
   styleUrl: './leaderboard-page.scss',
 })
 export class LeaderboardPage implements OnInit {
   public leaderboardService = inject(LeaderboardService);
 
-  public leaderboard = signal<LeaderboardUser[]>([]);
   public categories = this.leaderboardService.leaderboards;
-  public currentCategory = signal<string>(this.categories().map((data) => data.title)[0]);
-  public currentFilter = signal<string>(this.categories().map((data) => data.title)[0]);
   public sortField = signal<string>('score');
   public sortDirection = signal<'asc' | 'desc'>('asc');
 
   public maxScore = 240;
 
+  public selectedCategoryId = signal<string>('');
+  public selectedCategoryTitle = signal<string>('');
+
+  public firstCategory = computed(() =>
+    this.categories().length > 0 ? this.categories()[0] : null
+  );
+  public firstCategoryId = computed(() =>
+    this.firstCategory()?.id || ''
+  );
+  public firstCategoryTitle = computed(() =>
+    this.firstCategory()?.title || ''
+  );
+
+  public currentCategoryId = computed(() =>
+    this.selectedCategoryId() || this.firstCategoryId()
+  );
+  public currentCategoryTitle = computed(() =>
+    this.selectedCategoryTitle() || this.firstCategoryTitle()
+  );
+
+  public leaderboard = toSignal(
+    toObservable(this.selectedCategoryId).pipe(
+      takeUntilDestroyed(),
+      switchMap((categoryId) => {
+        return categoryId || this.firstCategoryId()
+          ? this.leaderboardService.getUsersForCategory(categoryId || this.firstCategoryId())
+          : []
+      })
+    ),
+    { initialValue: [] as LeaderboardUser[] }
+  );
+
+
   public filteredLeaderboard = computed(() => {
-    let filtered: LeaderboardUser[];
-
-    this.currentFilter() === 'all'
-      ? (filtered = [...this.leaderboard()])
-      : (filtered = [...this.leaderboard()]);
-
-    return this.sortData(filtered, this.sortField(), this.sortDirection());
+    return this.sortData([...this.leaderboard()], this.sortField(), this.sortDirection());
   });
 
   public statistics = computed(() => {
@@ -55,26 +82,15 @@ export class LeaderboardPage implements OnInit {
 
   public ngOnInit(): void {
     this.loadLeaderboard();
+      if (this.categories().length > 0) {
+        this.selectedCategoryId.set(this.categories()[0].id);
+        this.selectedCategoryTitle.set(this.categories()[0].title);
+      }
   }
 
-  public loadLeaderboard(): void {
-    this.leaderboardService
-      .getUsersForCategory(this.categories().map((data) => data.title)[0])
-      .pipe(map((data) => data))
-      .subscribe((users) => {
-        this.leaderboard.set(users);
-      });
-  }
-
-  public changeFilterCategory(categoryId: string, categoryName: string): void {
-    this.currentCategory.set(categoryName);
-    this.leaderboardService
-      .getUsersForCategory(categoryId)
-      .pipe(map((data) => data))
-      .subscribe((users) => {
-        this.leaderboard.set(users);
-        this.currentFilter.set(categoryId);
-      });
+  public changeFilterCategory(categoryId: string, categoryTitle: string): void {
+    this.selectedCategoryId.set(categoryId);
+    this.selectedCategoryTitle.set(categoryTitle)
   }
 
   public toggleSort(field: string): void {
