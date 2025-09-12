@@ -1,7 +1,9 @@
+@if (router.url === '/' || router.url === '/home') {
+  <app-video></app-video>
+}
+
 <div class="container d-flex flex-column min-vh-100">
   <app-header></app-header>
   <main class="flex-grow-1"><router-outlet></router-outlet><app-toast></app-toast></main>
-  <div class="container">
-    <app-footer></app-footer>
-  </div>
+  <app-footer></app-footer>
 </div>
