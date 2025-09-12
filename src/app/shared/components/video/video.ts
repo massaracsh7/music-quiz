@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, DestroyRef, ElementRef, inject, viewChild } from '@angular/core';
 
 @Component({
   selector: 'app-video',
@@ -7,5 +7,18 @@ import { Component } from '@angular/core';
   styleUrl: './video.scss'
 })
 export class Video {
+  videoLink = viewChild<ElementRef<HTMLVideoElement>>('video');
 
+  private destroyRef = inject(DestroyRef);
+
+  constructor() {
+    this.destroyRef.onDestroy(() => {
+      const video = this.videoLink()?.nativeElement;
+      if (video) {
+        video.pause();
+        video.src = '';
+        video.load();
+      }
+    });
+  }
 }
