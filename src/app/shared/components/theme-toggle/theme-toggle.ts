@@ -6,6 +6,7 @@ import { ThemeIcon } from '../../directives/theme-icon';
 @Component({
   selector: 'app-theme-toggle',
   imports: [CommonModule, ThemeIcon],
+  providers: [Theme],
   templateUrl: './theme-toggle.html',
   styleUrl: './theme-toggle.scss',
   standalone: true
