@@ -20,6 +20,7 @@ export class LeaderboardPage implements OnInit {
   public sortDirection = signal<'asc' | 'desc'>('asc');
 
   public maxScore = 240;
+  public isLoading: boolean = false;
 
   public selectedCategoryId = signal<string>('');
   public selectedCategoryTitle = signal<string>('');
@@ -81,11 +82,14 @@ export class LeaderboardPage implements OnInit {
   });
 
   public ngOnInit(): void {
-    this.loadLeaderboard();
+    this.isLoading = true;
+    setTimeout(() => {
       if (this.categories().length > 0) {
         this.selectedCategoryId.set(this.categories()[0].id);
         this.selectedCategoryTitle.set(this.categories()[0].title);
       }
+      this.isLoading = false;
+    },500)
   }
 
   public changeFilterCategory(categoryId: string, categoryTitle: string): void {
