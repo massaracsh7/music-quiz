@@ -11,17 +11,22 @@
           Players: {{ statistics().totalPlayers }}
         </span>
       </div>
-
-      <div class="card">
+      @if (isLoading) {
+        <div class="text-center py-4">
+          <span class="spinner-border text-primary"></span>
+          <p class="">Loading leaderboard...</p>
+        </div>
+      } @else {
+      <div class="card mb-2">
         <div class="card-body">
           <div class="d-flex flex-wrap gap-2">
-            @for (category of categories; track category.id) {
+            @for (category of categories(); track category.id) {
               <button
                 class="btn btn-outline-primary"
-                [class.active]="currentFilter() === category.id"
-                (click)="changeFilterCategory(category.id)"
+                [class.active]="currentCategoryId() === category.id"
+                (click)="changeFilterCategory(category.id, category.title)"
               >
-                {{ category.name }}
+                {{ category.title }}
               </button>
             }
           </div>
@@ -33,60 +38,45 @@
           <div class="table-responsive">
             <table class="table table-hover">
               <thead>
-                <tr>
-                  <th class="text-center" style="width: 5%">#</th>
-                  <th (click)="toggleSort('username')" style="width: 31%">
-                    Player
-                    @if (sortField() === 'username') {
-                      <span
-                        [class.bi-sort-alpha-down-alt]="sortDirection() === 'desc'"
-                        [class.bi-sort-alpha-up]="sortDirection() === 'asc'"
-                      >
-                      </span>
-                    } @else {
-                      <span class="bi bi-arrow-down-up"></span>
-                    }
-                  </th>
-                  <th style="width: 31%" (click)="toggleSort('score')">
-                    Score
-                    @if (sortField() === 'score') {
-                      <span
-                        [class.bi-sort-numeric-down]="sortDirection() === 'asc'"
-                        [class.bi-sort-numeric-up-alt]="sortDirection() === 'desc'"
-                      >
-                      </span>
-                    } @else {
-                      <span class="bi bi-arrow-down-up"></span>
-                    }
-                  </th>
-                  <th style="width: 31%" (click)="toggleSort('category')">
-                    Category
-                    @if (sortField() === 'category') {
-                      <span
-                        [class.bi-sort-alpha-down-alt]="sortDirection() === 'desc'"
-                        [class.bi-sort-alpha-up]="sortDirection() === 'asc'"
-                      >
-                      </span>
-                    } @else {
-                      <span class="bi bi-arrow-down-up"></span>
-                    }
-                  </th>
-                </tr>
+              <tr>
+                <th class="text-center">
+                  #
+                </th>
+                <th (click)="toggleSort('username')">
+                  Player
+                  @if (sortField() === 'username') {
+                    <span [class.bi-sort-alpha-down-alt]="sortDirection() === 'desc'"
+                          [class.bi-sort-alpha-up]="sortDirection() === 'asc'">
+                    </span>
+                  } @else {
+                    <span class="bi bi-arrow-down-up"></span>
+                  }
+                </th>
+                <th style="width: 50%;" (click)="toggleSort('score')">
+                  Score
+                  @if (sortField() === 'score') {
+                    <span [class.bi-sort-numeric-down]="sortDirection() === 'asc'"
+                          [class.bi-sort-numeric-up-alt]="sortDirection() === 'desc'">
+                    </span>
+                  } @else {
+                    <span class="bi bi-arrow-down-up"></span>
+                  }
+                </th>
+              </tr>
               </thead>
 
               <tbody>
                 @if (filteredLeaderboard().length > 0) {
-                  @for (entry of filteredLeaderboard(); track entry.id; let i = $index) {
+                  @for (entry of filteredLeaderboard(); track entry.email; let i = $index) {
                     <tr>
                       <td class="text-center">
                         {{ i + 1 }}
                       </td>
                       <td>
-                        {{ entry.username }}
+                        {{ entry.email }}
                       </td>
-                      <td>{{ entry.score }}s</td>
                       <td>
-                        {{ entry.category }}
+                        {{ entry.score }}s
                       </td>
                     </tr>
                   }
@@ -95,7 +85,7 @@
                     <td colspan="5" class="text-center">
                       <div>
                         <span class="bi bi-universal-access display-4 d-block mb-2"></span>
-                        <p class="h5">No one has played in this category yet.</p>
+                        <p class="h5">No one has played in "{{ currentCategoryTitle() }}" category yet.</p>
                         <p class="text-muted">Choose a different category</p>
                       </div>
                     </td>
@@ -112,8 +102,10 @@
           <div class="col-md-4">
             <div class="card bg-primary text-white">
               <div class="card-body text-center">
-                <h3 class="card-title display-5 fw-bold">{{ statistics().currentDataCount }}</h3>
-                <p class="card-text fs-5">Players in the category</p>
+                <h3 class="card-title display-5 fw-bold">
+                  {{ statistics().currentDataCount }}
+                </h3>
+                <p class="card-text fs-5"> Players in the category </p>
                 <i class="bi bi-people-fill display-2"></i>
               </div>
             </div>
@@ -122,8 +114,10 @@
           <div class="col-md-4">
             <div class="card bg-success text-white">
               <div class="card-body text-center">
-                <h3 class="card-title display-5 fw-bold">{{ statistics().successRate }}%</h3>
-                <p class="card-text fs-5">Success rate</p>
+                <h3 class="card-title display-5 fw-bold">
+                  {{ statistics().successRate }}%
+                </h3>
+                <p class="card-text fs-5"> Success rate </p>
                 <i class="bi bi-graph-up display-2"></i>
               </div>
             </div>
@@ -135,13 +129,14 @@
                 <h3 class="card-title display-5 fw-bold">
                   {{ statistics().currentAverage }} / {{ maxScore }}
                 </h3>
-                <p class="card-text fs-5">Average score</p>
+                <p class="card-text fs-5"> Average score </p>
                 <i class="bi bi-bar-chart-fill display-2"></i>
               </div>
             </div>
           </div>
         </div>
       }
+    }
     </div>
   </div>
 </div>

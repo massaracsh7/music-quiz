@@ -24,6 +24,10 @@ export const routes: Routes = [
       import('./components/leaderboard-page/leaderboard-page').then((m) => m.LeaderboardPage),
   },
   {
+    path: 'about',
+    loadComponent: () => import('./components/about-us-page/about-us-page').then((m) => m.AboutUsPage),
+  },
+  {
     path: '404',
     loadComponent: () =>
       import('./components/not-found-page/not-found-page').then((m) => m.NotFoundPage),
