@@ -4,7 +4,6 @@ import { Observable } from 'rxjs';
 import { LeaderboardCategory, LeaderboardUser } from '../../models/leaderboard.model';
 import { toSignal } from '@angular/core/rxjs-interop';
 
-@Injectable({ providedIn: 'root' })
 export class LeaderboardService {
   public firestore = inject(Firestore);
   public leaderboards: Signal<LeaderboardCategory[]>;
