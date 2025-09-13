@@ -1,4 +1,4 @@
-import { Component, ElementRef, effect, inject, viewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, effect, inject, viewChild } from '@angular/core';
 import { ToastService } from '../../services/toast/toast';
 import { Toast as BsToast } from 'bootstrap';
 
@@ -7,6 +7,8 @@ import { Toast as BsToast } from 'bootstrap';
   standalone: true,
   templateUrl: './toast.html',
   styleUrl: './toast.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+
 })
 export class Toast {
   public toastService = inject(ToastService);

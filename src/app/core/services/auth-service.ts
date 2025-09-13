@@ -6,6 +6,7 @@ import {
   signOut,
   updateProfile,
   User,
+  onAuthStateChanged,
 } from '@angular/fire/auth';
 import { from, switchMap, tap, map, Observable } from 'rxjs';
 
@@ -19,36 +20,53 @@ export class AuthService {
   public isLoggedIn = computed(() => !!this.idToken());
 
   private _storageEffect = effect(() => {
-    localStorage.setItem('idToken', this.idToken() ?? '');
-    localStorage.setItem('currentUserName', this.currentUserName() ?? '');
+    if (this.idToken()) {
+      localStorage.setItem('idToken', this.idToken()!);
+      localStorage.setItem('currentUserName', this.currentUserName() ?? '');
+    } else {
+      localStorage.removeItem('idToken');
+      localStorage.removeItem('currentUserName');
+    }
   });
+
+  constructor() {
+    onAuthStateChanged(this.auth, (user) => {
+      if (user) {
+        user.getIdToken().then(token => this.idToken.set(token));
+        this.currentUserName.set(user.displayName);
+      } else {
+        this.idToken.set(null);
+        this.currentUserName.set(null);
+      }
+    });
+  }
 
   public login(email: string, password: string): Observable<User> {
     return from(signInWithEmailAndPassword(this.auth, email, password)).pipe(
-      switchMap((userCredential) =>
+      switchMap(userCredential =>
         from(userCredential.user.getIdToken()).pipe(
-          tap((token) => {
-            this.idToken.set(token);
+          tap(token => {
             this.currentUserName.set(userCredential.user.displayName);
+            this.idToken.set(token);
           }),
-          map(() => userCredential.user),
-        ),
-      ),
+          map(() => userCredential.user)
+        )
+      )
     );
   }
 
   public register(email: string, password: string, username: string): Observable<User> {
     return from(createUserWithEmailAndPassword(this.auth, email, password)).pipe(
-      switchMap((userCredential) =>
+      switchMap(userCredential =>
         from(updateProfile(userCredential.user, { displayName: username })).pipe(
           switchMap(() => from(userCredential.user.getIdToken())),
-          tap((token) => {
-            this.idToken.set(token);
+          tap(token => {
             this.currentUserName.set(username);
+            this.idToken.set(token);
           }),
-          map(() => userCredential.user),
-        ),
-      ),
+          map(() => userCredential.user)
+        )
+      )
     );
   }
 
@@ -57,9 +75,7 @@ export class AuthService {
       tap(() => {
         this.idToken.set(null);
         this.currentUserName.set(null);
-        localStorage.removeItem('idToken');
-        localStorage.removeItem('currentUserName');
-      }),
+      })
     );
   }
 }
