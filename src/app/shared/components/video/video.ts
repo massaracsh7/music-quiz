@@ -11,14 +11,15 @@ export class Video {
 
   private destroyRef = inject(DestroyRef);
 
-  constructor() {
+ ngAfterViewInit() {
+    const video = this.videoLink()!.nativeElement;
+    video.play().catch(() => {
+    });
+
     this.destroyRef.onDestroy(() => {
-      const video = this.videoLink()?.nativeElement;
-      if (video) {
-        video.pause();
-        video.src = '';
-        video.load();
-      }
+      video.pause();
+      video.src = '';
+      video.load();
     });
   }
 }
