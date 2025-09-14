@@ -32,7 +32,7 @@ export class AuthService {
   constructor() {
     onAuthStateChanged(this.auth, (user) => {
       if (user) {
-        user.getIdToken().then(token => this.idToken.set(token));
+        user.getIdToken().then((token) => this.idToken.set(token));
         this.currentUserName.set(user.displayName);
       } else {
         this.idToken.set(null);
@@ -43,30 +43,30 @@ export class AuthService {
 
   public login(email: string, password: string): Observable<User> {
     return from(signInWithEmailAndPassword(this.auth, email, password)).pipe(
-      switchMap(userCredential =>
+      switchMap((userCredential) =>
         from(userCredential.user.getIdToken()).pipe(
-          tap(token => {
+          tap((token) => {
             this.currentUserName.set(userCredential.user.displayName);
             this.idToken.set(token);
           }),
-          map(() => userCredential.user)
-        )
-      )
+          map(() => userCredential.user),
+        ),
+      ),
     );
   }
 
   public register(email: string, password: string, username: string): Observable<User> {
     return from(createUserWithEmailAndPassword(this.auth, email, password)).pipe(
-      switchMap(userCredential =>
+      switchMap((userCredential) =>
         from(updateProfile(userCredential.user, { displayName: username })).pipe(
           switchMap(() => from(userCredential.user.getIdToken())),
-          tap(token => {
+          tap((token) => {
             this.currentUserName.set(username);
             this.idToken.set(token);
           }),
-          map(() => userCredential.user)
-        )
-      )
+          map(() => userCredential.user),
+        ),
+      ),
     );
   }
 
@@ -75,7 +75,7 @@ export class AuthService {
       tap(() => {
         this.idToken.set(null);
         this.currentUserName.set(null);
-      })
+      }),
     );
   }
 }

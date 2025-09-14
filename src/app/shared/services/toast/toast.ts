@@ -8,20 +8,20 @@ export type ToastItem = {
 
 @Injectable({ providedIn: 'root' })
 export class ToastService {
-  private nextId = 0;
+  public nextId = 0;
   public toasts = signal<ToastItem[]>([]);
 
-  public show(message: string, type: 'success' | 'error' = 'error') {
+  public show(message: string, type: 'success' | 'error' = 'error'): void {
     const id = this.nextId++;
     const toast: ToastItem = { id, message, type };
-    this.toasts.update(toasts => [...toasts, toast]);
+    this.toasts.update((toasts) => [...toasts, toast]);
   }
 
-  public remove(id: number) {
-    this.toasts.update(toasts => toasts.filter(t => t.id !== id));
+  public remove(id: number): void {
+    this.toasts.update((toasts) => toasts.filter((t) => t.id !== id));
   }
 
-  public clear() {
+  public clear(): void {
     this.toasts.set([]);
   }
 }

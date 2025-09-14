@@ -9,7 +9,7 @@ import { ThemeIcon } from '../../directives/theme-icon';
   providers: [Theme],
   templateUrl: './theme-toggle.html',
   styleUrl: './theme-toggle.scss',
-  standalone: true
+  standalone: true,
 })
 export class ThemeToggle {
   public theme = inject(Theme);

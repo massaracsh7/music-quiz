@@ -1,4 +1,11 @@
-import { ChangeDetectionStrategy, Component, DestroyRef, ElementRef, inject, viewChild } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  DestroyRef,
+  ElementRef,
+  inject,
+  viewChild,
+} from '@angular/core';
 
 @Component({
   selector: 'app-video',
@@ -6,24 +13,22 @@ import { ChangeDetectionStrategy, Component, DestroyRef, ElementRef, inject, vie
   imports: [],
   templateUrl: './video.html',
   styleUrl: './video.scss',
-    changeDetection: ChangeDetectionStrategy.OnPush,
-
-
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class Video {
-  videoLink = viewChild<ElementRef<HTMLVideoElement>>('video');
+  public videoLink = viewChild<ElementRef<HTMLVideoElement>>('video');
 
-  private destroyRef = inject(DestroyRef);
+  public destroyRef = inject(DestroyRef);
 
-  ngAfterViewInit() {
-    const videoEl = this.videoLink()!.nativeElement;
-    if (videoEl) {
-      videoEl.play().catch(() => { });
+  public ngAfterViewInit(): void {
+    const videoElement = this.videoLink()!.nativeElement;
+    if (videoElement) {
+      videoElement.play().catch(() => {});
 
       this.destroyRef.onDestroy(() => {
-        videoEl.pause();
-        videoEl.src = '';
-        videoEl.load();
+        videoElement.pause();
+        videoElement.src = '';
+        videoElement.load();
       });
     }
   }

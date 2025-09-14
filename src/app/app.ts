@@ -15,7 +15,6 @@ import { filter, map } from 'rxjs';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class App {
-  protected readonly title = signal('music-quiz');
   public router = inject(Router);
 
   public currentPath = toSignal(
@@ -31,4 +30,5 @@ export class App {
     return path === '/' || path === '/home';
   });
 
+  protected readonly title = signal('music-quiz');
 }

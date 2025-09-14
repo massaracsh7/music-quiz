@@ -2,21 +2,21 @@ import { Injectable, signal } from '@angular/core';
 
 @Injectable()
 export class Theme {
-theme = signal<'light' | 'dark'>(
-    (localStorage.getItem('theme') as 'light' | 'dark') ?? 'light'
+  public theme = signal<'light' | 'dark'>(
+    (localStorage.getItem('theme') as 'light' | 'dark') ?? 'light',
   );
 
   constructor() {
-    document.documentElement.setAttribute('data-bs-theme', this.theme());
+    document.documentElement.dataset['bsTheme'] = this.theme();
   }
 
-  setTheme(newTheme: 'light' | 'dark') {
+  public setTheme(newTheme: 'light' | 'dark'): void {
     this.theme.set(newTheme);
-    document.documentElement.setAttribute('data-bs-theme', newTheme);
+    document.documentElement.dataset['bsTheme'] = newTheme;
     localStorage.setItem('theme', newTheme);
   }
 
-  toggleTheme() {
+  public toggleTheme(): void {
     this.setTheme(this.theme() === 'dark' ? 'light' : 'dark');
   }
 }
