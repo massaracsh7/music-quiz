@@ -1,19 +1,27 @@
 import { Injectable, signal } from '@angular/core';
 
 export type ToastItem = {
+  id: number;
   message: string;
   type: 'success' | 'error';
 };
 
 @Injectable({ providedIn: 'root' })
 export class ToastService {
-  public toast = signal<ToastItem | null>(null);
+  private nextId = 0;
+  public toasts = signal<ToastItem[]>([]);
 
-  public show(message: string, type: 'success' | 'error' = 'error'): void {
-    this.toast.set({ message, type });
+  public show(message: string, type: 'success' | 'error' = 'error') {
+    const id = this.nextId++;
+    const toast: ToastItem = { id, message, type };
+    this.toasts.update(toasts => [...toasts, toast]);
   }
 
-  public clear(): void {
-    this.toast.set(null);
+  public remove(id: number) {
+    this.toasts.update(toasts => toasts.filter(t => t.id !== id));
+  }
+
+  public clear() {
+    this.toasts.set([]);
   }
 }
