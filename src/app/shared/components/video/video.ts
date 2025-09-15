@@ -27,7 +27,7 @@ export class Video {
 
       this.destroyRef.onDestroy(() => {
         videoElement.pause();
-        videoElement.src = '';
+        videoElement.removeAttribute('src'); 
         videoElement.load();
       });
     }
