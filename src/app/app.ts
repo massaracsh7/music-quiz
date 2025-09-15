@@ -9,26 +9,11 @@ import { filter, map } from 'rxjs';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, RouterModule, Toast, Header, Footer, Video],
+  imports: [RouterOutlet, RouterModule, Toast, Header, Footer],
   templateUrl: './app.html',
   styleUrl: './app.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class App {
-  public router = inject(Router);
-
-  public currentPath = toSignal(
-    this.router.events.pipe(
-      filter((event): event is NavigationEnd => event instanceof NavigationEnd),
-      map((event) => event.urlAfterRedirects),
-    ),
-    { initialValue: this.router.url },
-  );
-
-  public isHome = computed(() => {
-    const path = this.currentPath();
-    return path === '/' || path === '/home';
-  });
-
   protected readonly title = signal('music-quiz');
 }
