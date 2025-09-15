@@ -1,17 +1,14 @@
-.video-wrap {
+.home-bg {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  overflow: hidden;
+  background-image: url('../../../../assets/video/preview.png');
+  background-size: cover;
+  background-position: center;
   z-index: -1000;
-}
-
-.custom-video {
-  object-fit: cover;
-  width: 100%;
-  height: 100%;
+  pointer-events: none;
 }
 
 .section-overlay {
