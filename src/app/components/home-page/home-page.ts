@@ -4,7 +4,7 @@ import { Video } from '../../shared/components/video/video';
 
 @Component({
   selector: 'app-home-page',
-  imports: [RouterModule],
+  imports: [RouterModule, Video],
   templateUrl: './home-page.html',
   styleUrl: './home-page.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
