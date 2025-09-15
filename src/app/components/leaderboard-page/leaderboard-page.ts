@@ -1,50 +1,73 @@
-import { Component, computed, OnInit, signal } from '@angular/core';
-import {
-  getLeaderboard,
-  getScoresByCategory,
-  LeaderboardEntry,
-  MOCK_LEADERBOARD,
-} from '../../shared/data/leaderboard-data';
-import { MUSIC_CATEGORIES } from '../../shared/utils/music-categories';
+import { Component, computed, inject, OnInit, signal } from '@angular/core';
+import { LeaderboardService } from '../../core/services/leaderboard-service';
+import { LeaderboardUser } from '../../models/leaderboard.model';
+import { switchMap } from 'rxjs';
+import { takeUntilDestroyed, toObservable, toSignal } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-leaderboard-page',
+  standalone: true,
   imports: [],
+  providers: [LeaderboardService],
   templateUrl: './leaderboard-page.html',
   styleUrl: './leaderboard-page.scss',
 })
 export class LeaderboardPage implements OnInit {
-  public leaderboard = signal<LeaderboardEntry[]>([]);
-  public currentFilter = signal<string>('all');
+  public leaderboardService = inject(LeaderboardService);
+
+  public categories = this.leaderboardService.leaderboards;
   public sortField = signal<string>('score');
   public sortDirection = signal<'asc' | 'desc'>('asc');
 
   public maxScore = 240;
+  public isLoading: boolean = false;
 
-  public categories = [
-    { id: 'all', name: 'All' },
-    ...MUSIC_CATEGORIES.map((category) => ({
-      id: category.name,
-      name: category.name,
-    })),
-  ];
+  public selectedCategoryId = signal<string>('');
+  public selectedCategoryTitle = signal<string>('');
+
+  public firstCategory = computed(() =>
+    this.categories().length > 0 ? this.categories()[0] : null
+  );
+  public firstCategoryId = computed(() =>
+    this.firstCategory()?.id || ''
+  );
+  public firstCategoryTitle = computed(() =>
+    this.firstCategory()?.title || ''
+  );
+
+  public currentCategoryId = computed(() =>
+    this.selectedCategoryId() || this.firstCategoryId()
+  );
+  public currentCategoryTitle = computed(() =>
+    this.selectedCategoryTitle() || this.firstCategoryTitle()
+  );
+
+  public leaderboard = toSignal(
+    toObservable(this.selectedCategoryId).pipe(
+      takeUntilDestroyed(),
+      switchMap((categoryId) => {
+        return categoryId || this.firstCategoryId()
+          ? this.leaderboardService.getUsersForCategory(categoryId || this.firstCategoryId())
+          : []
+      })
+    ),
+    { initialValue: [] as LeaderboardUser[] }
+  );
+
 
   public filteredLeaderboard = computed(() => {
-    const filtered =
-      this.currentFilter() === 'all'
-        ? [...this.leaderboard()]
-        : getScoresByCategory(this.currentFilter());
-
-    return this.sortData(filtered, this.sortField(), this.sortDirection());
+    return this.sortData([...this.leaderboard()], this.sortField(), this.sortDirection());
   });
 
   public statistics = computed(() => {
-    const totalPlayers = MOCK_LEADERBOARD.length;
+    const totalPlayers = this.leaderboard().length;
     const currentData = this.filteredLeaderboard();
 
     const currentAverage =
       currentData.length > 0
-        ? Math.round(currentData.reduce((sum, entry) => sum + entry.score, 0) / currentData.length)
+        ? Math.round(
+          currentData.reduce((sum, entry) => sum + Number(entry.score), 0) / currentData.length
+        )
         : 0;
 
     const successRate =
@@ -59,15 +82,19 @@ export class LeaderboardPage implements OnInit {
   });
 
   public ngOnInit(): void {
-    this.loadLeaderboard();
+    this.isLoading = true;
+    setTimeout(() => {
+      if (this.categories().length > 0) {
+        this.selectedCategoryId.set(this.categories()[0].id);
+        this.selectedCategoryTitle.set(this.categories()[0].title);
+      }
+      this.isLoading = false;
+    },500)
   }
 
-  public loadLeaderboard(): void {
-    this.leaderboard.set(getLeaderboard());
-  }
-
-  public changeFilterCategory(category: string): void {
-    this.currentFilter.set(category);
+  public changeFilterCategory(categoryId: string, categoryTitle: string): void {
+    this.selectedCategoryId.set(categoryId);
+    this.selectedCategoryTitle.set(categoryTitle)
   }
 
   public toggleSort(field: string): void {
@@ -80,23 +107,18 @@ export class LeaderboardPage implements OnInit {
   }
 
   public sortData(
-    data: LeaderboardEntry[],
+    data: LeaderboardUser[],
     field: string,
     direction: 'desc' | 'asc',
-  ): LeaderboardEntry[] {
+  ): LeaderboardUser[] {
     return [...data].sort((a, b) => {
       let firstValue: string | number;
       let secondValue: string | number;
 
       switch (field) {
-        case 'username': {
-          firstValue = a.username.toLowerCase();
-          secondValue = b.username.toLowerCase();
-          break;
-        }
-        case 'category': {
-          firstValue = a.category.toLowerCase();
-          secondValue = b.category.toLowerCase();
+        case 'email': {
+          firstValue = a.email.toLowerCase();
+          secondValue = b.email.toLowerCase();
           break;
         }
         default: {
@@ -105,18 +127,10 @@ export class LeaderboardPage implements OnInit {
         }
       }
 
-      if (field === 'score') {
-        if (direction === 'desc') {
-          return secondValue > firstValue ? 1 : secondValue < firstValue ? -1 : 0;
-        } else {
-          return firstValue > secondValue ? 1 : firstValue < secondValue ? -1 : 0;
-        }
+      if (direction === 'desc') {
+        return secondValue > firstValue ? 1 : (secondValue < firstValue ? -1 : 0);
       } else {
-        if (direction === 'desc') {
-          return secondValue > firstValue ? 1 : secondValue < firstValue ? -1 : 0;
-        } else {
-          return firstValue > secondValue ? 1 : firstValue < secondValue ? -1 : 0;
-        }
+        return firstValue > secondValue ? 1 : (firstValue < secondValue ? -1 : 0);
       }
     });
   }
