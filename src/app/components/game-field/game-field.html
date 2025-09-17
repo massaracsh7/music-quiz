@@ -2,7 +2,12 @@
   <h5 class="mb-3">Categories</h5>
   <div class="d-flex flex-wrap gap-2">
     @for (category of categories(); track category.id) {
-      <span class="badge bg-primary badge-hover" (click)="onCategorySelected(category)">
+      <span
+        class="badge badge-hover btn-outline-secondary"
+        [class.badge-success]="currentCategory()?.id === category.id"
+        [class.bg-primary]="currentCategory()?.id !== category.id"
+        (click)="onCategorySelected(category)"
+      >
         {{ category.title }}
       </span>
     }
@@ -74,6 +79,6 @@
     ></app-category-confirm-modal>
   </div>
 </div>
-@if (showResultDialog() || showFinishDialog() || showCategoryDialog() ) {
+@if (showResultDialog() || showFinishDialog() || showCategoryDialog()) {
   <div class="modal-backdrop fade show"></div>
 }
