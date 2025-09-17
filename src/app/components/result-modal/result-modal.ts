@@ -1,4 +1,4 @@
-import { Component, input, output, effect, OnDestroy } from '@angular/core';
+import { Component, input, output, effect } from '@angular/core';
 import { Track } from '../../models/types/track.type';
 
 @Component({
