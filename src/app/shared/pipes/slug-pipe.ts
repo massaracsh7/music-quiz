@@ -5,24 +5,22 @@ import { Pipe, PipeTransform } from '@angular/core';
   standalone: true,
 })
 export class SlugPipe implements PipeTransform {
-  transform(value: string | null | undefined, maxLength: number = 50): string {
+  public transform(value: string | null | undefined, maxLength: number = 50): string {
     if (!value) {
       return '';
     }
 
-    let slug = value
+    const slug = value
       .toString()
       .toLowerCase()
       .trim()
       .normalize('NFD')
-      .replace(/[\u0300-\u036f]/g, '')
-      .replace(/[^a-z0-9\s-]/g, '')
-      .replace(/\s+/g, '-')
-      .replace(/-+/g, '-')
-      .replace(/^-+|-+$/g, '');
+      .replaceAll(/[\u0300-\u036F]/g, '')
+      .replaceAll(/[^a-z0-9\s-]/g, '')
+      .replaceAll(/\s+/g, '-')
+      .replaceAll(/-+/g, '-')
+      .replaceAll(/^-+|-+$/g, '');
 
-    return slug.length > maxLength
-      ? slug.slice(0, maxLength).replace(/-+$/, '')
-      : slug;
+    return slug.length > maxLength ? slug.slice(0, maxLength).replaceAll(/-+$/, '') : slug;
   }
 }

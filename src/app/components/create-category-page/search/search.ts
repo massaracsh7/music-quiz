@@ -5,7 +5,7 @@ import { SearchStateService } from '../../../core/services/search-state-service'
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormsModule } from '@angular/forms';
 import { LineLimiterPipe } from '../../../shared/pipes/line-limiter-pipe';
-import { ITunesTrack } from '../../../models/iTunes.model';
+import { ITunesTrack } from '../../../models/i-tunes.model';
 
 @Component({
   selector: 'app-search',
@@ -14,7 +14,6 @@ import { ITunesTrack } from '../../../models/iTunes.model';
   styleUrl: './search.scss',
 })
 export class Search implements OnInit, OnDestroy {
-  private searchService = inject(SearchService);
   public searchState = inject(SearchStateService);
 
   public tracks = this.searchState.tracks;
@@ -22,42 +21,18 @@ export class Search implements OnInit, OnDestroy {
   public isLoading = this.searchState.isLoading;
   public searchQuery = this.searchState.searchQuery;
 
+  private searchService = inject(SearchService);
   private searchSubject = new Subject<string>();
   private destroy$ = new Subject<void>();
   private destroyRef = inject(DestroyRef);
 
-  public ngOnInit() {
+  public ngOnInit(): void {
     this.setupSearch();
   }
 
   public ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
-  }
-
-  private setupSearch(): void {
-    this.searchSubject
-      .pipe(
-        switchMap((query) => {
-          this.isLoading.set(true);
-          return this.searchService.searchTracks(query);
-        }),
-        takeUntilDestroyed(this.destroyRef),
-      )
-      .subscribe({
-        next: (search) => {
-          const filteredTracks = this.searchService.filterOnlyTracks(search.results);
-          const updatedTracks = this.updateSelectedFlags(filteredTracks, this.selectedTracks());
-
-          this.tracks.set(updatedTracks);
-          this.isLoading.set(false);
-        },
-        error: (error) => {
-          console.error('An unexpected error occurred', error);
-          this.isLoading.set(false);
-          this.tracks.set([]);
-        },
-      });
   }
 
   public onSearchInput(): void {
@@ -91,6 +66,31 @@ export class Search implements OnInit, OnDestroy {
   public clearSearch(): void {
     this.searchQuery.set('');
     this.tracks.set([]);
+  }
+
+  private setupSearch(): void {
+    this.searchSubject
+      .pipe(
+        switchMap((query) => {
+          this.isLoading.set(true);
+          return this.searchService.searchTracks(query);
+        }),
+        takeUntilDestroyed(this.destroyRef),
+      )
+      .subscribe({
+        next: (search) => {
+          const filteredTracks = this.searchService.filterOnlyTracks(search.results);
+          const updatedTracks = this.updateSelectedFlags(filteredTracks, this.selectedTracks());
+
+          this.tracks.set(updatedTracks);
+          this.isLoading.set(false);
+        },
+        error: (error) => {
+          console.error('An unexpected error occurred', error);
+          this.isLoading.set(false);
+          this.tracks.set([]);
+        },
+      });
   }
 
   private updateSelectedFlags(

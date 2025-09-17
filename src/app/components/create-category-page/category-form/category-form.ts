@@ -7,6 +7,7 @@ import { CategoryService } from '../../../core/services/category-service';
 import { SlugPipe } from '../../../shared/pipes/slug-pipe';
 import { Search } from '../search/search';
 import { LineLimiterPipe } from '../../../shared/pipes/line-limiter-pipe';
+import { ITunesTrack } from '../../../models/i-tunes.model';
 
 @Component({
   selector: 'app-category-form',
@@ -58,13 +59,13 @@ export class CategoryForm {
     this.search.clearSearch();
   }
 
-  public onTrackSelect(track: any): void {
+  public onTrackSelect(track: ITunesTrack): void {
     this.searchState.removeFromSelectedTracks(track.trackId);
 
     const tracks = this.searchState.tracks();
     const updatedTracks = tracks.map((tr) =>
-      tr.trackId === track.trackId ? {...tr, isSelected: false} : tr
-    )
+      tr.trackId === track.trackId ? { ...tr, isSelected: false } : tr,
+    );
     this.searchState.tracks.set(updatedTracks);
   }
 

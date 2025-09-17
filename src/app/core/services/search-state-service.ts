@@ -1,5 +1,5 @@
 import { Injectable, signal } from '@angular/core';
-import { ITunesTrack } from '../../models/iTunes.model';
+import { ITunesTrack } from '../../models/i-tunes.model';
 
 @Injectable({
   providedIn: 'root',

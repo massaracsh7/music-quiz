@@ -1,11 +1,5 @@
 import { Injectable, inject, Signal } from '@angular/core';
-import {
-  Firestore,
-  collection,
-  collectionData,
-  doc,
-  setDoc,
-} from '@angular/fire/firestore';
+import { Firestore, collection, collectionData, doc, setDoc } from '@angular/fire/firestore';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { catchError, from, map, Observable, throwError } from 'rxjs';
 import { Category } from '../../models/category.model';
@@ -25,10 +19,10 @@ export class CategoryService {
   }
 
   public createCategory(category: Category): Observable<string> {
-    const categoryDocRef = doc(this.firestore, 'categories', category.id);
+    const categoryDocumentReference = doc(this.firestore, 'categories', category.id);
 
     return from(
-      setDoc(categoryDocRef, {
+      setDoc(categoryDocumentReference, {
         ...category,
       }),
     ).pipe(
