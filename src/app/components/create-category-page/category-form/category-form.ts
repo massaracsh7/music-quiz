@@ -8,6 +8,7 @@ import { SlugPipe } from '../../../shared/pipes/slug-pipe';
 import { Search } from '../search/search';
 import { LineLimiterPipe } from '../../../shared/pipes/line-limiter-pipe';
 import { ITunesTrack } from '../../../models/i-tunes.model';
+import { LeaderboardCategory } from '../../../models/leaderboard.model';
 
 @Component({
   selector: 'app-category-form',
@@ -44,6 +45,11 @@ export class CategoryForm {
       tracks: this.selectedTracks().map((track) => track.trackId),
     };
 
+    const categoryForLeaderboard: LeaderboardCategory = {
+      id: slugCategoryValue,
+      title: categoryValue,
+    };
+
     this.categoryService
       .createCategory(category)
       .pipe(takeUntilDestroyed(this.destroyRef))
@@ -57,6 +63,8 @@ export class CategoryForm {
         },
       });
     this.search.clearSearch();
+
+    this.categoryService.addLeaderboardCategory(categoryForLeaderboard);
   }
 
   public onTrackSelect(track: ITunesTrack): void {

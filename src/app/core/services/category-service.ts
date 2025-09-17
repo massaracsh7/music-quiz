@@ -3,6 +3,7 @@ import { Firestore, collection, collectionData, doc, setDoc } from '@angular/fir
 import { toSignal } from '@angular/core/rxjs-interop';
 import { catchError, from, map, Observable, throwError } from 'rxjs';
 import { Category } from '../../models/category.model';
+import { LeaderboardCategory } from '../../models/leaderboard.model';
 
 @Injectable({ providedIn: 'root' })
 export class CategoryService {
@@ -30,6 +31,22 @@ export class CategoryService {
       catchError((error) => {
         console.error('Error creating category:', error);
         return throwError(() => new Error('Failed to create category'));
+      }),
+    );
+  }
+
+  public addLeaderboardCategory(category: LeaderboardCategory): Observable<string> {
+    const categoryDocumentReference = doc(this.firestore, 'leaderboardCategories', category.id);
+
+    return from(
+      setDoc(categoryDocumentReference, {
+        ...category,
+      }),
+    ).pipe(
+      map(() => category.id),
+      catchError((error) => {
+        console.error('Error add leaderboard category:', error);
+        return throwError(() => new Error('Failed to add leaderboard category'));
       }),
     );
   }
