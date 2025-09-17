@@ -34,7 +34,17 @@
     </h5>
   </div>
 
-  <div id="waveform" class="waveform"></div>
+  <div id="waveform" class="waveform">
+    @if (!currentTrack()) {
+      <div class="waveform-placeholder">
+        <div class="waveform-placeholder__line"></div>
+        <div class="waveform-placeholder__line"></div>
+        <div class="waveform-placeholder__line"></div>
+        <div class="waveform-placeholder__line"></div>
+        <div class="waveform-placeholder__line"></div>
+      </div>
+    }
+  </div>
   <div class="text-center mb-3">
     <div class="text-center mb-3">
       <span class="text-primary">⏱ Current time:</span>
