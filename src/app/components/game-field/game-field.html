@@ -18,19 +18,19 @@
   <div class="d-flex justify-content-around gap-2 flex-wrap">
     @if (currentCategory()) {
       <h5>
-        <span class="text-primary">Current category: </span>
-        <span class="text-dark">{{ currentCategory()?.title }}</span>
+        <span>Current category: </span>
+        <span>{{ currentCategory()?.title }}</span>
       </h5>
     }
     <h5 class="text-center mb-3">
-      <span class="text-primary">Song: </span>
-      <span class="text-dark">
+      <span>Song: </span>
+      <span>
         <span>{{ currentTrackIndex() + 1 }}</span> / <span>{{ currentTracks().length }}</span></span
       >
     </h5>
     <h5 class="text-center mb-3">
-      <span class="text-primary">Score: </span>
-      <span class="text-dark">{{ scoreCounter.score() }}</span>
+      <span>Score: </span>
+      <span>{{ scoreCounter.score() }}</span>
     </h5>
   </div>
 
@@ -47,8 +47,8 @@
   </div>
   <div class="text-center mb-3">
     <div class="text-center mb-3">
-      <span class="text-primary">⏱ Current time:</span>
-      <span class="text-dark"> {{ wavesurfer.currentTime() }}s</span>
+      <span>⏱ Current time:</span>
+      <span> {{ wavesurfer.currentTime() }}s</span>
     </div>
     <div class="mt-4 text-center">
       <button class="btn btn-primary me-2" (click)="onPlay()">

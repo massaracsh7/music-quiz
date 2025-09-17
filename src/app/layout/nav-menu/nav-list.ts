@@ -3,4 +3,5 @@ export const NavList = [
   { path: '/game', label: 'Game', icon: 'controller' },
   { path: '/leaderboard', label: 'Leaderboard', icon: 'trophy' },
   { path: '/about', label: 'About Us', icon: 'info-circle' },
+  { path: '/create-category', label: 'Create category', icon: 'bookmark-plus' },
 ];

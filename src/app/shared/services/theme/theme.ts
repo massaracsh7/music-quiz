@@ -3,7 +3,7 @@ import { Injectable, signal } from '@angular/core';
 @Injectable()
 export class Theme {
   public theme = signal<'light' | 'dark'>(
-    (localStorage.getItem('theme') as 'light' | 'dark') ?? 'light',
+    (localStorage.getItem('theme') as 'light' | 'dark') ?? 'dark',
   );
 
   constructor() {

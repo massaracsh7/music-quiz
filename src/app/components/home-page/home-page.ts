@@ -9,4 +9,4 @@ import { Video } from '../../shared/components/video/video';
   styleUrl: './home-page.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class HomePage { }
+export class HomePage {}
