@@ -37,6 +37,7 @@ export class GameField {
 
   public currentTrack = computed(() => {
     const tracks = this.currentTracks();
+    console.log(tracks);
     const index = this.currentTrackIndex();
     return tracks.length > 0 && index < tracks.length ? tracks[index] : undefined;
   });
