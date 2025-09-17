@@ -1,5 +1,5 @@
 import { Component, effect, signal } from '@angular/core';
-import { Wavesurfer } from '../../shared/services/wavesurfer/wavesurfer';
+import { Wavesurfer } from '../../core/services/wavesurfer/wavesurfer';
 
 @Component({
   selector: 'app-game-page-field',
