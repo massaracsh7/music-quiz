@@ -1,4 +1,12 @@
-import { Component, effect, inject, signal, WritableSignal, computed } from '@angular/core';
+import {
+  Component,
+  effect,
+  inject,
+  signal,
+  WritableSignal,
+  computed,
+  ChangeDetectionStrategy,
+} from '@angular/core';
 import { Wavesurfer } from '../../core/services/wavesurfer/wavesurfer';
 import { CategoriesLoader } from '../../core/services/categories-loader/categories-loader';
 import { Category } from '../../models/category.model';
@@ -14,6 +22,7 @@ import { CategoryConfirmModal } from '../modals/category-confirm-modal/category-
   imports: [ResultModal, FinishModal, CategoryConfirmModal],
   templateUrl: './game-field.html',
   styleUrl: './game-field.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class GameField {
   public categoriesLoader: CategoriesLoader = inject(CategoriesLoader);
