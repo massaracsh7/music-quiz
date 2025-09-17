@@ -113,10 +113,10 @@ export class GameField {
 
   public closeDialog(): void {
     this.showResultDialog.set(false);
-    this.nextTrack();
-    if (this.currentTrackIndex() === this.currentTracks().length - 1) {
-      this.showFinishDialog.set(true);
-    }
+
+    this.currentTrackIndex() < this.currentTracks().length - 1
+      ? this.nextTrack()
+      : this.showFinishDialog.set(true);
   }
 
   public closeFinishDialog(): void {
