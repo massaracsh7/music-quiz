@@ -1,32 +1,37 @@
+@let isCorrect = isCorrectSignal();
+@let selectedTrack = currentTrack();
+@let artworkUrl = selectedTrack?.artworkUrl100;
+
 <div
   class="modal fade"
   #resultModal
   tabindex="-1"
   [class.show]="showResultDialog()"
-  [style.display]="showResultDialog() ? 'block' : 'none'"
+  [ngClass]="showResultDialog() ? 'd-block' : 'd-none'"
 >
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header">
-        <h5
-          class="modal-title"
-          [style.color]="(resultMessage() || '').includes('Correct') ? 'green' : 'red'"
-        >
-          {{ (resultMessage() || '').includes('Correct') ? 'Correct!' : 'Incorrect' }}
+        <h5 class="modal-title" [ngClass]="isCorrect ? 'text-success' : 'text-danger'">
+          {{ isCorrect ? 'Excellent' : 'You don\'t know' }}!
         </h5>
       </div>
+
       <div class="modal-body">
-        <p>{{ resultMessage() || '' }}</p>
-        @let artworkUrl = currentTrack()?.artworkUrl100;
+        <div>
+          {{ !isCorrect ? `The correct answer was:` : '' }}
+          <div class="fs-3">{{ selectedTrack?.artistName }} - {{ selectedTrack?.trackName }}</div>
+        </div>
         @if (artworkUrl) {
           <img
-            class="result-img"
-            [style.border-color]="(resultMessage() || '').includes('Correct') ? 'green' : 'red'"
-            [src]="artworkUrl.replace('100x100bb.jpg', '300x300bb.jpg')"
+            class="img-fluid border border-5 rounded"
+            [ngClass]="isCorrect ? 'border-success' : 'border-danger'"
+            [src]="artworkUrl.replace('100x100', '600x600')"
+            width="300"
+            height="300"
             alt="artwork"
           />
         }
-
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-primary" (click)="closeDialog.emit()">OK</button>
