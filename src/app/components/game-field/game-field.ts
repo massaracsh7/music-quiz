@@ -121,6 +121,7 @@ export class GameField {
 
     if (this.wavesurfer) {
       this.wavesurfer.stop();
+      this.wavesurfer.play();
     }
   }
 
