@@ -6,5 +6,5 @@ export type LeaderboardUser = {
 export type LeaderboardCategory = {
   id: string;
   title: string;
-  users: LeaderboardUser[];
+  users?: LeaderboardUser[];
 };

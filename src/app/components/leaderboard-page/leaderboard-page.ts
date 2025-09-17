@@ -26,20 +26,14 @@ export class LeaderboardPage implements OnInit {
   public selectedCategoryTitle = signal<string>('');
 
   public firstCategory = computed(() =>
-    this.categories().length > 0 ? this.categories()[0] : null
+    this.categories().length > 0 ? this.categories()[0] : null,
   );
-  public firstCategoryId = computed(() =>
-    this.firstCategory()?.id || ''
-  );
-  public firstCategoryTitle = computed(() =>
-    this.firstCategory()?.title || ''
-  );
+  public firstCategoryId = computed(() => this.firstCategory()?.id || '');
+  public firstCategoryTitle = computed(() => this.firstCategory()?.title || '');
 
-  public currentCategoryId = computed(() =>
-    this.selectedCategoryId() || this.firstCategoryId()
-  );
-  public currentCategoryTitle = computed(() =>
-    this.selectedCategoryTitle() || this.firstCategoryTitle()
+  public currentCategoryId = computed(() => this.selectedCategoryId() || this.firstCategoryId());
+  public currentCategoryTitle = computed(
+    () => this.selectedCategoryTitle() || this.firstCategoryTitle(),
   );
 
   public leaderboard = toSignal(
@@ -48,12 +42,11 @@ export class LeaderboardPage implements OnInit {
       switchMap((categoryId) => {
         return categoryId || this.firstCategoryId()
           ? this.leaderboardService.getUsersForCategory(categoryId || this.firstCategoryId())
-          : []
-      })
+          : [];
+      }),
     ),
-    { initialValue: [] as LeaderboardUser[] }
+    { initialValue: [] as LeaderboardUser[] },
   );
-
 
   public filteredLeaderboard = computed(() => {
     return this.sortData([...this.leaderboard()], this.sortField(), this.sortDirection());
@@ -66,8 +59,8 @@ export class LeaderboardPage implements OnInit {
     const currentAverage =
       currentData.length > 0
         ? Math.round(
-          currentData.reduce((sum, entry) => sum + Number(entry.score), 0) / currentData.length
-        )
+            currentData.reduce((sum, entry) => sum + Number(entry.score), 0) / currentData.length,
+          )
         : 0;
 
     const successRate =
@@ -89,12 +82,12 @@ export class LeaderboardPage implements OnInit {
         this.selectedCategoryTitle.set(this.categories()[0].title);
       }
       this.isLoading = false;
-    },500)
+    }, 500);
   }
 
   public changeFilterCategory(categoryId: string, categoryTitle: string): void {
     this.selectedCategoryId.set(categoryId);
-    this.selectedCategoryTitle.set(categoryTitle)
+    this.selectedCategoryTitle.set(categoryTitle);
   }
 
   public toggleSort(field: string): void {
@@ -128,9 +121,9 @@ export class LeaderboardPage implements OnInit {
       }
 
       if (direction === 'desc') {
-        return secondValue > firstValue ? 1 : (secondValue < firstValue ? -1 : 0);
+        return secondValue > firstValue ? 1 : secondValue < firstValue ? -1 : 0;
       } else {
-        return firstValue > secondValue ? 1 : (firstValue < secondValue ? -1 : 0);
+        return firstValue > secondValue ? 1 : firstValue < secondValue ? -1 : 0;
       }
     });
   }
