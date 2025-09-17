@@ -7,10 +7,11 @@ import { Track } from '../../models/types/track.type';
 import { ResultModal } from '../result-modal/result-modal';
 import { ScoreCounter } from '../../core/services/score-counter/score-counter';
 import { FinishModal } from '../finish-modal/finish-modal';
+import { CategoryConfirmModal } from '../category-confirm-modal/category-confirm-modal';
 
 @Component({
   selector: 'app-game-page-field',
-  imports: [ResultModal, FinishModal],
+  imports: [ResultModal, FinishModal, CategoryConfirmModal],
   templateUrl: './game-field.html',
   styleUrl: './game-field.scss',
 })
@@ -22,9 +23,11 @@ export class GameField {
 
   public showResultDialog = signal(false);
   public showFinishDialog = signal(false);
+  public showCategoryDialog = signal(false);
   public resultMessage = signal('');
   public categories = this.categoriesLoader.categories;
   public currentCategory: WritableSignal<Category | null> = signal(null);
+  public selectedCategory: WritableSignal<Category | null> = signal(null);
   public currentTracks = signal<Track[]>([]);
   public currentTrackIndex = signal(0);
   public trackNames = computed(() => {
@@ -74,9 +77,18 @@ export class GameField {
   }
 
   public onCategorySelected(category: Category): void {
-    this.currentCategory.set(category);
-    this.currentTrackIndex.set(0);
-    this.wavesurfer.stop();
+    this.showCategoryDialog.set(true);
+    this.selectedCategory.set(category);
+  }
+
+  public onCategorySelectDialogClose(category: Category): void {
+    this.showCategoryDialog.set(false);
+    if (category) {
+      this.currentCategory.set(category);
+      this.currentTrackIndex.set(0);
+      this.wavesurfer.stop();
+      this.scoreCounter.resetScore();
+    }
   }
 
   public onDontKnowClick(): void {
@@ -121,6 +133,10 @@ export class GameField {
 
   public closeFinishDialog(): void {
     this.showFinishDialog.set(false);
+  }
+
+  public closeCategoryDialog(): void {
+    this.showCategoryDialog.set(false);
   }
 
   private showResult(message: string): void {

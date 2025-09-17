@@ -9,4 +9,8 @@ export class ScoreCounter {
   public increaseScore(scoreCount: number): void {
     this.score.update((previous) => previous + scoreCount);
   }
+
+  public resetScore(): void {
+    this.score.set(0);
+  }
 }

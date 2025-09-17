@@ -66,8 +66,14 @@
       (onCategorySelected)="onCategorySelected($event)"
       (closeDialog)="closeFinishDialog()"
     ></app-finish-modal>
+    <app-category-confirm-modal
+      [showCategoryDialog]="showCategoryDialog()"
+      [selectedCategory]="selectedCategory()"
+      (onCategorySelectDialogClose)="onCategorySelectDialogClose($event)"
+      (closeCategoryDialog)="closeCategoryDialog()"
+    ></app-category-confirm-modal>
   </div>
 </div>
-@if (showResultDialog() || showFinishDialog()) {
+@if (showResultDialog() || showFinishDialog() || showCategoryDialog() ) {
   <div class="modal-backdrop fade show"></div>
 }
