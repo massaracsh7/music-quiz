@@ -1,0 +1,33 @@
+.badge-hover {
+  cursor: pointer;
+}
+
+.badge-success {
+  transform: scale(1.1);
+  background-color: green;
+}
+
+.waveform {
+  height: 20vh;
+  margin: 2rem 0;
+  position: relative;
+  background-color: #f8f9fa;
+  border-radius: 0.5rem;
+  overflow: hidden;
+
+  &-placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    gap: 0.5rem;
+    padding: 0 2rem;
+
+    &__line {
+      height: 50%;
+      width: 0.5rem;
+      background-color: #e9ecef;
+      border-radius: 0.5rem;
+    }
+  }
+}

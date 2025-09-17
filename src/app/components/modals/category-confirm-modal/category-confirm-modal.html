@@ -1,0 +1,29 @@
+<div
+  class="modal fade"
+  [class.show]="showCategoryDialog()"
+  [style.display]="showCategoryDialog() ? 'block' : 'none'"
+>
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-body">
+        <h5 class="modal-title">Do you want change category to {{ selectedCategory()?.title }}?</h5>
+      </div>
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-primary"
+          (click)="closeCategoryDialog.emit()"
+        >
+          Cancel
+        </button>
+        <button
+          type="button"
+          class="btn btn-primary"
+          (click)="onCategorySelectDialogClose.emit(selectedCategory()!)"
+        >
+          OK
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

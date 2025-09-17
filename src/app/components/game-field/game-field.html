@@ -1,26 +1,67 @@
+<div class="categories">
+  <h5 class="mb-3">Categories</h5>
+  <div class="d-flex flex-wrap gap-2">
+    @for (category of categories(); track category.id) {
+      <span
+        class="badge badge-hover btn-outline-secondary"
+        [class.badge-success]="currentCategory()?.id === category.id"
+        [class.bg-primary]="currentCategory()?.id !== category.id"
+        (click)="onCategorySelected(category)"
+      >
+        {{ category.title }}
+      </span>
+    }
+  </div>
+</div>
+
 <div class="container py-4">
-  <h5 class="text-center mb-3">
-    <span class="text-primary">Song </span>
-    <span class="text-dark"> <span>3</span> / <span>10</span></span>
-  </h5>
-  <div id="waveform" class="waveform"></div>
+  <div class="d-flex justify-content-around gap-2 flex-wrap">
+    @if (currentCategory()) {
+      <h5>
+        <span class="text-primary">Current category: </span>
+        <span class="text-dark">{{ currentCategory()?.title }}</span>
+      </h5>
+    }
+    <h5 class="text-center mb-3">
+      <span class="text-primary">Song: </span>
+      <span class="text-dark">
+        <span>{{ currentTrackIndex() + 1 }}</span> / <span>{{ currentTracks().length }}</span></span
+      >
+    </h5>
+    <h5 class="text-center mb-3">
+      <span class="text-primary">Score: </span>
+      <span class="text-dark">{{ scoreCounter.score() }}</span>
+    </h5>
+  </div>
+
+  <div id="waveform" class="waveform">
+    @if (!currentTrack()) {
+      <div class="waveform-placeholder">
+        <div class="waveform-placeholder__line"></div>
+        <div class="waveform-placeholder__line"></div>
+        <div class="waveform-placeholder__line"></div>
+        <div class="waveform-placeholder__line"></div>
+        <div class="waveform-placeholder__line"></div>
+      </div>
+    }
+  </div>
   <div class="text-center mb-3">
     <div class="text-center mb-3">
       <span class="text-primary">⏱ Current time:</span>
       <span class="text-dark"> {{ wavesurfer.currentTime() }}s</span>
     </div>
     <div class="mt-4 text-center">
-      <button class="btn btn-primary me-2" (click)="onPlayPause()">
-        {{ wavesurfer.isPlaying() ? 'Pause' : 'Play' }}
+      <button class="btn btn-primary me-2" (click)="onPlay()">
+        Play
       </button>
     </div>
 
     <div class="mt-4 text-center">
       <h6>What's the name of this song?</h6>
       <div class="d-flex justify-content-center gap-2 flex-wrap">
-        @for (variant of namesVariants; track variant) {
-          <button class="btn btn-outline-primary" (click)="onAnswerSelected(variant)">
-            {{ variant }}
+        @for (track of trackNames(); track track) {
+          <button class="btn btn-outline-primary" (click)="onAnswerSelected(track)">
+            {{ track }}
           </button>
         }
       </div>
@@ -28,31 +69,27 @@
     <div class="mt-4 text-center">
       <button class="btn btn-danger" (click)="onDontKnowClick()">I don't know</button>
     </div>
-    <div
-      class="modal fade"
-      #resultModal
-      tabindex="-1"
-      [class.show]="showResultDialog()"
-      [style.display]="showResultDialog() ? 'block' : 'none'"
-    >
-      <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title">
-              {{ resultMessage().includes('Correct') ? 'Correct!' : 'Incorrect' }}
-            </h5>
-          </div>
-          <div class="modal-body">
-            <p>{{ resultMessage() }}</p>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-primary" (click)="closeDialog()">OK</button>
-          </div>
-        </div>
-      </div>
-    </div>
-    @if (showResultDialog()) {
-      <div class="modal-backdrop fade show"></div>
-    }
+    <app-result-modal
+      [showResultDialog]="showResultDialog()"
+      [resultMessage]="resultMessage()"
+      [currentTrack]="currentTrack()"
+      (closeDialog)="closeDialog()"
+    ></app-result-modal>
+    <app-finish-modal
+      [showFinishDialog]="showFinishDialog()"
+      [categories]="categories()"
+      (onCategorySelected)="onCategorySelected($event)"
+      (closeDialog)="closeFinishDialog()"
+      [score]="scoreCounter.score()"
+    ></app-finish-modal>
+    <app-category-confirm-modal
+      [showCategoryDialog]="showCategoryDialog()"
+      [selectedCategory]="selectedCategory()"
+      (onCategorySelectDialogClose)="onCategorySelectDialogClose($event)"
+      (closeCategoryDialog)="closeCategoryDialog()"
+    ></app-category-confirm-modal>
   </div>
 </div>
+@if (showResultDialog() || showFinishDialog() || showCategoryDialog()) {
+  <div class="modal-backdrop fade show"></div>
+}

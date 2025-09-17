@@ -1,3 +1,4 @@
+/* eslint-disable unicorn/no-nested-ternary */
 import { Component, computed, inject, OnInit, signal } from '@angular/core';
 import { LeaderboardService } from '../../core/services/leaderboard-service';
 import { LeaderboardUser } from '../../models/leaderboard.model';
@@ -16,6 +17,7 @@ export class LeaderboardPage implements OnInit {
   public leaderboardService = inject(LeaderboardService);
 
   public categories = this.leaderboardService.leaderboards;
+  public currentFilter = signal<string>('all');
   public sortField = signal<string>('score');
   public sortDirection = signal<'asc' | 'desc'>('asc');
 
@@ -120,10 +122,18 @@ export class LeaderboardPage implements OnInit {
         }
       }
 
-      if (direction === 'desc') {
-        return secondValue > firstValue ? 1 : secondValue < firstValue ? -1 : 0;
+      if (field === 'score') {
+        if (direction === 'desc') {
+          return secondValue > firstValue ? 1 : secondValue < firstValue ? -1 : 0;
+        } else {
+          return firstValue > secondValue ? 1 : firstValue < secondValue ? -1 : 0;
+        }
       } else {
-        return firstValue > secondValue ? 1 : firstValue < secondValue ? -1 : 0;
+        if (direction === 'desc') {
+          return secondValue > firstValue ? 1 : secondValue < firstValue ? -1 : 0;
+        } else {
+          return firstValue > secondValue ? 1 : firstValue < secondValue ? -1 : 0;
+        }
       }
     });
   }
