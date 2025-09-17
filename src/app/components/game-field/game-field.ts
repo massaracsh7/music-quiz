@@ -4,10 +4,11 @@ import { CategoriesLoader } from '../../core/services/categories-loader/categori
 import { Category } from '../../models/category.model';
 import { TracksLoader } from '../../core/services/tracks-loader/tracks-loader';
 import { Track } from '../../models/types/track.type';
+import { ResultModal } from '../result-modal/result-modal';
 
 @Component({
   selector: 'app-game-page-field',
-  imports: [],
+  imports: [ResultModal],
   templateUrl: './game-field.html',
   styleUrl: './game-field.scss',
 })
@@ -24,15 +25,13 @@ export class GameField {
   public currentTrackIndex = signal(0);
   public trackNames = computed(() => {
     const tracks = this.currentTracks();
-    return tracks
-      .map(track => track.trackName)
-      .sort(() => 0.5 - Math.random());
+    return tracks.map((track) => track.trackName).sort(() => 0.5 - Math.random());
   });
 
   public currentTrack = computed(() => {
     const tracks = this.currentTracks();
     const index = this.currentTrackIndex();
-    return tracks.length > 0 && index < tracks.length ? tracks[index] : null;
+    return tracks.length > 0 && index < tracks.length ? tracks[index] : undefined;
   });
 
   private destroyed = signal(false);
