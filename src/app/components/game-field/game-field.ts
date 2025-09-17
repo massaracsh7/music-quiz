@@ -5,10 +5,12 @@ import { Category } from '../../models/category.model';
 import { TracksLoader } from '../../core/services/tracks-loader/tracks-loader';
 import { Track } from '../../models/types/track.type';
 import { ResultModal } from '../result-modal/result-modal';
+import { ScoreCounter } from '../../core/services/score-counter/score-counter';
+import { FinishModal } from '../finish-modal/finish-modal';
 
 @Component({
   selector: 'app-game-page-field',
-  imports: [ResultModal],
+  imports: [ResultModal, FinishModal],
   templateUrl: './game-field.html',
   styleUrl: './game-field.scss',
 })
@@ -16,8 +18,10 @@ export class GameField {
   public categoriesLoader: CategoriesLoader = inject(CategoriesLoader);
   public tracksLoader: TracksLoader = inject(TracksLoader);
   public wavesurfer: Wavesurfer = inject(Wavesurfer);
+  public scoreCounter: ScoreCounter = inject(ScoreCounter);
 
   public showResultDialog = signal(false);
+  public showFinishDialog = signal(false);
   public resultMessage = signal('');
   public categories = this.categoriesLoader.categories;
   public currentCategory: WritableSignal<Category | null> = signal(null);
@@ -56,27 +60,13 @@ export class GameField {
     });
 
     effect(() => {
-      return () => {
+      return (): void => {
         if (this.wavesurfer) {
           this.wavesurfer.destroy();
         }
         this.destroyed.set(true);
       };
     });
-  }
-
-  private initCurrentTrack(): void {
-    const track = this.currentTrack();
-    if (!track) return;
-    this.wavesurfer.init('#waveform', track.previewUrl);
-  }
-
-  private nextTrack(): void {
-    const nextIndex = this.currentTrackIndex() + 1;
-    if (nextIndex < this.currentTracks().length) {
-      this.currentTrackIndex.set(nextIndex);
-      this.initCurrentTrack();
-    }
   }
 
   public onPlayPause(): void {
@@ -94,6 +84,7 @@ export class GameField {
     if (!currentTrack) return;
 
     this.showResult(`The correct answer was: ${currentTrack.trackName}`);
+    this.scoreCounter.increaseScore(30);
 
     if (this.wavesurfer) {
       this.wavesurfer.stop();
@@ -111,6 +102,10 @@ export class GameField {
         : ` Incorrect! The correct answer was: ${currentTrack.trackName}`,
     );
 
+    isCorrect
+      ? this.scoreCounter.increaseScore(this.wavesurfer.currentTime())
+      : this.scoreCounter.increaseScore(30);
+
     if (this.wavesurfer) {
       this.wavesurfer.stop();
     }
@@ -119,10 +114,31 @@ export class GameField {
   public closeDialog(): void {
     this.showResultDialog.set(false);
     this.nextTrack();
+    if (this.currentTrackIndex() === this.currentTracks().length - 1) {
+      this.showFinishDialog.set(true);
+    }
+  }
+
+  public closeFinishDialog(): void {
+    this.showFinishDialog.set(false);
   }
 
   private showResult(message: string): void {
     this.resultMessage.set(message);
     this.showResultDialog.set(true);
+  }
+
+  private initCurrentTrack(): void {
+    const track = this.currentTrack();
+    if (!track) return;
+    this.wavesurfer.init('#waveform', track.previewUrl);
+  }
+
+  private nextTrack(): void {
+    const nextIndex = this.currentTrackIndex() + 1;
+    if (nextIndex < this.currentTracks().length) {
+      this.currentTrackIndex.set(nextIndex);
+      this.initCurrentTrack();
+    }
   }
 }

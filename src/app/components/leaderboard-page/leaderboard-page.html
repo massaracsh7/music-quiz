@@ -33,39 +33,51 @@
           </div>
         </div>
 
-        <div class="card mb-3">
-          <div class="card-body">
-            <div class="table-responsive">
-              <table class="table table-hover">
-                <thead>
-                  <tr>
-                    <th class="text-center">#</th>
-                    <th (click)="toggleSort('username')">
-                      Player
-                      @if (sortField() === 'username') {
-                        <span
-                          [class.bi-sort-alpha-down-alt]="sortDirection() === 'desc'"
-                          [class.bi-sort-alpha-up]="sortDirection() === 'asc'"
-                        >
-                        </span>
-                      } @else {
-                        <span class="bi bi-arrow-down-up"></span>
-                      }
-                    </th>
-                    <th style="width: 50%" (click)="toggleSort('score')">
-                      Score
-                      @if (sortField() === 'score') {
-                        <span
-                          [class.bi-sort-numeric-down]="sortDirection() === 'asc'"
-                          [class.bi-sort-numeric-up-alt]="sortDirection() === 'desc'"
-                        >
-                        </span>
-                      } @else {
-                        <span class="bi bi-arrow-down-up"></span>
-                      }
-                    </th>
-                  </tr>
-                </thead>
+      <div class="card mb-3">
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="table table-hover">
+              <thead>
+                <tr>
+                  <th class="text-center" style="width: 5%">#</th>
+                  <th (click)="toggleSort('username')" style="width: 31%">
+                    Player
+                    @if (sortField() === 'username') {
+                      <span
+                        [class.bi-sort-alpha-down-alt]="sortDirection() === 'desc'"
+                        [class.bi-sort-alpha-up]="sortDirection() === 'asc'"
+                      >
+                      </span>
+                    } @else {
+                      <span class="bi bi-arrow-down-up"></span>
+                    }
+                  </th>
+                  <th style="width: 31%" (click)="toggleSort('score')">
+                    Score
+                    @if (sortField() === 'score') {
+                      <span
+                        [class.bi-sort-numeric-down]="sortDirection() === 'asc'"
+                        [class.bi-sort-numeric-up-alt]="sortDirection() === 'desc'"
+                      >
+                      </span>
+                    } @else {
+                      <span class="bi bi-arrow-down-up"></span>
+                    }
+                  </th>
+                  <th style="width: 31%" (click)="toggleSort('category')">
+                    Category
+                    @if (sortField() === 'category') {
+                      <span
+                        [class.bi-sort-alpha-down-alt]="sortDirection() === 'desc'"
+                        [class.bi-sort-alpha-up]="sortDirection() === 'asc'"
+                      >
+                      </span>
+                    } @else {
+                      <span class="bi bi-arrow-down-up"></span>
+                    }
+                  </th>
+                </tr>
+              </thead>
 
                 <tbody>
                   @if (filteredLeaderboard().length > 0) {

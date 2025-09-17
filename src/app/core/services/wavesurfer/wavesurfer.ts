@@ -5,10 +5,10 @@ import WaveSurfer from 'wavesurfer.js';
   providedIn: 'root',
 })
 export class Wavesurfer {
-  private wavesurfer?: WaveSurfer;
+  public currentTime = signal<number>(0);
+  public isPlaying = signal<boolean>(false);
 
-  currentTime = signal<number>(0);
-  isPlaying = signal<boolean>(false);
+  private wavesurfer?: WaveSurfer;
 
   public init(container: string, songUrl: string): void {
     if (this.wavesurfer) {

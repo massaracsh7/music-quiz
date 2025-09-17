@@ -1,4 +1,4 @@
-import { Component, input, output } from '@angular/core';
+import { Component, input, output, effect, OnDestroy } from '@angular/core';
 import { Track } from '../../models/types/track.type';
 
 @Component({
@@ -12,4 +12,10 @@ export class ResultModal {
   public resultMessage = input<string>();
   public currentTrack = input<Track>();
   public closeDialog = output<void>();
+
+  constructor() {
+    effect(() => {
+      document.body.style.overflow = this.showResultDialog() ? 'hidden' : '';
+    });
+  }
 }

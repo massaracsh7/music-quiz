@@ -7,6 +7,6 @@ export class ScoreCounter {
   public score = signal(0);
 
   public increaseScore(scoreCount: number): void {
-    this.score.update((prev) => prev + scoreCount);
+    this.score.update((previous) => previous + scoreCount);
   }
 }

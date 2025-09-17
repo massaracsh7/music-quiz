@@ -23,6 +23,10 @@
         <span>{{ currentTrackIndex() + 1 }}</span> / <span>{{ currentTracks().length }}</span></span
       >
     </h5>
+    <h5 class="text-center mb-3">
+      <span class="text-primary">Score: </span>
+      <span class="text-dark">{{ scoreCounter.score() }}</span>
+    </h5>
   </div>
 
   <div id="waveform" class="waveform"></div>
@@ -56,5 +60,14 @@
       [currentTrack]="currentTrack()"
       (closeDialog)="closeDialog()"
     ></app-result-modal>
+    <app-finish-modal
+      [showFinishDialog]="showFinishDialog()"
+      [categories]="categories()"
+      (onCategorySelected)="onCategorySelected($event)"
+      (closeDialog)="closeFinishDialog()"
+    ></app-finish-modal>
   </div>
 </div>
+@if (showResultDialog() || showFinishDialog()) {
+  <div class="modal-backdrop fade show"></div>
+}
