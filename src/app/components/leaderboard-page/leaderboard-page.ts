@@ -17,7 +17,6 @@ export class LeaderboardPage implements OnInit {
   public leaderboardService = inject(LeaderboardService);
 
   public categories = this.leaderboardService.leaderboards;
-  // public leaderboard = signal<LeaderboardEntry[]>([]);
   public currentFilter = signal<string>('all');
   public sortField = signal<string>('score');
   public sortDirection = signal<'asc' | 'desc'>('asc');

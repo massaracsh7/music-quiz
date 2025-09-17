@@ -3,12 +3,12 @@ import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Category } from '../../../models/category.model';
 import { SearchStateService } from '../../../core/services/search-state-service';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { CategoryService } from '../../../core/services/category-service';
 import { SlugPipe } from '../../../shared/pipes/slug-pipe';
 import { Search } from '../search/search';
 import { LineLimiterPipe } from '../../../shared/pipes/line-limiter-pipe';
 import { ITunesTrack } from '../../../models/i-tunes.model';
 import { LeaderboardCategory } from '../../../models/leaderboard.model';
+import { CategoryService } from '../../../core/services/category-service';
 
 @Component({
   selector: 'app-category-form',
