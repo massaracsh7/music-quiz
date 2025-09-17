@@ -1,7 +1,13 @@
-import { Injectable, inject, signal, effect, Signal } from '@angular/core';
-import { Firestore, collection, collectionData } from '@angular/fire/firestore';
+import { Injectable, inject, Signal } from '@angular/core';
+import {
+  Firestore,
+  collection,
+  collectionData,
+  doc,
+  setDoc,
+} from '@angular/fire/firestore';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { Observable } from 'rxjs';
+import { catchError, from, map, Observable, throwError } from 'rxjs';
 import { Category } from '../../models/category.model';
 
 @Injectable({ providedIn: 'root' })
@@ -16,5 +22,21 @@ export class CategoryService {
     const categories$ = collectionData(categoriesCollection) as Observable<Category[]>;
 
     this.categories = toSignal(categories$, { initialValue: [] });
+  }
+
+  public createCategory(category: Category): Observable<string> {
+    const categoryDocRef = doc(this.firestore, 'categories', category.id);
+
+    return from(
+      setDoc(categoryDocRef, {
+        ...category,
+      }),
+    ).pipe(
+      map(() => category.id),
+      catchError((error) => {
+        console.error('Error creating category:', error);
+        return throwError(() => new Error('Failed to create category'));
+      }),
+    );
   }
 }
