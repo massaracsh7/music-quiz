@@ -1,0 +1,27 @@
+<div
+  class="modal fade"
+  #resultModal
+  tabindex="-1"
+  [class.show]="showResultDialog()"
+  [style.display]="showResultDialog() ? 'block' : 'none'"
+>
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">
+          {{ (resultMessage() || '').includes('Correct') ? 'Correct!' : 'Incorrect' }}
+        </h5>
+      </div>
+      <div class="modal-body">
+        <p>{{ resultMessage() || '' }}</p>
+        <img class="rounded border border-2 w-50 p-3" [src]="currentTrack()?.artworkUrl100" alt="artwork"/>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" (click)="closeDialog.emit()">OK</button>
+      </div>
+    </div>
+  </div>
+</div>
+@if (showResultDialog()) {
+  <div class="modal-backdrop fade show"></div>
+}
