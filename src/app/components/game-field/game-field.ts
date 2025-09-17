@@ -72,8 +72,8 @@ export class GameField {
     });
   }
 
-  public onPlayPause(): void {
-    this.wavesurfer.playPause();
+  public onPlay(): void {
+    this.wavesurfer.play();
   }
 
   public onCategorySelected(category: Category): void {
