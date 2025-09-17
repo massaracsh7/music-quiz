@@ -94,7 +94,9 @@ export class GameField {
     const currentTrack = this.currentTrack();
     if (!currentTrack) return;
 
-    this.showResult(`The correct answer was: ${currentTrack.trackName}`);
+    this.showResult(
+      `The correct answer was: ${currentTrack.artistName} - ${currentTrack.trackName}`,
+    );
     this.scoreCounter.increaseScore(30);
 
     if (this.wavesurfer) {
@@ -109,8 +111,8 @@ export class GameField {
     const isCorrect = answer === currentTrack.trackName;
     this.showResult(
       isCorrect
-        ? ` Correct! The song was: ${currentTrack.trackName}`
-        : ` Incorrect! The correct answer was: ${currentTrack.trackName}`,
+        ? ` Correct! ${currentTrack.artistName} - ${currentTrack.trackName}`
+        : ` Incorrect! The correct answer was: ${currentTrack.artistName} - ${currentTrack.trackName}`,
     );
 
     isCorrect

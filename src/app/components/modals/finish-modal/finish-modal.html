@@ -7,10 +7,11 @@
 >
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Track in category is over. Choose another category</h5>
+      <div class="modal-header d-flex">
+        <h5>Score: {{ score() }}</h5>
       </div>
-      <div class="modal-body">
+      <div class="modal-body d-flex flex-column gap-3">
+        <h5 class="modal-title">Track in category is over. Choose another category</h5>
         <div class="d-flex flex-wrap gap-2">
           @for (category of categories(); track category.id) {
             <span
@@ -22,7 +23,9 @@
           }
         </div>
       </div>
-      <div class="modal-footer"></div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" (click)="onExit()">Exit</button>
+      </div>
     </div>
   </div>
 </div>

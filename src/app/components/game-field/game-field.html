@@ -70,6 +70,7 @@
       [categories]="categories()"
       (onCategorySelected)="onCategorySelected($event)"
       (closeDialog)="closeFinishDialog()"
+      [score]="scoreCounter.score()"
     ></app-finish-modal>
     <app-category-confirm-modal
       [showCategoryDialog]="showCategoryDialog()"
