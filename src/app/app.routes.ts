@@ -25,7 +25,15 @@ export const routes: Routes = [
   },
   {
     path: 'about',
-    loadComponent: () => import('./components/about-us-page/about-us-page').then((m) => m.AboutUsPage),
+    loadComponent: () =>
+      import('./components/about-us-page/about-us-page').then((m) => m.AboutUsPage),
+  },
+  {
+    path: 'create-category',
+    loadComponent: () =>
+      import('./components/create-category-page/create-category-page').then(
+        (m) => m.CreateCategoryPage,
+      ),
   },
   {
     path: '404',
