@@ -33,6 +33,18 @@ export class Wavesurfer {
     });
   }
 
+  public play(): void {
+    if (!this.wavesurfer) return;
+    this.wavesurfer.play();
+    this.isPlaying.set(true);
+  }
+
+  public stop(): void {
+    if (!this.wavesurfer) return;
+    this.wavesurfer.stop();
+    this.isPlaying.set(false);
+  }
+
   public playPause(): void {
     if (!this.wavesurfer) return;
     this.wavesurfer.playPause();
