@@ -17,12 +17,16 @@
       </div>
       <div class="modal-body">
         <p>{{ resultMessage() || '' }}</p>
-        <img
-          class="result-img"
-          [style.border-color]="(resultMessage() || '').includes('Correct') ? 'green' : 'red'"
-          [src]="currentTrack()!.artworkUrl100.replace('100x100bb.jpg', '300x300bb.jpg')"
-          alt="artwork"
-        />
+        @let artworkUrl = currentTrack()?.artworkUrl100;
+        @if (artworkUrl) {
+          <img
+            class="result-img"
+            [style.border-color]="(resultMessage() || '').includes('Correct') ? 'green' : 'red'"
+            [src]="artworkUrl.replace('100x100bb.jpg', '300x300bb.jpg')"
+            alt="artwork"
+          />
+        }
+
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-primary" (click)="closeDialog.emit()">OK</button>
