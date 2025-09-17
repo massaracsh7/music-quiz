@@ -43,6 +43,7 @@ export class GameField {
     const tracks = this.currentTracks();
     return tracks.map((track) => track.trackName).sort(() => 0.5 - Math.random());
   });
+  public isFinished = computed(() => this.wavesurfer.isFinished());
 
   public currentTrack = computed(() => {
     const tracks = this.currentTracks();
@@ -78,6 +79,13 @@ export class GameField {
         }
         this.destroyed.set(true);
       };
+    });
+
+    effect(() => {
+      if (this.isFinished()) {
+        this.showResult();
+        this.scoreCounter.increaseScore(30);
+      }
     });
   }
 
