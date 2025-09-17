@@ -4,10 +4,10 @@ import { CategoriesLoader } from '../../core/services/categories-loader/categori
 import { Category } from '../../models/category.model';
 import { TracksLoader } from '../../core/services/tracks-loader/tracks-loader';
 import { Track } from '../../models/types/track.type';
-import { ResultModal } from '../result-modal/result-modal';
+import { ResultModal } from '../modals/result-modal/result-modal';
 import { ScoreCounter } from '../../core/services/score-counter/score-counter';
-import { FinishModal } from '../finish-modal/finish-modal';
-import { CategoryConfirmModal } from '../category-confirm-modal/category-confirm-modal';
+import { FinishModal } from '../modals/finish-modal/finish-modal';
+import { CategoryConfirmModal } from '../modals/category-confirm-modal/category-confirm-modal';
 
 @Component({
   selector: 'app-game-page-field',

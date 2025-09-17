@@ -1,5 +1,5 @@
 import { Component, input, output, effect } from '@angular/core';
-import { Track } from '../../models/types/track.type';
+import { Track } from '../../../models/types/track.type';
 
 @Component({
   selector: 'app-result-modal',
