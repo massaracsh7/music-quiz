@@ -33,12 +33,12 @@ export class GameField {
   public showResultDialog = signal(false);
   public showFinishDialog = signal(false);
   public showCategoryDialog = signal(false);
-  public resultMessage = signal('');
   public categories = this.categoriesLoader.categories;
   public currentCategory: WritableSignal<Category | null> = signal(null);
   public selectedCategory: WritableSignal<Category | null> = signal(null);
   public currentTracks = signal<Track[]>([]);
   public currentTrackIndex = signal(0);
+  public isCorrect = signal(false);
   public trackNames = computed(() => {
     const tracks = this.currentTracks();
     return tracks.map((track) => track.trackName).sort(() => 0.5 - Math.random());
@@ -93,7 +93,7 @@ export class GameField {
   public onCategorySelectDialogClose(category: Category): void {
     this.showCategoryDialog.set(false);
     if (category) {
-      this.currentCategory.set(category);
+      this.currentCategory.set(structuredClone(category));
       this.wavesurfer.stop();
       this.scoreCounter.resetScore();
     }
@@ -103,9 +103,7 @@ export class GameField {
     const currentTrack = this.currentTrack();
     if (!currentTrack) return;
 
-    this.showResult(
-      `The correct answer was: ${currentTrack.artistName} - ${currentTrack.trackName}`,
-    );
+    this.showResult();
     this.scoreCounter.increaseScore(30);
 
     if (this.wavesurfer) {
@@ -118,11 +116,8 @@ export class GameField {
     if (!currentTrack) return;
 
     const isCorrect = answer === currentTrack.trackName;
-    this.showResult(
-      isCorrect
-        ? ` Correct! ${currentTrack.artistName} - ${currentTrack.trackName}`
-        : ` Incorrect! The correct answer was: ${currentTrack.artistName} - ${currentTrack.trackName}`,
-    );
+    this.isCorrect.set(isCorrect);
+    this.showResult();
 
     isCorrect
       ? this.scoreCounter.increaseScore(this.wavesurfer.currentTime())
@@ -150,8 +145,7 @@ export class GameField {
     this.showCategoryDialog.set(false);
   }
 
-  private showResult(message: string): void {
-    this.resultMessage.set(message);
+  private showResult(): void {
     this.showResultDialog.set(true);
   }
 
