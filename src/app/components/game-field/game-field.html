@@ -38,10 +38,10 @@
     <div class="mt-4 text-center">
       <h6>What's the name of this song?</h6>
       <div class="d-flex justify-content-center gap-2 flex-wrap">
-        @for (track of currentTracks(); track track.trackId
+        @for (track of trackNames(); track track
           ) {
-          <button class="btn btn-outline-primary" (click)="onAnswerSelected(track.trackName)">
-            {{ track.trackName }}
+          <button class="btn btn-outline-primary" (click)="onAnswerSelected(track)">
+            {{ track }}
           </button>
         }
       </div>

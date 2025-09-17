@@ -22,6 +22,7 @@ export class GameField {
   public currentCategory: WritableSignal<Category | null> = signal(null);
   public currentTracks = signal<Track[]>([]);
   public currentTrackIndex = signal(0);
+  public trackNames: WritableSignal<string[]> = signal([]);
 
   public currentTrack = computed(() => {
     const tracks = this.currentTracks();
@@ -46,6 +47,12 @@ export class GameField {
           this.currentTracks.set(tracks);
           this.currentTrackIndex.set(0);
           this.initCurrentTrack();
+          const names: string[] = [];
+          tracks.forEach((track) => names.push(track.trackName));
+          names.sort((a, b) => {
+            return 0.5 - Math.random();
+          });
+          this.trackNames.set(names);
         });
       }
     });
