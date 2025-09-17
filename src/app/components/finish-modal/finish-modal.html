@@ -1,0 +1,28 @@
+<div
+  class="modal fade"
+  #finishModal
+  tabindex="-1"
+  [class.show]="showFinishDialog()"
+  [style.display]="showFinishDialog() ? 'block' : 'none'"
+>
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Track in category is over. Choose another category</h5>
+      </div>
+      <div class="modal-body">
+        <div class="d-flex flex-wrap gap-2">
+          @for (category of categories(); track category.id) {
+            <span
+              class="badge bg-primary badge-hover"
+              (click)="onCategorySelected.emit(category); closeDialog.emit()"
+            >
+              {{ category.title }}
+            </span>
+          }
+        </div>
+      </div>
+      <div class="modal-footer"></div>
+    </div>
+  </div>
+</div>
