@@ -10,9 +10,10 @@
       <input
         type="text"
         class="form-control"
-        [disabled]="isLoading()"
+        [disabled]="isSearching()"
         [(ngModel)]="searchQuery"
         [placeholder]="isLoading() ? 'Searching...' : 'Enter name track to search'"
+        (keydown.enter)="onSearchInput()"
       />
       @if (searchQuery()) {
         <button
@@ -66,7 +67,7 @@
       </div>
     }
 
-    @if (tracks().length === 0 && searchQuery() && !isLoading()) {
+    @if (tracks().length === 0 && searchQuery() && !isLoading() && isSearching()) {
       <div class="text-center">
         <span class="bi bi-search"></span>
         <p>No tracks found for {{ searchQuery() }}</p>

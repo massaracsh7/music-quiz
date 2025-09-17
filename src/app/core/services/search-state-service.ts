@@ -8,6 +8,7 @@ export class SearchStateService {
   public tracks = signal<ITunesTrack[]>([]);
   public selectedTracks = signal<ITunesTrack[]>([]);
   public isLoading = signal(false);
+  public isSearching = signal(false);
   public searchQuery = signal('');
 
   public removeFromSelectedTracks(trackId: number): void {

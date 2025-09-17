@@ -19,6 +19,7 @@ export class Search implements OnInit, OnDestroy {
   public tracks = this.searchState.tracks;
   public selectedTracks = this.searchState.selectedTracks;
   public isLoading = this.searchState.isLoading;
+  public isSearching = this.searchState.isSearching;
   public searchQuery = this.searchState.searchQuery;
 
   private searchService = inject(SearchService);
@@ -36,6 +37,7 @@ export class Search implements OnInit, OnDestroy {
   }
 
   public onSearchInput(): void {
+    this.isSearching.set(true);
     if (this.searchQuery().trim().length >= 2) {
       this.searchSubject.next(this.searchQuery().trim());
     } else {
@@ -66,9 +68,11 @@ export class Search implements OnInit, OnDestroy {
   public clearSearch(): void {
     this.searchQuery.set('');
     this.tracks.set([]);
+    this.isSearching.set(false);
   }
 
   private setupSearch(): void {
+    this.isSearching.set(false);
     this.searchSubject
       .pipe(
         switchMap((query) => {
