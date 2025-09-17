@@ -37,7 +37,6 @@ export class GameField {
 
   public currentTrack = computed(() => {
     const tracks = this.currentTracks();
-    console.log(tracks);
     const index = this.currentTrackIndex();
     return tracks.length > 0 && index < tracks.length ? tracks[index] : undefined;
   });
@@ -86,7 +85,6 @@ export class GameField {
     this.showCategoryDialog.set(false);
     if (category) {
       this.currentCategory.set(category);
-      this.currentTrackIndex.set(0);
       this.wavesurfer.stop();
       this.scoreCounter.resetScore();
     }
