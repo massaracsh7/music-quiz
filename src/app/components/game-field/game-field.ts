@@ -49,7 +49,7 @@ export class GameField {
           this.initCurrentTrack();
           const names: string[] = [];
           tracks.forEach((track) => names.push(track.trackName));
-          names.sort((a, b) => {
+          names.sort(() => {
             return 0.5 - Math.random();
           });
           this.trackNames.set(names);
