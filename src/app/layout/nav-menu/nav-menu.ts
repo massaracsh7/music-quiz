@@ -1,8 +1,8 @@
 import { Component, computed, inject } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { NAV_LIST_ADMIN, NAV_LIST_BASE } from './nav-list.const';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../core/services/auth-service';
+import { NAV_LIST } from './nav-list.const';
 
 @Component({
   selector: 'app-nav-menu',
@@ -14,5 +14,11 @@ import { AuthService } from '../../core/services/auth-service';
 export class NavMenu {
   public auth = inject(AuthService);
 
-  public navList = computed(() => (this.auth.isAdmin() ? NAV_LIST_ADMIN : NAV_LIST_BASE));
+  public navList = NAV_LIST;
+
+  public onlyAdminRoutes = ['/create-category'];
+
+  public isShowRoute(path: string): boolean {
+    return !this.onlyAdminRoutes.includes(path) || this.auth.isAdmin();
+  }
 }
