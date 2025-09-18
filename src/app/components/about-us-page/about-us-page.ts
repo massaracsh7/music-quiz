@@ -18,33 +18,33 @@ export type StudentInterface = {
 export class AboutUsPage {
   public students: StudentInterface[] = [
     {
-      img: 'https://images.unsplash.com/photo-1708346217879-a17c15dd96b7?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+      img: 'https://i.postimg.cc/DyDhpxkq/96a20478-7558-4e35-817d-f7a6cc97c03c.png',
       name: 'Katsiaryna Tatarynava',
       role: 'Student',
       description:
-        "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make.",
+        "Katsiaryna configured and integrated the Firebase cloud platform for data storage, implemented the database structure and optimized queries. She has developed a complete authentication and authorization system, including registration and login. She also developed a home page with intuitive navigation and optimized production. The project also implements a theme design system with switching between light and dark modes.",
       task: [
         'Firebase', 'Auth', 'Services', 'Main page', 'Theme'
       ],
       linGit: 'https://github.com/massaracsh7',
     },
     {
-      img: 'https://images.unsplash.com/photo-1708242828015-d4c591944496?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+      img: 'https://i.postimg.cc/HnhqKkKp/30bf1b94-17fc-4595-bea1-9cc1004c1d0a.png',
       name: 'Dzmitry Turok',
       role: 'Student',
       description:
-        "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
+        "Dzmitry created the project architecture from scratch, configured the build and configuration of the development environment. Implemented an audio playback system with advanced configuration and management. He have set up a routing system on the website. He also developed a game page with interactive elements and animations.",
       task: [
         'Init project', 'Config Audio Player', 'Routing', 'Game page',
       ],
       linGit: 'https://github.com/tubyliec',
     },
     {
-      img: 'https://plus.unsplash.com/premium_photo-1709772918943-83a29278e406?q=80&w=688&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+      img: 'https://i.postimg.cc/4yyCB9WL/e022ac89-17b1-414e-b466-7d957b7f6622.png',
       name: 'Evgeniya Tsel',
       role: 'Student',
       description:
-        "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown",
+        "Evgeniya has developed a leaderboard with dynamic data updates, sorting and visualization of user achievements.  She also created an information page about the project developers.  Implemented the functionality of creating categories, including API search in iTunes.",
       task: [
         'LeaderBoard', 'About Us Page', 'Create category',
       ],

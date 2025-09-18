@@ -10,7 +10,7 @@
             <div
               class="card-body text-center p-4 d-flex flex-column align-items-center justify-content-between gap-2"
             >
-              <div class="mb-3">
+              <div>
                 <img
                   [src]="student.img"
                   [alt]="student.name"
@@ -18,12 +18,12 @@
                   style="width: 120px; height: 120px; object-fit: cover"
                 />
               </div>
-              <h4 class="card-title fw-bold m-0">{{ student.name }}</h4>
+              <h4 class="col-auto card-title fw-bold m-0 d-flex align-items-center" style="height: 60px">{{ student.name }}</h4>
               <p class="card-subtitle m-0">{{ student.role }}</p>
 
-              <p class="card-text text-muted m-0 flex-grow-1">{{ student.description }}</p>
+              <p class="col-auto card-text text-muted m-0 mb-3 flex-grow-1 d-flex align-items-center" style="min-height: 250px">{{ student.description }}</p>
 
-              <div class="mb-4">
+              <div class="col-auto text-center d-flex flex-column justify-content-center" style="min-height: 60px">
                 <div class="d-flex flex-wrap align-items-center justify-content-center gap-2">
                   @for (task of student.task; track $index) {
                     <span class="badge bg-secondary"> {{ task }} </span>
