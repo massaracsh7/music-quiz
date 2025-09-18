@@ -8,7 +8,8 @@ import { Search } from '../search/search';
 import { LineLimiterPipe } from '../../../shared/pipes/line-limiter-pipe';
 import { ITunesTrack } from '../../../models/i-tunes.model';
 import { LeaderboardCategory } from '../../../models/leaderboard.model';
-import { CategoryService } from '../../../core/services/category-service';
+import { CategoryService } from '../../../core/services/сategory-service/сategory-service';
+import {ToastService} from '../../../shared/services/toast/toast';
 
 @Component({
   selector: 'app-category-form',
@@ -19,6 +20,7 @@ import { CategoryService } from '../../../core/services/category-service';
 })
 export class CategoryForm {
   public searchState = inject(SearchStateService);
+  public toast = inject(ToastService);
 
   public categoryForm = new FormGroup({
     categoryName: new FormControl(''),
@@ -54,11 +56,13 @@ export class CategoryForm {
       .createCategory(category)
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
-        next: (categoryId) => {
+        next: () => {
+          this.toast.show(`Category "${category.title}" has been successfully created`, 'success');
           this.categoryForm.reset();
           this.searchState.clearSelectedTracks();
         },
         error: (error) => {
+          this.toast.show('An error occurred when creating the category', 'error');
           console.error('Error creating category', error);
         },
       });

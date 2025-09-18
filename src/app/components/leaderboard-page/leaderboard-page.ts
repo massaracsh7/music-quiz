@@ -17,7 +17,6 @@ export class LeaderboardPage implements OnInit {
   public leaderboardService = inject(LeaderboardService);
 
   public categories = this.leaderboardService.leaderboards;
-  public currentFilter = signal<string>('all');
   public sortField = signal<string>('score');
   public sortDirection = signal<'asc' | 'desc'>('asc');
 
@@ -122,18 +121,10 @@ export class LeaderboardPage implements OnInit {
         }
       }
 
-      if (field === 'score') {
-        if (direction === 'desc') {
-          return secondValue > firstValue ? 1 : secondValue < firstValue ? -1 : 0;
-        } else {
-          return firstValue > secondValue ? 1 : firstValue < secondValue ? -1 : 0;
-        }
+      if (direction === 'desc') {
+        return secondValue > firstValue ? 1 : secondValue < firstValue ? -1 : 0;
       } else {
-        if (direction === 'desc') {
-          return secondValue > firstValue ? 1 : secondValue < firstValue ? -1 : 0;
-        } else {
-          return firstValue > secondValue ? 1 : firstValue < secondValue ? -1 : 0;
-        }
+        return firstValue > secondValue ? 1 : firstValue < secondValue ? -1 : 0;
       }
     });
   }
