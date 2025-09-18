@@ -153,8 +153,6 @@ export class GameField {
 
   public closeFinishDialog(): void {
     this.showFinishDialog.set(false);
-    console.log(this.currentCategory()?.title);
-    console.log(this.authService.currentUser()?.email);
     const category = this.currentCategory();
     const currentUser = this.authService.currentUser();
     if (category?.title && currentUser?.email) {
@@ -164,6 +162,7 @@ export class GameField {
         this.scoreCounter.score(),
       );
     }
+    this.scoreCounter.resetScore();
   }
 
   public closeCategoryDialog(): void {
