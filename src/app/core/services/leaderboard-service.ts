@@ -3,7 +3,7 @@ import { Firestore, collection, collectionData, doc, setDoc } from '@angular/fir
 import { Observable } from 'rxjs';
 import { LeaderboardCategory, LeaderboardUser } from '../../models/leaderboard.model';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { ConvertToDashIdPipe } from '../../shared/pipes/convert-to-dash-id-pipe';
+import { convertToDashId } from '../../shared/utils/convert-to-dash-id';
 
 @Injectable({
   providedIn: 'root',
@@ -11,8 +11,6 @@ import { ConvertToDashIdPipe } from '../../shared/pipes/convert-to-dash-id-pipe'
 export class LeaderboardService {
   public firestore = inject(Firestore);
   public leaderboards: Signal<LeaderboardCategory[]>;
-
-  private convertToDashIdPipe = new ConvertToDashIdPipe();
 
   constructor() {
     const leaderboardCollection = collection(this.firestore, 'leaderboardCategories');
@@ -28,7 +26,7 @@ export class LeaderboardService {
   }
 
   public setUserScore(categoryName: string, userEmail: string, score: number): Promise<void> {
-    const categoryId = this.convertToDashIdPipe.transform(categoryName);
+    const categoryId = convertToDashId(categoryName);
 
     const userDocument = doc(
       this.firestore,
