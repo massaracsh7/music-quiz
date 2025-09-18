@@ -7,6 +7,7 @@ import WaveSurfer from 'wavesurfer.js';
 export class Wavesurfer {
   public currentTime = signal<number>(0);
   public isPlaying = signal<boolean>(false);
+  public isFinished = signal<boolean>(false);
 
   private wavesurfer?: WaveSurfer;
 
@@ -29,7 +30,7 @@ export class Wavesurfer {
     });
 
     this.wavesurfer.on('finish', () => {
-      this.isPlaying.set(false);
+      this.isFinished.set(true);
     });
   }
 
