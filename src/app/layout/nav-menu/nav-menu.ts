@@ -1,6 +1,6 @@
 import { Component, computed, inject } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { NAV_LIST_ADMIN, NAV_LIST_BASE } from './nav-list';
+import { NAV_LIST_ADMIN, NAV_LIST_BASE } from './nav-list.const';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../core/services/auth-service';
 
