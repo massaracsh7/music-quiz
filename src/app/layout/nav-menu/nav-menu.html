@@ -1,14 +1,16 @@
 <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
-  @for (link of navLinks; track link.label) {
-    <li class="nav-item">
-      <a
-        [routerLink]="link.path"
-        routerLinkActive="active"
-        class="nav-link px-2 d-flex align-items-center"
-      >
-        <i class="bi bi-{{ link.icon }} me-1"></i>
-        {{ link.label }}
-      </a>
-    </li>
+  @for (link of navList; track link.label) {
+    @if (isShowRoute(link.path)) {
+      <li class="nav-item">
+        <a
+          [routerLink]="link.path"
+          routerLinkActive="active"
+          class="nav-link px-2 d-flex align-items-center"
+        >
+          <i class="bi bi-{{ link.icon }} me-1"></i>
+          {{ link.label }}
+        </a>
+      </li>
+    }
   }
 </ul>

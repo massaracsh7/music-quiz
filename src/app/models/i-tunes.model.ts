@@ -1,4 +1,4 @@
-export interface ITunesTrack {
+export type ITunesTrack = {
   trackId: number;
   trackName: string;
   artistName: string;
@@ -6,9 +6,9 @@ export interface ITunesTrack {
   artworkUrl60: string;
   kind: string;
   isSelected?: boolean;
-}
+};
 
-export interface ITunesResponse {
+export type ITunesResponse = {
   resultCount: number;
   results: ITunesTrack[];
-}
+};

@@ -1,4 +1,4 @@
-import { inject, Injectable, signal, computed, effect } from '@angular/core';
+import { inject, Injectable, signal, computed } from '@angular/core';
 import {
   Auth,
   createUserWithEmailAndPassword,
@@ -6,76 +6,77 @@ import {
   signOut,
   updateProfile,
   User,
-  onAuthStateChanged,
+  authState,
 } from '@angular/fire/auth';
-import { from, switchMap, tap, map, Observable } from 'rxjs';
+import { Firestore, doc, getDoc, setDoc } from '@angular/fire/firestore';
+import { from, Observable, tap, switchMap, map } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
   public auth = inject(Auth);
+  public firestore = inject(Firestore);
 
-  public idToken = signal<string | null>(localStorage.getItem('idToken'));
-  public currentUserName = signal<string | null>(localStorage.getItem('currentUserName'));
-
-  public isLoggedIn = computed(() => !!this.idToken());
-
-  private _storageEffect = effect(() => {
-    if (this.idToken()) {
-      localStorage.setItem('idToken', this.idToken()!);
-      localStorage.setItem('currentUserName', this.currentUserName() ?? '');
-    } else {
-      localStorage.removeItem('idToken');
-      localStorage.removeItem('currentUserName');
-    }
-  });
+  public currentUser = signal<User | null>(null);
+  public currentUserName = computed(() => this.currentUser()?.displayName ?? '');
+  public isLoggedIn = computed(() => !!this.currentUser());
+  public isAdmin = signal(false);
 
   constructor() {
-    onAuthStateChanged(this.auth, (user) => {
+    authState(this.auth).subscribe(async (user) => {
+      this.currentUser.set(user);
       if (user) {
-        user.getIdToken().then((token) => this.idToken.set(token));
-        this.currentUserName.set(user.displayName);
+        const snap = await getDoc(doc(this.firestore, 'users', user.uid));
+        const role = snap.exists() ? snap.data()['role'] : 'user';
+        this.isAdmin.set(role === 'admin');
       } else {
-        this.idToken.set(null);
-        this.currentUserName.set(null);
+        this.isAdmin.set(false);
       }
     });
   }
 
   public login(email: string, password: string): Observable<User> {
     return from(signInWithEmailAndPassword(this.auth, email, password)).pipe(
-      switchMap((userCredential) =>
-        from(userCredential.user.getIdToken()).pipe(
-          tap((token) => {
-            this.currentUserName.set(userCredential.user.displayName);
-            this.idToken.set(token);
-          }),
-          map(() => userCredential.user),
-        ),
-      ),
+      switchMap(async (cred) => {
+        const snap = await getDoc(doc(this.firestore, 'users', cred.user.uid));
+        const role = snap.exists() ? snap.data()['role'] : 'user';
+        this.currentUser.set({
+          ...cred.user,
+          displayName: cred.user.displayName ?? '',
+        } as User);
+
+        this.isAdmin.set(role === 'admin');
+
+        return cred.user;
+      }),
     );
   }
 
   public register(email: string, password: string, username: string): Observable<User> {
     return from(createUserWithEmailAndPassword(this.auth, email, password)).pipe(
-      switchMap((userCredential) =>
-        from(updateProfile(userCredential.user, { displayName: username })).pipe(
-          switchMap(() => from(userCredential.user.getIdToken())),
-          tap((token) => {
-            this.currentUserName.set(username);
-            this.idToken.set(token);
+      switchMap((cred) =>
+        from(updateProfile(cred.user, { displayName: username })).pipe(
+          switchMap(() =>
+            from(
+              setDoc(doc(this.firestore, 'users', cred.user.uid), {
+                role: 'user',
+                email,
+              }),
+            ),
+          ),
+          tap(() => {
+            this.currentUser.set({
+              ...cred.user,
+              displayName: username,
+            } as User);
           }),
-          map(() => userCredential.user),
+          map(() => cred.user),
         ),
       ),
     );
   }
 
   public logout(): Observable<void> {
-    return from(signOut(this.auth)).pipe(
-      tap(() => {
-        this.idToken.set(null);
-        this.currentUserName.set(null);
-      }),
-    );
+    this.isAdmin.set(false);
+    return from(signOut(this.auth)).pipe(tap(() => this.currentUser.set(null)));
   }
 }

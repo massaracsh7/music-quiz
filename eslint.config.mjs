@@ -54,7 +54,7 @@ export default [
       ],
       '@typescript-eslint/explicit-function-return-type': 'error',
       '@typescript-eslint/member-ordering': 'error',
-      '@typescript-eslint/consistent-type-definitions': ['error', 'type'],
+      // '@typescript-eslint/consistent-type-definitions': ['error', 'type'],
       // Angular
       '@angular-eslint/directive-selector': [
         'error',

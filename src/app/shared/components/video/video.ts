@@ -15,6 +15,4 @@ import {
   styleUrl: './video.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class Video {
-
-}
+export class Video {}
