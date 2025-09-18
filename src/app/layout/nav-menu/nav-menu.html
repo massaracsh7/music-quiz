@@ -1,5 +1,5 @@
 <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
-  @for (link of navLinks; track link.label) {
+  @for (link of navList(); track link.label) {
     <li class="nav-item">
       <a
         [routerLink]="link.path"
