@@ -39,11 +39,12 @@ export class GameField {
   public currentTracks = signal<Track[]>([]);
   public currentTrackIndex = signal(0);
   public isCorrect = signal(false);
+  public isPlaying = computed(() => this.wavesurfer.isPlaying());
+  public isFinished = computed(() => this.wavesurfer.isFinished());
   public trackNames = computed(() => {
     const tracks = this.currentTracks();
     return tracks.map((track) => track.trackName).sort(() => 0.5 - Math.random());
   });
-  public isFinished = computed(() => this.wavesurfer.isFinished());
 
   public currentTrack = computed(() => {
     const tracks = this.currentTracks();
@@ -139,6 +140,7 @@ export class GameField {
 
   public closeDialog(): void {
     this.showResultDialog.set(false);
+    this.wavesurfer.stop();
 
     this.currentTrackIndex() < this.currentTracks().length - 1
       ? this.nextTrack()
