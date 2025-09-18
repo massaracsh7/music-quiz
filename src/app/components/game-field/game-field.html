@@ -51,7 +51,7 @@
       <span> {{ wavesurfer.currentTime() }}s</span>
     </div>
     <div class="mt-4 text-center">
-      <button class="btn btn-primary me-2" (click)="onPlay()" [disabled] = isPlaying()>Play</button>
+      <button class="btn btn-primary me-2" (click)="onPlay()" [disabled]="isPlaying()">Play</button>
     </div>
 
     <div class="mt-4 text-center">

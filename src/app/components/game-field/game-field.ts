@@ -16,6 +16,8 @@ import { ResultModal } from '../modals/result-modal/result-modal';
 import { ScoreCounter } from '../../core/services/score-counter/score-counter';
 import { FinishModal } from '../modals/finish-modal/finish-modal';
 import { CategoryConfirmModal } from '../modals/category-confirm-modal/category-confirm-modal';
+import { LeaderboardService } from '../../core/services/leaderboard-service';
+import { AuthService } from '../../core/services/auth-service';
 
 @Component({
   selector: 'app-game-page-field',
@@ -29,6 +31,8 @@ export class GameField {
   public tracksLoader: TracksLoader = inject(TracksLoader);
   public wavesurfer: Wavesurfer = inject(Wavesurfer);
   public scoreCounter: ScoreCounter = inject(ScoreCounter);
+  public leaderboardService: LeaderboardService = inject(LeaderboardService);
+  public authService: AuthService = inject(AuthService);
 
   public showResultDialog = signal(false);
   public showFinishDialog = signal(false);
@@ -149,6 +153,17 @@ export class GameField {
 
   public closeFinishDialog(): void {
     this.showFinishDialog.set(false);
+    console.log(this.currentCategory()?.title);
+    console.log(this.authService.currentUser()?.email);
+    const category = this.currentCategory();
+    const currentUser = this.authService.currentUser();
+    if (category?.title && currentUser?.email) {
+      this.leaderboardService.setUserScore(
+        category.title,
+        currentUser.email,
+        this.scoreCounter.score(),
+      );
+    }
   }
 
   public closeCategoryDialog(): void {
