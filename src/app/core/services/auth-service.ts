@@ -1,81 +1,49 @@
-import { inject, Injectable, signal, computed, effect } from '@angular/core';
-import {
-  Auth,
-  createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
-  signOut,
-  updateProfile,
-  User,
-  onAuthStateChanged,
-} from '@angular/fire/auth';
-import { from, switchMap, tap, map, Observable } from 'rxjs';
+import { inject, Injectable, signal, computed } from '@angular/core';
+import { Auth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, updateProfile, User, authState } from '@angular/fire/auth';
+import { from, Observable, tap, switchMap, map } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-  public auth = inject(Auth);
+  private auth = inject(Auth);
 
-  public idToken = signal<string | null>(localStorage.getItem('idToken'));
-  public currentUserName = signal<string | null>(localStorage.getItem('currentUserName'));
-
-  public isLoggedIn = computed(() => !!this.idToken());
-
-  private _storageEffect = effect(() => {
-    if (this.idToken()) {
-      localStorage.setItem('idToken', this.idToken()!);
-      localStorage.setItem('currentUserName', this.currentUserName() ?? '');
-    } else {
-      localStorage.removeItem('idToken');
-      localStorage.removeItem('currentUserName');
-    }
-  });
+  public currentUser = signal<User | null>(null);
+  public currentUserName = computed(() => this.currentUser()?.displayName ?? '');
+  public isLoggedIn = computed(() => !!this.currentUser());
 
   constructor() {
-    onAuthStateChanged(this.auth, (user) => {
-      if (user) {
-        user.getIdToken().then((token) => this.idToken.set(token));
-        this.currentUserName.set(user.displayName);
-      } else {
-        this.idToken.set(null);
-        this.currentUserName.set(null);
-      }
-    });
+    authState(this.auth).subscribe((user) => this.currentUser.set(user));
   }
 
   public login(email: string, password: string): Observable<User> {
     return from(signInWithEmailAndPassword(this.auth, email, password)).pipe(
-      switchMap((userCredential) =>
-        from(userCredential.user.getIdToken()).pipe(
-          tap((token) => {
-            this.currentUserName.set(userCredential.user.displayName);
-            this.idToken.set(token);
-          }),
-          map(() => userCredential.user),
-        ),
-      ),
+      tap((cred) => {
+        this.currentUser.set({
+          ...cred.user,
+          displayName: cred.user.displayName ?? '',
+        } as User);
+      }),
+      map((cred) => cred.user),
     );
   }
 
   public register(email: string, password: string, username: string): Observable<User> {
     return from(createUserWithEmailAndPassword(this.auth, email, password)).pipe(
-      switchMap((userCredential) =>
-        from(updateProfile(userCredential.user, { displayName: username })).pipe(
-          switchMap(() => from(userCredential.user.getIdToken())),
-          tap((token) => {
-            this.currentUserName.set(username);
-            this.idToken.set(token);
+      switchMap((cred) =>
+        from(updateProfile(cred.user, { displayName: username })).pipe(
+          switchMap(() => from(cred.user.getIdToken())),
+          tap(() => {
+            this.currentUser.set({
+              ...cred.user,
+              displayName: username,
+            } as User);
           }),
-          map(() => userCredential.user),
-        ),
-      ),
+          map(() => cred.user),
+        )
+      )
     );
   }
 
   public logout(): Observable<void> {
-    return from(signOut(this.auth)).pipe(
-      tap(() => {
-        this.idToken.set(null);
-        this.currentUserName.set(null);
-      }),
-    );
+    return from(signOut(this.auth)).pipe(tap(() => this.currentUser.set(null)));
   }
 }
