@@ -8,7 +8,7 @@ import { Search } from '../search/search';
 import { LineLimiterPipe } from '../../../shared/pipes/line-limiter-pipe';
 import { ITunesTrack } from '../../../models/i-tunes.model';
 import { LeaderboardCategory } from '../../../models/leaderboard.model';
-import { CategoryService } from '../../../core/services/category-service';
+import { CategoryService } from '../../../core/services/сategory-service/сategory-service';
 
 @Component({
   selector: 'app-category-form',

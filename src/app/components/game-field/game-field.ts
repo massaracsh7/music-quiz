@@ -8,7 +8,7 @@ import {
   ChangeDetectionStrategy,
 } from '@angular/core';
 import { Wavesurfer } from '../../core/services/wavesurfer/wavesurfer';
-import { CategoriesLoader } from '../../core/services/categories-loader/categories-loader';
+import { CategoryService } from '../../core/services/сategory-service/сategory-service';
 import { Category } from '../../models/category.model';
 import { TracksLoader } from '../../core/services/tracks-loader/tracks-loader';
 import { Track } from '../../models/types/track.type';
@@ -25,7 +25,7 @@ import { CategoryConfirmModal } from '../modals/category-confirm-modal/category-
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class GameField {
-  public categoriesLoader: CategoriesLoader = inject(CategoriesLoader);
+  public categoriesLoader: CategoryService = inject(CategoryService);
   public tracksLoader: TracksLoader = inject(TracksLoader);
   public wavesurfer: Wavesurfer = inject(Wavesurfer);
   public scoreCounter: ScoreCounter = inject(ScoreCounter);

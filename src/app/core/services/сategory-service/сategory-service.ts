@@ -6,7 +6,7 @@ import { Category } from '../../../models/category.model';
 import { LeaderboardCategory } from '../../../models/leaderboard.model';
 
 @Injectable({ providedIn: 'root' })
-export class CategoriesLoader {
+export class CategoryService {
   public firestore = inject(Firestore);
 
   public categories: Signal<Category[]>;
