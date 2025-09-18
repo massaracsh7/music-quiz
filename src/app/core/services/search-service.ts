@@ -10,12 +10,12 @@ export class SearchService {
   private http = inject(HttpClient);
 
   public searchTracks(query: string, limit: number = 17): Observable<ITunesResponse> {
-    const params = new HttpParams()
+    const parameters = new HttpParams()
       .set('term', query)
       .set('media', 'music')
       .set('limit', limit.toString());
 
-    return this.http.get<ITunesResponse>('https://itunes.apple.com/search', { params });
+    return this.http.get<ITunesResponse>('https://itunes.apple.com/search', { params: parameters });
   }
 
   public filterOnlyTracks(tracks: ITunesTrack[]): ITunesTrack[] {

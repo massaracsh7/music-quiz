@@ -1,5 +1,13 @@
 import { inject, Injectable, signal, computed } from '@angular/core';
-import { Auth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, updateProfile, User, authState } from '@angular/fire/auth';
+import {
+  Auth,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  signOut,
+  updateProfile,
+  User,
+  authState,
+} from '@angular/fire/auth';
 import { Firestore, doc, getDoc, setDoc } from '@angular/fire/firestore';
 import { from, Observable, tap, switchMap, map } from 'rxjs';
 
@@ -39,7 +47,7 @@ export class AuthService {
         this.isAdmin.set(role === 'admin');
 
         return cred.user;
-      })
+      }),
     );
   }
 
@@ -48,10 +56,12 @@ export class AuthService {
       switchMap((cred) =>
         from(updateProfile(cred.user, { displayName: username })).pipe(
           switchMap(() =>
-            from(setDoc(doc(this.firestore, "users", cred.user.uid), {
-              role: "user",
-              email,
-            }))
+            from(
+              setDoc(doc(this.firestore, 'users', cred.user.uid), {
+                role: 'user',
+                email,
+              }),
+            ),
           ),
           tap(() => {
             this.currentUser.set({
@@ -60,8 +70,8 @@ export class AuthService {
             } as User);
           }),
           map(() => cred.user),
-        )
-      )
+        ),
+      ),
     );
   }
 
@@ -69,5 +79,4 @@ export class AuthService {
     this.isAdmin.set(false);
     return from(signOut(this.auth)).pipe(tap(() => this.currentUser.set(null)));
   }
-
 }

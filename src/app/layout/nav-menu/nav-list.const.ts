@@ -6,6 +6,6 @@ export const NAV_LIST_BASE = [
 ];
 
 export const NAV_LIST_ADMIN = [
-  ... NAV_LIST_BASE,
+  ...NAV_LIST_BASE,
   { path: '/create-category', label: 'Create category', icon: 'bookmark-plus' },
 ];

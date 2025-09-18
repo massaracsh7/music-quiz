@@ -12,8 +12,7 @@ import { AuthService } from '../../core/services/auth-service';
   standalone: true,
 })
 export class NavMenu {
-private auth = inject(AuthService);
+  public auth = inject(AuthService);
 
-  navList = computed(() =>
-    this.auth.isAdmin() ? NAV_LIST_ADMIN : NAV_LIST_BASE
-  );}
+  public navList = computed(() => (this.auth.isAdmin() ? NAV_LIST_ADMIN : NAV_LIST_BASE));
+}
