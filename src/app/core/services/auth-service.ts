@@ -31,7 +31,6 @@ export class AuthService {
       switchMap(async (cred) => {
         const snap = await getDoc(doc(this.firestore, 'users', cred.user.uid));
         const role = snap.exists() ? snap.data()['role'] : 'user';
-
         this.currentUser.set({
           ...cred.user,
           displayName: cred.user.displayName ?? '',
