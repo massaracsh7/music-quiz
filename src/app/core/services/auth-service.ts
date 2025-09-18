@@ -2,6 +2,8 @@ import { inject, Injectable, signal, computed } from '@angular/core';
 import { Auth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, updateProfile, User, authState } from '@angular/fire/auth';
 import { from, Observable, tap, switchMap, map } from 'rxjs';
 
+export const ADMIN_UIDS = ['VPipMaBGMVYzTWSwW1xvCuocpEy2', 'n1zXfWPESnP1pqy3c5CJf69WXk12'];
+
 @Injectable({ providedIn: 'root' })
 export class AuthService {
   private auth = inject(Auth);
@@ -46,4 +48,8 @@ export class AuthService {
   public logout(): Observable<void> {
     return from(signOut(this.auth)).pipe(tap(() => this.currentUser.set(null)));
   }
+
+  public isAdmin = computed(() =>
+  this.currentUser() ? ADMIN_UIDS.includes(this.currentUser()!.uid) : false
+);
 }
