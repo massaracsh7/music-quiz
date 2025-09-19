@@ -16,6 +16,8 @@ import { ResultModal } from '../modals/result-modal/result-modal';
 import { ScoreCounter } from '../../core/services/score-counter/score-counter';
 import { FinishModal } from '../modals/finish-modal/finish-modal';
 import { CategoryConfirmModal } from '../modals/category-confirm-modal/category-confirm-modal';
+import { LeaderboardService } from '../../core/services/leaderboard-service';
+import { AuthService } from '../../core/services/auth-service';
 
 @Component({
   selector: 'app-game-page-field',
@@ -29,6 +31,8 @@ export class GameField {
   public tracksLoader: TracksLoader = inject(TracksLoader);
   public wavesurfer: Wavesurfer = inject(Wavesurfer);
   public scoreCounter: ScoreCounter = inject(ScoreCounter);
+  public leaderboardService: LeaderboardService = inject(LeaderboardService);
+  public authService: AuthService = inject(AuthService);
 
   public showResultDialog = signal(false);
   public showFinishDialog = signal(false);
@@ -39,11 +43,12 @@ export class GameField {
   public currentTracks = signal<Track[]>([]);
   public currentTrackIndex = signal(0);
   public isCorrect = signal(false);
+  public isPlaying = computed(() => this.wavesurfer.isPlaying());
+  public isFinished = computed(() => this.wavesurfer.isFinished());
   public trackNames = computed(() => {
     const tracks = this.currentTracks();
     return tracks.map((track) => track.trackName).sort(() => 0.5 - Math.random());
   });
-  public isFinished = computed(() => this.wavesurfer.isFinished());
 
   public currentTrack = computed(() => {
     const tracks = this.currentTracks();
@@ -139,6 +144,7 @@ export class GameField {
 
   public closeDialog(): void {
     this.showResultDialog.set(false);
+    this.wavesurfer.stop();
 
     this.currentTrackIndex() < this.currentTracks().length - 1
       ? this.nextTrack()
@@ -147,6 +153,16 @@ export class GameField {
 
   public closeFinishDialog(): void {
     this.showFinishDialog.set(false);
+    const category = this.currentCategory();
+    const currentUser = this.authService.currentUser();
+    if (category?.title && currentUser?.email) {
+      this.leaderboardService.setUserScore(
+        category.title,
+        currentUser.email,
+        this.scoreCounter.score(),
+      );
+    }
+    this.scoreCounter.resetScore();
   }
 
   public closeCategoryDialog(): void {

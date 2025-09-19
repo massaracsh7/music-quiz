@@ -17,7 +17,7 @@
         </h5>
       </div>
 
-      <div class="modal-body">
+      <div class="modal-body d-flex flex-column gap-3 justify-content-center align-items-center">
         <div>
           {{ !isCorrect ? `The correct answer was:` : '' }}
           <div class="fs-3">{{ selectedTrack?.artistName }} - {{ selectedTrack?.trackName }}</div>
@@ -32,6 +32,9 @@
             alt="artwork"
           />
         }
+        <div class="progress w-75" role="progressbar" aria-label="Progress bar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
+          <div class="progress-bar text-bg-success" [style.width]="'25%'"></div>
+        </div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-primary" (click)="closeDialog.emit()">OK</button>

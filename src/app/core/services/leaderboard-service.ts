@@ -1,9 +1,13 @@
-import { inject, Injectable, Signal, effect } from '@angular/core';
+import { inject, Injectable, Signal } from '@angular/core';
 import { Firestore, collection, collectionData, doc, setDoc } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 import { LeaderboardCategory, LeaderboardUser } from '../../models/leaderboard.model';
 import { toSignal } from '@angular/core/rxjs-interop';
+import { convertToDashId } from '../../shared/utils/convert-to-dash-id';
 
+@Injectable({
+  providedIn: 'root',
+})
 export class LeaderboardService {
   public firestore = inject(Firestore);
   public leaderboards: Signal<LeaderboardCategory[]>;
@@ -21,7 +25,9 @@ export class LeaderboardService {
     return collectionData(usersCol, { idField: 'email' }) as Observable<LeaderboardUser[]>;
   }
 
-  public setUserScore(categoryId: string, userEmail: string, score: number): Promise<void> {
+  public setUserScore(categoryName: string, userEmail: string, score: number): Promise<void> {
+    const categoryId = convertToDashId(categoryName);
+
     const userDocument = doc(
       this.firestore,
       `leaderboardCategories/${categoryId}/users/${userEmail}`,
