@@ -9,7 +9,7 @@ import { LineLimiterPipe } from '../../../shared/pipes/line-limiter-pipe';
 import { ITunesTrack } from '../../../models/i-tunes.model';
 import { LeaderboardCategory } from '../../../models/leaderboard.model';
 import { CategoryService } from '../../../core/services/сategory-service/сategory-service';
-import {ToastService} from '../../../shared/services/toast/toast';
+import { ToastService } from '../../../shared/services/toast/toast';
 
 @Component({
   selector: 'app-category-form',

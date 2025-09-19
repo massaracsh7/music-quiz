@@ -155,9 +155,9 @@ export class GameField {
     this.showFinishDialog.set(false);
     const category = this.currentCategory();
     const currentUser = this.authService.currentUser();
-    if (category?.title && currentUser?.email) {
+    if (category?.id && currentUser?.email) {
       this.leaderboardService.setUserScore(
-        category.title,
+        category.id,
         currentUser.email,
         this.scoreCounter.score(),
       );
