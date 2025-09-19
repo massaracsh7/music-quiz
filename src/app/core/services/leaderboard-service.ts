@@ -3,7 +3,6 @@ import { Firestore, collection, collectionData, doc, setDoc } from '@angular/fir
 import { Observable } from 'rxjs';
 import { LeaderboardCategory, LeaderboardUser } from '../../models/leaderboard.model';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { convertToDashId } from '../../shared/utils/convert-to-dash-id';
 
 @Injectable({
   providedIn: 'root',
@@ -25,9 +24,7 @@ export class LeaderboardService {
     return collectionData(usersCol, { idField: 'email' }) as Observable<LeaderboardUser[]>;
   }
 
-  public setUserScore(categoryName: string, userEmail: string, score: number): Promise<void> {
-    const categoryId = convertToDashId(categoryName);
-
+  public setUserScore(categoryId: string, userEmail: string, score: number): Promise<void> {
     const userDocument = doc(
       this.firestore,
       `leaderboardCategories/${categoryId}/users/${userEmail}`,
