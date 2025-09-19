@@ -1,8 +1,8 @@
 <section class="about-us-page">
   <div class="container">
-      <h1 class="text-center mb-5 fw-bold">
-        <span class="bi bi-people-fill me-3"></span>Our Development
-      </h1>
+    <h1 class="text-center mb-5 fw-bold">
+      <span class="bi bi-people-fill me-3"></span>Our Development
+    </h1>
     <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
       @for (student of students; track student.name) {
         <div class="col">
@@ -18,12 +18,25 @@
                   style="width: 120px; height: 120px; object-fit: cover"
                 />
               </div>
-              <h4 class="col-auto card-title fw-bold m-0 d-flex align-items-center" style="height: 60px">{{ student.name }}</h4>
+              <h4
+                class="col-auto card-title fw-bold m-0 d-flex align-items-center"
+                style="height: 60px"
+              >
+                {{ student.name }}
+              </h4>
               <p class="card-subtitle m-0">{{ student.role }}</p>
 
-              <p class="col-auto card-text text-muted m-0 mb-3 flex-grow-1 d-flex align-items-center" style="min-height: 250px">{{ student.description }}</p>
+              <p
+                class="col-auto card-text text-muted m-0 mb-3 flex-grow-1 d-flex align-items-center"
+                style="min-height: 250px"
+              >
+                {{ student.description }}
+              </p>
 
-              <div class="col-auto text-center d-flex flex-column justify-content-center" style="min-height: 60px">
+              <div
+                class="col-auto text-center d-flex flex-column justify-content-center"
+                style="min-height: 60px"
+              >
                 <div class="d-flex flex-wrap align-items-center justify-content-center gap-2">
                   @for (task of student.task; track $index) {
                     <span class="badge bg-secondary"> {{ task }} </span>

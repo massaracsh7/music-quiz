@@ -1,6 +1,6 @@
 <div class="d-flex justify-content-center align-items-center mt-5">
   <div class="card p-4 mt-auto" style="max-width: 500px; width: 100%">
-   <ng-template #loginFormTpl>
+    <ng-template #loginFormTpl>
       <h3 class="card-title mb-3 text-center">{{ loginTitle }}</h3>
       <app-login-form></app-login-form>
     </ng-template>
@@ -10,9 +10,6 @@
       <app-register-form></app-register-form>
     </ng-template>
 
-    <ng-container
-      *ngTemplateOutlet="isLogin() ? loginFormTpl : registerFormTpl"
-    ></ng-container>
-
+    <ng-container *ngTemplateOutlet="isLogin() ? loginFormTpl : registerFormTpl"></ng-container>
   </div>
 </div>
