@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { AuthService } from '../../core/services/auth-service';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-user-menu',
@@ -10,8 +10,11 @@ import { RouterModule } from '@angular/router';
 })
 export class UserMenu {
   public auth = inject(AuthService);
+  public router = inject(Router);
 
   public logout(): void {
-    this.auth.logout().subscribe();
+    this.auth.logout().subscribe(() => {
+      this.router.navigate(['/']);
+    });
   }
 }
