@@ -1,4 +1,4 @@
-import { Component, inject, computed } from '@angular/core';
+import { Component, inject, computed, signal } from '@angular/core';
 import { UserService } from '../../core/services/user-service/user-service';
 import { AppUser, UserInfo, UserRole } from '../../models/user.model';
 import { CommonModule } from '@angular/common';
@@ -29,5 +29,19 @@ export class AdminPage {
     if (this.canChangeRoles()) {
       this.userService.updateUserRole(user.uid, newRole as UserRole).subscribe();
     }
+  }
+
+  public sortDirection = signal<'asc' | 'desc'>('asc');
+
+  public sortedUsers = computed(() => {
+    return [...this.users()].sort((a, b) => {
+      if (a.role < b.role) return this.sortDirection() === 'asc' ? -1 : 1;
+      if (a.role > b.role) return this.sortDirection() === 'asc' ? 1 : -1;
+      return 0;
+    });
+  });
+
+  public toggleSort() {
+    this.sortDirection.set(this.sortDirection() === 'asc' ? 'desc' : 'asc');
   }
 }
