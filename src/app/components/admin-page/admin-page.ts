@@ -8,7 +8,7 @@ import { FormsModule } from '@angular/forms';
   selector: 'app-admin-page',
   templateUrl: './admin-page.html',
   styleUrl: './admin-page.scss',
-    imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule],
 
 })
 export class AdminPage {
@@ -17,16 +17,13 @@ export class AdminPage {
   public users = this.userService.users;
 
   public roles: UserRole[] = ['admin', 'super_user', 'user'];
-  public   options = [
-    { value: 'admin', label: 'admin' },
-    { value: 'super_user', label: 'super_user' },
-    { value: 'user', label: 'user' },
-  ];
+  public get options() {
+    return this.roles.map(role => ({ value: role, label: role }));
+  }
 
-  public currentUserRole = computed(() => this.userService.currentUserRole());
-
-  public canChangeRoles = computed(() => this.userService.isAdmin(this.currentUserRole()));
-  public canCreateCategories = computed(() => this.userService.canCreateCategoriesFn(this.currentUserRole()));
+  public currentUserRole = this.userService.currentUserRole;
+  public canChangeRoles = this.userService.canChangeRoles;
+  public canCreateCategories = this.userService.canCreateCategories;
 
   public changeRole(user: UserInfo, newRole: UserRole) {
     if (this.canChangeRoles()) {

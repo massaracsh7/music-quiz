@@ -4,6 +4,8 @@ import { AuthService } from '../../core/services/auth-service';
 import { ToastService } from '../services/toast/toast';
 import { firstValueFrom } from 'rxjs';
 import { Auth, authState } from '@angular/fire/auth';
+import { UserRole } from '../../models/user.model';
+import { UserService } from '../../core/services/user-service/user-service';
 
 export const authGuard: CanActivateFn = async () => {
   const authServer = inject(AuthService);
@@ -29,3 +31,18 @@ export const authGuard: CanActivateFn = async () => {
 
 //   return router.createUrlTree(['/']);
 // };
+
+export const roleGuard = (allowedRoles: UserRole[]): CanActivateFn => () => {
+  const userService = inject(UserService);
+  const router = inject(Router);
+  const toast = inject(ToastService);
+
+  const role = userService.currentUserRole();
+
+  if (allowedRoles.includes(role)) {
+    return true;
+  }
+
+  toast.show('You need rights to access this page', 'error');
+  return router.createUrlTree(['/']);
+};
