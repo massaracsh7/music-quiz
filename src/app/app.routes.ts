@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { adminGuard, authGuard } from './shared/guards/auth.guard';
+import { authGuard } from './shared/guards/auth.guard';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -36,7 +36,14 @@ export const routes: Routes = [
       import('./components/create-category-page/create-category-page').then(
         (m) => m.CreateCategoryPage,
       ),
-    canActivate: [adminGuard],
+    // canActivate: [adminGuard],
+  },
+    {
+    path: 'admin',
+    loadComponent: () =>
+      import('./components/admin-page/admin-page').then(
+        (m) => m.AdminPage,
+      ),
   },
   {
     path: '404',

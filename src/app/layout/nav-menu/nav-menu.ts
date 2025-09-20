@@ -18,7 +18,7 @@ export class NavMenu {
 
   public onlyAdminRoutes = ['/create-category'];
 
-  public isShowRoute(path: string): boolean {
-    return !this.onlyAdminRoutes.includes(path) || this.auth.isAdmin();
-  }
+  // public isShowRoute(path: string): boolean {
+  //   return !this.onlyAdminRoutes.includes(path) || this.auth.isAdmin();
+  // }
 }

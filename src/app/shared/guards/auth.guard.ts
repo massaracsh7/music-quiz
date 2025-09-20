@@ -18,14 +18,14 @@ export const authGuard: CanActivateFn = async () => {
   return router.createUrlTree(['/login']);
 };
 
-export const adminGuard: CanActivateFn = () => {
-  const auth = inject(AuthService);
-  const router = inject(Router);
-  const toast = inject(ToastService);
-  if (auth.isAdmin()) {
-    return true;
-  }
-  toast.show('You need admin rights to access this page', 'error');
+// export const adminGuard: CanActivateFn = () => {
+//   const auth = inject(AuthService);
+//   const router = inject(Router);
+//   const toast = inject(ToastService);
+//   if (auth.isAdmin()) {
+//     return true;
+//   }
+//   toast.show('You need admin rights to access this page', 'error');
 
-  return router.createUrlTree(['/']);
-};
+//   return router.createUrlTree(['/']);
+// };

@@ -5,3 +5,7 @@ export interface AppUser {
   displayName: string;
   role: UserRole;
 }
+
+export interface UserInfo extends AppUser {
+  uid: string;  
+}
