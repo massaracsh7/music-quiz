@@ -4,12 +4,10 @@ import { from, Observable, tap } from 'rxjs';
 import { AuthService } from '../auth-service';
 import { AppUser, UserRole } from '../../../models/user.model';
 
-
-
 @Injectable({ providedIn: 'root' })
 export class UserService {
-  private firestore = inject(Firestore);
-  private auth = inject(AuthService);
+  public firestore = inject(Firestore);
+  public auth = inject(AuthService);
 
   public users = signal<(AppUser & { uid: string })[]>([]);
 
@@ -17,7 +15,7 @@ export class UserService {
 
   public currentUserRole = computed<UserRole>(() => {
     const current = this.currentUser();
-    const user = this.users().find(u => u.uid === current?.uid);
+    const user = this.users().find((u) => u.uid === current?.uid);
     return user?.role ?? 'user';
   });
 
@@ -29,24 +27,24 @@ export class UserService {
   }
 
   public updateUserRole(uid: string, role: UserRole): Observable<void> {
-    const userDoc = doc(this.firestore, 'users', uid);
-    return from(updateDoc(userDoc, { role })).pipe(
+    const userDocument = doc(this.firestore, 'users', uid);
+    return from(updateDoc(userDocument, { role })).pipe(
       tap(() => {
-        this.users.update(current =>
-          current.map(user => user.uid === uid ? { ...user, role } : user)
+        this.users.update((current) =>
+          current.map((user) => (user.uid === uid ? { ...user, role } : user)),
         );
-      })
+      }),
     );
   }
 
-  private loadUsers() {
+  public loadUsers(): void {
     const usersCollection = collection(this.firestore, 'users');
-    collectionData(usersCollection, { idField: 'uid' }).subscribe(users => {
+    collectionData(usersCollection, { idField: 'uid' }).subscribe((users) => {
       this.users.set(
-        (users as (AppUser & { uid: string; role?: UserRole })[]).map(u => ({
+        (users as (AppUser & { uid: string; role?: UserRole })[]).map((u) => ({
           ...u,
-          role: u.role ?? 'user' 
-        }))
+          role: u.role ?? 'user',
+        })),
       );
     });
   }

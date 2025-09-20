@@ -1,6 +1,6 @@
 import { Component, inject, computed, signal, DestroyRef } from '@angular/core';
 import { UserService } from '../../core/services/user-service/user-service';
-import { AppUser, UserInfo, UserRole } from '../../models/user.model';
+import { AppUser, RoleOption, UserInfo, UserRole } from '../../models/user.model';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { catchError, of, tap } from 'rxjs';
@@ -12,38 +12,18 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
   templateUrl: './admin-page.html',
   styleUrl: './admin-page.scss',
   imports: [CommonModule, FormsModule],
-
 })
 export class AdminPage {
-  private userService = inject(UserService);
+  public userService = inject(UserService);
+  public toast = inject(ToastService);
+  public destroyRef = inject(DestroyRef);
 
   public users = this.userService.users;
-
   public roles: UserRole[] = ['admin', 'super_user', 'user'];
-  public get options() {
-    return this.roles.map(role => ({ value: role, label: role }));
-  }
-
   public currentUserRole = this.userService.currentUserRole;
   public canChangeRoles = this.userService.canChangeRoles;
   public canCreateCategories = this.userService.canCreateCategories;
-  public toast = inject(ToastService);
-  private destroyRef = inject(DestroyRef);
 
-
-  public changeRole(user: UserInfo, newRole: UserRole) {
-    if (!this.canChangeRoles()) return;
-    this.userService.updateUserRole(user.uid, newRole).pipe(
-      tap(() => {
-        this.toast.show(`Role of "${user.email}" changed successfully`, 'success');
-      }),
-      catchError(err => {
-        this.toast.show(`Failed to change role: ${err.message}`, 'error');
-        return of();
-      }),      
-      takeUntilDestroyed(this.destroyRef)
-    ).subscribe();
-  }
   public sortDirection = signal<'asc' | 'desc'>('asc');
 
   public sortedUsers = computed(() => {
@@ -54,7 +34,28 @@ export class AdminPage {
     });
   });
 
-  public toggleSort() {
+  public get options(): RoleOption[] {
+    return this.roles.map((role) => ({ value: role, label: role }));
+  }
+
+  public changeRole(user: UserInfo, newRole: UserRole): void {
+    if (!this.canChangeRoles()) return;
+    this.userService
+      .updateUserRole(user.uid, newRole)
+      .pipe(
+        tap(() => {
+          this.toast.show(`Role of "${user.email}" changed successfully`, 'success');
+        }),
+        catchError((error) => {
+          this.toast.show(`Failed to change role: ${error.message}`, 'error');
+          return of();
+        }),
+        takeUntilDestroyed(this.destroyRef),
+      )
+      .subscribe();
+  }
+
+  public toggleSort(): void {
     this.sortDirection.set(this.sortDirection() === 'asc' ? 'desc' : 'asc');
   }
 }

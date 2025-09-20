@@ -12,7 +12,7 @@ export const authGuard: CanActivateFn = async () => {
   const auth = inject(Auth);
   const router = inject(Router);
   const toast = inject(ToastService);
-  const user = authServer.currentUser() || await firstValueFrom(authState(auth));
+  const user = authServer.currentUser() || (await firstValueFrom(authState(auth)));
   if (user) {
     return true;
   }
@@ -20,17 +20,19 @@ export const authGuard: CanActivateFn = async () => {
   return router.createUrlTree(['/login']);
 };
 
-export const roleGuard = (allowedRoles: UserRole[]): CanActivateFn => () => {
-  const userService = inject(UserService);
-  const router = inject(Router);
-  const toast = inject(ToastService);
+export const roleGuard =
+  (allowedRoles: UserRole[]): CanActivateFn =>
+  () => {
+    const userService = inject(UserService);
+    const router = inject(Router);
+    const toast = inject(ToastService);
 
-  const role = userService.currentUserRole();
+    const role = userService.currentUserRole();
 
-  if (allowedRoles.includes(role)) {
-    return true;
-  }
+    if (allowedRoles.includes(role)) {
+      return true;
+    }
 
-  toast.show('You need rights to access this page', 'error');
-  return router.createUrlTree(['/']);
-};
+    toast.show('You need rights to access this page', 'error');
+    return router.createUrlTree(['/']);
+  };

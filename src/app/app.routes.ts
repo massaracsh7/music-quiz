@@ -36,15 +36,12 @@ export const routes: Routes = [
       import('./components/create-category-page/create-category-page').then(
         (m) => m.CreateCategoryPage,
       ),
-    canActivate: [roleGuard(['admin', 'super_user'])] 
+    canActivate: [roleGuard(['admin', 'super_user'])],
   },
-    {
+  {
     path: 'admin',
-    loadComponent: () =>
-      import('./components/admin-page/admin-page').then(
-        (m) => m.AdminPage,
-      ),
-      canActivate: [roleGuard(['admin'])]
+    loadComponent: () => import('./components/admin-page/admin-page').then((m) => m.AdminPage),
+    canActivate: [roleGuard(['admin'])],
   },
   {
     path: '404',
