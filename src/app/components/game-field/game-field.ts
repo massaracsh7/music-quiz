@@ -103,13 +103,11 @@ export class GameField {
     });
 
     effect(() => {
-      if (this.isFinished()) {
+      const finished = this.isFinished();
+      if (finished) {
+        this.onFalseAnswer();
         this.showResult();
         this.scoreCounter.increaseScore(30);
-        const isCorrect = false;
-        const results = [...this.trackResults()];
-        results[this.currentTrackIndex()] = isCorrect;
-        this.trackResults.set(results);
       }
     });
   }
@@ -132,10 +130,7 @@ export class GameField {
     const currentTrack = this.currentTrack();
     if (!currentTrack) return;
 
-    const isCorrect = false;
-    const results = [...this.trackResults()];
-    results[this.currentTrackIndex()] = isCorrect;
-    this.trackResults.set(results);
+    this.onFalseAnswer();
 
     this.showResult();
     this.scoreCounter.increaseScore(30);
@@ -143,6 +138,12 @@ export class GameField {
     if (this.wavesurfer) {
       this.wavesurfer.stop();
     }
+  }
+
+  public onFalseAnswer(): void {
+    const results = [...this.trackResults()];
+    results[this.currentTrackIndex()] = false;
+    this.trackResults.set(results);
   }
 
   public onAnswerSelected(answer: string): void {
@@ -202,6 +203,7 @@ export class GameField {
   private initCurrentTrack(): void {
     const track = this.currentTrack();
     if (!track) return;
+    this.wavesurfer.isFinished.set(false);
     this.wavesurfer.init('#waveform', track.previewUrl, true);
   }
 
