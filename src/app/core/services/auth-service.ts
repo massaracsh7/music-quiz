@@ -60,6 +60,7 @@ export class AuthService {
               setDoc(doc(this.firestore, 'users', cred.user.uid), {
                 role: 'user',
                 email,
+                displayName: username,
               }),
             ),
           ),
