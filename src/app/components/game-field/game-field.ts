@@ -96,10 +96,6 @@ export class GameField {
     });
   }
 
-  public onPlay(): void {
-    this.wavesurfer.play();
-  }
-
   public onCategorySelected(category: Category): void {
     this.showCategoryDialog.set(true);
     this.selectedCategory.set(category);
