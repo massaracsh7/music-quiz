@@ -2,12 +2,13 @@ import { Component, inject, computed } from '@angular/core';
 import { UserService } from '../../core/services/user-service/user-service';
 import { AppUser, UserInfo, UserRole } from '../../models/user.model';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-admin-page',
   templateUrl: './admin-page.html',
   styleUrl: './admin-page.scss',
-    imports: [CommonModule],
+    imports: [CommonModule, FormsModule],
 
 })
 export class AdminPage {

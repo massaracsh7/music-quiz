@@ -1,5 +1,3 @@
-<h2>Admin Panel</h2>
-
 <table>
   <thead>
     <tr>
@@ -17,8 +15,8 @@
         <td>{{ user.role }}</td>
         <td>
           <select
-            [value]="user.role"
-            (change)="changeRole(user, $any($event.target).value)"
+            [ngModel]="user.role"
+            (ngModelChange)="changeRole(user, $event)"
           >
             @for (option of options; track option.value) {
               <option [value]="option.value">{{ option.label }}</option>
