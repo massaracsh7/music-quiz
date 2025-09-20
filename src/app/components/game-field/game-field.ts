@@ -46,8 +46,22 @@ export class GameField {
   public isPlaying = computed(() => this.wavesurfer.isPlaying());
   public isFinished = computed(() => this.wavesurfer.isFinished());
   public trackNames = computed(() => {
+    const currentTrack = this.currentTrack();
     const tracks = this.currentTracks();
-    return tracks.map((track) => track.trackName).sort(() => 0.5 - Math.random());
+    const trackNames = tracks.map((track) => track.trackName);
+    const randomNames = [];
+    if (currentTrack?.trackName) randomNames.push(currentTrack?.trackName);
+    for (let i = 0; i < 3; i += 1) {
+      trackNames[i] !== currentTrack?.trackName
+        ? randomNames.push(trackNames[i])
+        : randomNames.push(trackNames[trackNames.length - 1]);
+    }
+    return randomNames
+      .sort(() => 0.5 - Math.random())
+      .map((name, index) => ({
+        id: index,
+        name: name,
+      }));
   });
   public trackResults = signal<boolean[]>([]);
 
@@ -92,6 +106,10 @@ export class GameField {
       if (this.isFinished()) {
         this.showResult();
         this.scoreCounter.increaseScore(30);
+        const isCorrect = false;
+        const results = [...this.trackResults()];
+        results[this.currentTrackIndex()] = isCorrect;
+        this.trackResults.set(results);
       }
     });
   }
