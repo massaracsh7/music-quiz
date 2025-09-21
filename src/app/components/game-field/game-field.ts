@@ -6,6 +6,7 @@ import {
   WritableSignal,
   computed,
   ChangeDetectionStrategy,
+  DestroyRef,
 } from '@angular/core';
 import { Wavesurfer } from '../../core/services/wavesurfer/wavesurfer';
 import { CategoryService } from '../../core/services/сategory-service/сategory-service';
@@ -72,6 +73,7 @@ export class GameField {
   });
 
   private destroyed = signal(false);
+  private destroyRef = inject(DestroyRef);
 
   constructor() {
     effect(() => {
@@ -108,7 +110,12 @@ export class GameField {
         this.onFalseAnswer();
         this.showResult();
         this.scoreCounter.increaseScore(30);
+        this.wavesurfer.isFinished.set(false);
       }
+    });
+
+    this.destroyRef.onDestroy(() => {
+      this.wavesurfer.destroy();
     });
   }
 
