@@ -142,15 +142,23 @@ export class GameField {
     this.showResult();
     this.scoreCounter.increaseScore(30);
 
-    if (this.wavesurfer) {
-      this.wavesurfer.stop();
-    }
+    this.onDialogPlay();
   }
 
   public onFalseAnswer(): void {
     const results = [...this.trackResults()];
     results[this.currentTrackIndex()] = false;
     this.trackResults.set(results);
+  }
+
+  public onDialogPlay() {
+    if (this.wavesurfer) {
+      this.wavesurfer.stop();
+      this.wavesurfer.play();
+      setTimeout(() => {
+        this.wavesurfer.stop();
+      }, 20000);
+    }
   }
 
   public onAnswerSelected(answer: string): void {
@@ -170,10 +178,7 @@ export class GameField {
       ? this.scoreCounter.increaseScore(this.wavesurfer.currentTime())
       : this.scoreCounter.increaseScore(30);
 
-    if (this.wavesurfer) {
-      this.wavesurfer.stop();
-      this.wavesurfer.play();
-    }
+    this.onDialogPlay();
   }
 
   public closeDialog(): void {
