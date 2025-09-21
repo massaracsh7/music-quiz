@@ -1,5 +1,5 @@
 <div class="categories">
-  <h5 class="mb-3">Categories</h5>
+  <h5 class="mb-3">{{ 'GAME_FIELD.TITLE' | translate }}</h5>
   <div class="d-flex flex-wrap gap-2">
     @for (category of categories(); track category.id) {
       <span
@@ -18,7 +18,7 @@
   <div class="d-flex justify-content-around gap-2 flex-wrap">
     @if (currentCategory()) {
       <h5>
-        <span>Current category: </span>
+        <span>{{ 'GAME_FIELD.CATEGORY_TITLE' | translate }} </span>
         <span>{{ currentCategory()?.title }}</span>
       </h5>
     }
