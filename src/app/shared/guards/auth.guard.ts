@@ -17,7 +17,7 @@ export const authGuard: CanActivateFn = async () => {
     return true;
   }
   toast.show('Login or register to play game', 'error');
-  return router.createUrlTree(['/login']);
+  return router.createUrlTree(['/auth/login']);
 };
 
 export const roleGuard =

@@ -19,13 +19,12 @@ export const routes: Routes = [
     canActivate: [authGuard],
   },
   {
-    path: 'login',
-    loadComponent: () => import('./components/auth-page/auth-page').then((m) => m.AuthPage),
-  },
-  {
-    path: 'register',
-    loadComponent: () => import('./components/auth-page/auth-page').then((m) => m.AuthPage),
-  },
+    path: 'auth/:mode',
+    loadComponent: () =>
+      import('./components/auth-page/auth-page').then(m => m.AuthPage),
+  },  
+  { path: 'login', redirectTo: 'auth/login' },
+  { path: 'register', redirectTo: 'auth/register' },
   {
     path: 'leaderboard',
     loadComponent: () =>
