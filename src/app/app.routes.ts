@@ -23,8 +23,8 @@ export const routes: Routes = [
     path: 'auth/:mode',
     loadComponent: () =>
       import('./components/auth-page/auth-page').then(m => m.AuthPage),
-    resolve: {users: usersResolver}
-  },  
+    resolve: { users: usersResolver }
+  },
   { path: 'login', redirectTo: 'auth/login' },
   { path: 'register', redirectTo: 'auth/register' },
   {
@@ -43,11 +43,13 @@ export const routes: Routes = [
       import('./components/create-category-page/create-category-page').then(
         (m) => m.CreateCategoryPage,
       ),
+    resolve: { users: usersResolver },
     canActivate: [roleGuard(['admin', 'super_user'])],
   },
   {
     path: 'admin',
     loadComponent: () => import('./components/admin-page/admin-page').then((m) => m.AdminPage),
+    resolve: { users: usersResolver },
     canActivate: [roleGuard(['admin'])],
   },
   {

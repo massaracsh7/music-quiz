@@ -1,6 +1,6 @@
 import { inject, Injectable, signal, computed } from '@angular/core';
 import { Firestore, collection, collectionData, doc, updateDoc } from '@angular/fire/firestore';
-import { from, Observable, tap } from 'rxjs';
+import { firstValueFrom, from, Observable, tap } from 'rxjs';
 import { AuthService } from '../auth-service';
 import { AppUser, UserRole } from '../../../models/user.model';
 
@@ -56,4 +56,20 @@ export class UserService {
   public canCreateCategoriesFn(role: UserRole): boolean {
     return role === 'admin' || role === 'super_user';
   }
+
+  public prefetchUsersAsync(): Promise<void> {
+  const usersCollection = collection(this.firestore, 'users');
+  return firstValueFrom(
+    collectionData(usersCollection, { idField: 'uid' }).pipe(
+      tap((users) =>
+        this.users.set(
+          (users as (AppUser & { uid: string; role?: UserRole })[]).map((u) => ({
+            ...u,
+            role: u.role ?? 'user',
+          })),
+        ),
+      ),
+    ),
+  ).then(() => undefined);
+}
 }
