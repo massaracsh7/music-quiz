@@ -49,6 +49,7 @@ export class GameField {
     const tracks = this.currentTracks();
     return tracks.map((track) => track.trackName).sort(() => 0.5 - Math.random());
   });
+  public trackResults = signal<boolean[]>([]);
 
   public currentTrack = computed(() => {
     const tracks = this.currentTracks();
@@ -72,6 +73,7 @@ export class GameField {
         this.tracksLoader.getTracksByIds(category.tracks).subscribe((tracks) => {
           this.currentTracks.set(tracks);
           this.currentTrackIndex.set(0);
+          this.trackResults.set(new Array(tracks.length).fill(null));
           this.initCurrentTrack();
         });
       }
@@ -116,6 +118,11 @@ export class GameField {
     const currentTrack = this.currentTrack();
     if (!currentTrack) return;
 
+    const isCorrect = false;
+    const results = [...this.trackResults()];
+    results[this.currentTrackIndex()] = isCorrect;
+    this.trackResults.set(results);
+
     this.showResult();
     this.scoreCounter.increaseScore(30);
 
@@ -130,6 +137,11 @@ export class GameField {
 
     const isCorrect = answer === currentTrack.trackName;
     this.isCorrect.set(isCorrect);
+
+    const results = [...this.trackResults()];
+    results[this.currentTrackIndex()] = isCorrect;
+    this.trackResults.set(results);
+
     this.showResult();
 
     isCorrect

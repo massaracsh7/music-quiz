@@ -75,7 +75,10 @@
       [showResultDialog]="showResultDialog()"
       [isCorrectSignal]="isCorrect()"
       [currentTrack]="currentTrack()"
+      [currentTrackNumber]="currentTrackIndex()"
+      [totalTracks]="currentTracks().length"
       (closeDialog)="closeDialog()"
+      [trackResults]="trackResults()"
     ></app-result-modal>
     <app-finish-modal
       [showFinishDialog]="showFinishDialog()"
