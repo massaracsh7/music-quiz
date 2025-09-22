@@ -46,6 +46,7 @@ export class GameField {
   public isCorrect = signal(false);
   public isPlaying = computed(() => this.wavesurfer.isPlaying());
   public isFinished = computed(() => this.wavesurfer.isFinished());
+  public isBeforeFirstRound = signal(true);
   public trackNames = computed(() => {
     const currentTrack = this.currentTrack();
     const tracks = this.currentTracks();
@@ -210,6 +211,7 @@ export class GameField {
 
   public onPlay() {
     this.wavesurfer.play();
+    this.isBeforeFirstRound.set(false);
   }
 
   private showResult(): void {

@@ -62,7 +62,7 @@
           <button
             class="btn btn-outline-primary"
             (click)="onAnswerSelected(track.name)"
-            [disabled]="!isPlaying()"
+            [disabled]="isBeforeFirstRound()"
           >
             {{ track.name }}
           </button>
