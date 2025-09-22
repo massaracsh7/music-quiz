@@ -52,12 +52,6 @@ export class Wavesurfer {
     this.isPlaying.set(false);
   }
 
-  public playPause(): void {
-    if (!this.wavesurfer) return;
-    this.wavesurfer.playPause();
-    this.isPlaying.set(this.wavesurfer.isPlaying());
-  }
-
   public destroy(): void {
     this.wavesurfer?.destroy();
     this.wavesurfer = undefined;
