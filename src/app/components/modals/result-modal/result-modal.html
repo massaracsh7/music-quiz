@@ -39,16 +39,16 @@
           aria-valuemin="0"
           [attr.aria-valuemax]="totalTracks()"
         >
-          @if(tracks) {
+          @if (tracks) {
             @for (result of trackResults(); track $index) {
               <div
                 class="progress"
                 role="progressbar"
                 [ngClass]="{
-                'bg-success': result === true,
-                'bg-danger': result === false,
-                'bg-secondary': result === null,
-              }"
+                  'bg-success': result,
+                  'bg-danger': !result,
+                  'bg-secondary': result === null,
+                }"
                 [style.width.%]="100 / tracks"
               ></div>
             }
