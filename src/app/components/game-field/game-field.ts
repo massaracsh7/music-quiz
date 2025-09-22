@@ -90,7 +90,7 @@ export class GameField {
           this.currentTracks.set(tracks);
           this.currentTrackIndex.set(0);
           this.trackResults.set(new Array(tracks.length).fill(null));
-          this.initCurrentTrack();
+          this.initCurrentTrack(false);
         });
       }
     });
@@ -208,22 +208,26 @@ export class GameField {
     this.showCategoryDialog.set(false);
   }
 
+  public onPlay() {
+    this.wavesurfer.play();
+  }
+
   private showResult(): void {
     this.showResultDialog.set(true);
   }
 
-  private initCurrentTrack(): void {
+  private initCurrentTrack(autoPlay: boolean): void {
     const track = this.currentTrack();
     if (!track) return;
     this.wavesurfer.isFinished.set(false);
-    this.wavesurfer.init('#waveform', track.previewUrl, true);
+    this.wavesurfer.init('#waveform', track.previewUrl, autoPlay);
   }
 
   private nextTrack(): void {
     const nextIndex = this.currentTrackIndex() + 1;
     if (nextIndex < this.currentTracks().length) {
       this.currentTrackIndex.set(nextIndex);
-      this.initCurrentTrack();
+      this.initCurrentTrack(true);
     }
   }
 }
