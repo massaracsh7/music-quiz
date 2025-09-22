@@ -7,6 +7,7 @@ import {
   computed,
   ChangeDetectionStrategy,
   DestroyRef,
+  input,
 } from '@angular/core';
 import { Wavesurfer } from '../../core/services/wavesurfer/wavesurfer';
 import { CategoryService } from '../../core/services/сategory-service/сategory-service';
@@ -28,6 +29,8 @@ import { AuthService } from '../../core/services/auth-service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class GameField {
+  public categoryId = input<string | null>(null);
+
   public categoriesLoader: CategoryService = inject(CategoryService);
   public tracksLoader: TracksLoader = inject(TracksLoader);
   public wavesurfer: Wavesurfer = inject(Wavesurfer);
@@ -79,6 +82,14 @@ export class GameField {
   constructor() {
     effect(() => {
       const categories = this.categories();
+      if (this.categoryId()) {
+        const category = categories.find(c => c.id === this.categoryId());
+        if (category) {
+          this.currentCategory.set(category);
+          return;
+        }
+      }
+
       if (categories.length > 0 && !this.currentCategory()) {
         this.currentCategory.set(categories[0]);
       }

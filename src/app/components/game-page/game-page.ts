@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { GameField } from '../game-field/game-field';
 
@@ -9,4 +9,6 @@ import { GameField } from '../game-field/game-field';
   standalone: true,
   imports: [CommonModule, GameField],
 })
-export class GamePage {}
+export class GamePage {
+  public categoryId = input<string | null>(null);
+}

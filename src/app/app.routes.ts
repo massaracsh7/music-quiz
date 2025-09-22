@@ -13,6 +13,12 @@ export const routes: Routes = [
     canActivate: [authGuard],
   },
   {
+    path: 'game/:categoryId',
+    loadComponent: () =>
+      import('./components/game-page/game-page').then(m => m.GamePage),
+    canActivate: [authGuard],
+  },
+  {
     path: 'login',
     loadComponent: () => import('./components/auth-page/auth-page').then((m) => m.AuthPage),
   },
