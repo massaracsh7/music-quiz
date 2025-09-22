@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import { authGuard, roleGuard } from './shared/guards/auth.guard';
+import { usersResolver } from './shared/resolvers/users.resolver';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -22,6 +23,7 @@ export const routes: Routes = [
     path: 'auth/:mode',
     loadComponent: () =>
       import('./components/auth-page/auth-page').then(m => m.AuthPage),
+    resolve: {users: usersResolver}
   },  
   { path: 'login', redirectTo: 'auth/login' },
   { path: 'register', redirectTo: 'auth/register' },
