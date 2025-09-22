@@ -11,7 +11,7 @@ export class Wavesurfer {
 
   private wavesurfer?: WaveSurfer;
 
-  public init(container: string, songUrl: string): void {
+  public init(container: string, songUrl: string, autoplay: boolean = false): void {
     if (this.wavesurfer) {
       this.wavesurfer.destroy();
     }
@@ -32,6 +32,12 @@ export class Wavesurfer {
     this.wavesurfer.on('finish', () => {
       this.isFinished.set(true);
     });
+
+    if (autoplay) {
+      this.wavesurfer.on('ready', () => {
+        this.play();
+      });
+    }
   }
 
   public play(): void {
@@ -44,12 +50,6 @@ export class Wavesurfer {
     if (!this.wavesurfer) return;
     this.wavesurfer.stop();
     this.isPlaying.set(false);
-  }
-
-  public playPause(): void {
-    if (!this.wavesurfer) return;
-    this.wavesurfer.playPause();
-    this.isPlaying.set(this.wavesurfer.isPlaying());
   }
 
   public destroy(): void {

@@ -1,6 +1,7 @@
 @let isCorrect = isCorrectSignal();
 @let selectedTrack = currentTrack();
 @let artworkUrl = selectedTrack?.artworkUrl100;
+@let tracks = totalTracks();
 
 <div
   class="modal fade"
@@ -13,7 +14,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" [ngClass]="isCorrect ? 'text-success' : 'text-danger'">
-          {{ isCorrect ? 'Excellent' : 'You don\'t know' }}!
+          {{ isCorrect ? 'Excellent' : "You don't know" }}!
         </h5>
       </div>
 
@@ -32,8 +33,26 @@
             alt="artwork"
           />
         }
-        <div class="progress w-75" role="progressbar" aria-label="Progress bar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
-          <div class="progress-bar text-bg-success" [style.width]="'25%'"></div>
+        <div
+          class="progress-stacked w-100"
+          role="progressbar"
+          aria-valuemin="0"
+          [attr.aria-valuemax]="totalTracks()"
+        >
+          @if (tracks) {
+            @for (result of trackResults(); track $index) {
+              <div
+                class="progress"
+                role="progressbar"
+                [ngClass]="{
+                  'bg-success': result === true,
+                  'bg-danger': result === false,
+                  'bg-secondary': result === null,
+                }"
+                [style.width.%]="100 / tracks"
+              ></div>
+            }
+          }
         </div>
       </div>
       <div class="modal-footer">

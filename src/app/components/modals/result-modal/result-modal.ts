@@ -11,8 +11,11 @@ import { CommonModule } from '@angular/common';
 export class ResultModal {
   public showResultDialog = input<boolean>();
   public currentTrack = input<Track>();
+  public currentTrackNumber = input<number>();
+  public totalTracks = input<number>();
   public isCorrectSignal = input<boolean>(false);
   public closeDialog = output<void>();
+  public trackResults = input<boolean[]>([]);
 
   constructor() {
     effect(() => {

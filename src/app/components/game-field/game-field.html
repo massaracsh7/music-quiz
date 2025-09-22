@@ -50,20 +50,21 @@
       <span>⏱ Current time:</span>
       <span> {{ wavesurfer.currentTime() }}s</span>
     </div>
-    <div class="mt-4 text-center">
-      <button class="btn btn-primary me-2" (click)="onPlay()" [disabled]="isPlaying()">Play</button>
-    </div>
-
+    @if (currentTrackIndex() === 0) {
+      <div class="mt-4 text-center">
+        <button class="btn btn-primary me-2" (click)="onPlay()" [disabled]="isPlaying()">Play</button>
+      </div>
+    }
     <div class="mt-4 text-center">
       <h6>What's the name of this song?</h6>
       <div class="d-flex justify-content-center gap-2 flex-wrap">
-        @for (track of trackNames(); track track) {
+        @for (track of trackNames(); track track.id) {
           <button
             class="btn btn-outline-primary"
-            (click)="onAnswerSelected(track)"
-            [disabled]="!isPlaying()"
+            (click)="onAnswerSelected(track.name)"
+            [disabled]="isBeforeFirstRound()"
           >
-            {{ track }}
+            {{ track.name }}
           </button>
         }
       </div>
@@ -75,7 +76,10 @@
       [showResultDialog]="showResultDialog()"
       [isCorrectSignal]="isCorrect()"
       [currentTrack]="currentTrack()"
+      [currentTrackNumber]="currentTrackIndex()"
+      [totalTracks]="currentTracks().length"
       (closeDialog)="closeDialog()"
+      [trackResults]="trackResults()"
     ></app-result-modal>
     <app-finish-modal
       [showFinishDialog]="showFinishDialog()"

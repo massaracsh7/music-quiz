@@ -6,6 +6,7 @@ import {
   WritableSignal,
   computed,
   ChangeDetectionStrategy,
+  DestroyRef,
 } from '@angular/core';
 import { Wavesurfer } from '../../core/services/wavesurfer/wavesurfer';
 import { CategoryService } from '../../core/services/сategory-service/сategory-service';
@@ -45,10 +46,26 @@ export class GameField {
   public isCorrect = signal(false);
   public isPlaying = computed(() => this.wavesurfer.isPlaying());
   public isFinished = computed(() => this.wavesurfer.isFinished());
+  public isBeforeFirstRound = signal(true);
   public trackNames = computed(() => {
+    const currentTrack = this.currentTrack();
     const tracks = this.currentTracks();
-    return tracks.map((track) => track.trackName).sort(() => 0.5 - Math.random());
+    const trackNames = tracks.map((track) => track.trackName);
+    const randomNames = [];
+    if (currentTrack?.trackName) randomNames.push(currentTrack?.trackName);
+    for (let i = 0; i < 3; i += 1) {
+      trackNames[i] !== currentTrack?.trackName
+        ? randomNames.push(trackNames[i])
+        : randomNames.push(trackNames[trackNames.length - 1]);
+    }
+    return randomNames
+      .sort(() => 0.5 - Math.random())
+      .map((name, index) => ({
+        id: index,
+        name: name,
+      }));
   });
+  public trackResults = signal<boolean[]>([]);
 
   public currentTrack = computed(() => {
     const tracks = this.currentTracks();
@@ -57,6 +74,7 @@ export class GameField {
   });
 
   private destroyed = signal(false);
+  private destroyRef = inject(DestroyRef);
 
   constructor() {
     effect(() => {
@@ -72,7 +90,8 @@ export class GameField {
         this.tracksLoader.getTracksByIds(category.tracks).subscribe((tracks) => {
           this.currentTracks.set(tracks);
           this.currentTrackIndex.set(0);
-          this.initCurrentTrack();
+          this.trackResults.set(new Array(tracks.length).fill(null));
+          this.initCurrentTrack(false);
         });
       }
     });
@@ -87,15 +106,18 @@ export class GameField {
     });
 
     effect(() => {
-      if (this.isFinished()) {
+      const finished = this.isFinished();
+      if (finished) {
+        this.onFalseAnswer();
         this.showResult();
         this.scoreCounter.increaseScore(30);
+        this.wavesurfer.isFinished.set(false);
       }
     });
-  }
 
-  public onPlay(): void {
-    this.wavesurfer.play();
+    this.destroyRef.onDestroy(() => {
+      this.wavesurfer.destroy();
+    });
   }
 
   public onCategorySelected(category: Category): void {
@@ -116,11 +138,27 @@ export class GameField {
     const currentTrack = this.currentTrack();
     if (!currentTrack) return;
 
+    this.onFalseAnswer();
+
     this.showResult();
     this.scoreCounter.increaseScore(30);
 
+    this.onDialogPlay();
+  }
+
+  public onFalseAnswer(): void {
+    const results = [...this.trackResults()];
+    results[this.currentTrackIndex()] = false;
+    this.trackResults.set(results);
+  }
+
+  public onDialogPlay() {
     if (this.wavesurfer) {
       this.wavesurfer.stop();
+      this.wavesurfer.play();
+      setTimeout(() => {
+        this.wavesurfer.stop();
+      }, 20000);
     }
   }
 
@@ -130,16 +168,18 @@ export class GameField {
 
     const isCorrect = answer === currentTrack.trackName;
     this.isCorrect.set(isCorrect);
+
+    const results = [...this.trackResults()];
+    results[this.currentTrackIndex()] = isCorrect;
+    this.trackResults.set(results);
+
     this.showResult();
 
     isCorrect
       ? this.scoreCounter.increaseScore(this.wavesurfer.currentTime())
       : this.scoreCounter.increaseScore(30);
 
-    if (this.wavesurfer) {
-      this.wavesurfer.stop();
-      this.wavesurfer.play();
-    }
+    this.onDialogPlay();
   }
 
   public closeDialog(): void {
@@ -169,21 +209,27 @@ export class GameField {
     this.showCategoryDialog.set(false);
   }
 
+  public onPlay() {
+    this.wavesurfer.play();
+    this.isBeforeFirstRound.set(false);
+  }
+
   private showResult(): void {
     this.showResultDialog.set(true);
   }
 
-  private initCurrentTrack(): void {
+  private initCurrentTrack(autoPlay: boolean): void {
     const track = this.currentTrack();
     if (!track) return;
-    this.wavesurfer.init('#waveform', track.previewUrl);
+    this.wavesurfer.isFinished.set(false);
+    this.wavesurfer.init('#waveform', track.previewUrl, autoPlay);
   }
 
   private nextTrack(): void {
     const nextIndex = this.currentTrackIndex() + 1;
     if (nextIndex < this.currentTracks().length) {
       this.currentTrackIndex.set(nextIndex);
-      this.initCurrentTrack();
+      this.initCurrentTrack(true);
     }
   }
 }
