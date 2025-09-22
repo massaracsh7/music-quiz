@@ -53,13 +53,13 @@
     <div class="mt-4 text-center">
       <h6>What's the name of this song?</h6>
       <div class="d-flex justify-content-center gap-2 flex-wrap">
-        @for (track of trackNames(); track track) {
+        @for (track of trackNames(); track track.id) {
           <button
             class="btn btn-outline-primary"
-            (click)="onAnswerSelected(track)"
+            (click)="onAnswerSelected(track.name)"
             [disabled]="!isPlaying()"
           >
-            {{ track }}
+            {{ track.name }}
           </button>
         }
       </div>
