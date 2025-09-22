@@ -51,10 +51,6 @@
       <span> {{ wavesurfer.currentTime() }}s</span>
     </div>
     <div class="mt-4 text-center">
-      <button class="btn btn-primary me-2" (click)="onPlay()" [disabled]="isPlaying()">Play</button>
-    </div>
-
-    <div class="mt-4 text-center">
       <h6>What's the name of this song?</h6>
       <div class="d-flex justify-content-center gap-2 flex-wrap">
         @for (track of trackNames(); track track) {

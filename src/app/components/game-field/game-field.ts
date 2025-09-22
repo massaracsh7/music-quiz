@@ -188,7 +188,7 @@ export class GameField {
   private initCurrentTrack(): void {
     const track = this.currentTrack();
     if (!track) return;
-    this.wavesurfer.init('#waveform', track.previewUrl);
+    this.wavesurfer.init('#waveform', track.previewUrl, true);
   }
 
   private nextTrack(): void {
