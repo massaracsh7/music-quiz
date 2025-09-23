@@ -1,5 +1,5 @@
 /* eslint-disable unicorn/no-nested-ternary */
-import { Component, computed, inject, OnInit, signal } from '@angular/core';
+import { Component, computed, effect, inject, signal } from '@angular/core';
 import { LeaderboardService } from '../../core/services/leaderboard-service';
 import { LeaderboardUser } from '../../models/leaderboard.model';
 import { switchMap } from 'rxjs';
@@ -13,7 +13,7 @@ import { takeUntilDestroyed, toObservable, toSignal } from '@angular/core/rxjs-i
   templateUrl: './leaderboard-page.html',
   styleUrl: './leaderboard-page.scss',
 })
-export class LeaderboardPage implements OnInit {
+export class LeaderboardPage {
   public leaderboardService = inject(LeaderboardService);
 
   public categories = this.leaderboardService.leaderboards;
@@ -21,7 +21,7 @@ export class LeaderboardPage implements OnInit {
   public sortDirection = signal<'asc' | 'desc'>('asc');
 
   public maxScore = 240;
-  public isLoading: boolean = false;
+  public isLoading = signal<boolean>(true);
 
   public selectedCategoryId = signal<string>('');
   public selectedCategoryTitle = signal<string>('');
@@ -75,15 +75,21 @@ export class LeaderboardPage implements OnInit {
     };
   });
 
-  public ngOnInit(): void {
-    this.isLoading = true;
-    setTimeout(() => {
-      if (this.categories().length > 0) {
-        this.selectedCategoryId.set(this.categories()[0].id);
-        this.selectedCategoryTitle.set(this.categories()[0].title);
+  public constructor() {
+    effect(() => {
+      const categories = this.categories();
+      if (categories.length > 0 && !this.selectedCategoryId() && !this.selectedCategoryTitle()) {
+        this.selectedCategoryId.set(categories[0].id);
+        this.selectedCategoryTitle.set(categories[0].title);
       }
-      this.isLoading = false;
-    }, 500);
+    });
+
+    effect(() => {
+      const leaderboard = this.leaderboard();
+      if (leaderboard.length > 0 || this.selectedCategoryId() || this.selectedCategoryTitle()) {
+        this.isLoading.set(false);
+      }
+    });
   }
 
   public changeFilterCategory(categoryId: string, categoryTitle: string): void {
