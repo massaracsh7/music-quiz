@@ -50,16 +50,16 @@ export class GameField {
   public isPlaying = computed(() => this.wavesurfer.isPlaying());
   public isFinished = computed(() => this.wavesurfer.isFinished());
   public isBeforeFirstRound = signal(true);
-  public trackNames = computed(() => {
+ public trackNames = computed(() => {
     const currentTrack = this.currentTrack();
     const tracks = this.currentTracks();
     const trackNames = tracks.map((track) => track.trackName);
     const randomNames = [];
     if (currentTrack?.trackName) randomNames.push(currentTrack?.trackName);
-    for (let index = 0; index < 3; index += 1) {
-      trackNames[index] === currentTrack?.trackName
-        ? randomNames.push(trackNames.at(-1))
-        : randomNames.push(trackNames[index]);
+    for (let i = 0; i < 3; i += 1) {
+      trackNames[i] !== currentTrack?.trackName
+        ? randomNames.push(trackNames[i])
+        : randomNames.push(trackNames[trackNames.length - 1]);
     }
     return randomNames
       .sort(() => 0.5 - Math.random())
