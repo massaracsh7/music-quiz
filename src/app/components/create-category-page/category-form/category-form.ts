@@ -3,7 +3,7 @@ import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Category } from '../../../models/category.model';
 import { SearchStateService } from '../../../core/services/search-state-service';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { SlugPipe } from '../../../shared/pipes/slug-pipe';
+import { slugHelpers } from '../../../shared/helpers/slug-helpers';
 import { Search } from '../search/search';
 import { LineLimiterPipe } from '../../../shared/pipes/line-limiter-pipe';
 import { ITunesTrack } from '../../../models/i-tunes.model';
@@ -14,7 +14,7 @@ import { ToastService } from '../../../shared/services/toast/toast';
 @Component({
   selector: 'app-category-form',
   imports: [ReactiveFormsModule, LineLimiterPipe],
-  providers: [SlugPipe, Search],
+  providers: [Search],
   templateUrl: './category-form.html',
   styleUrl: './category-form.scss',
 })
@@ -30,7 +30,6 @@ export class CategoryForm {
   public selectedTracks = this.searchState.selectedTracks;
 
   private categoryService = inject(CategoryService);
-  private slugPipe = inject(SlugPipe);
   private destroyRef = inject(DestroyRef);
   private search = inject(Search);
 
@@ -38,7 +37,7 @@ export class CategoryForm {
     const categoryValue = this.categoryForm.get('categoryName')!.value!;
     if (!categoryValue) return;
 
-    const slugCategoryValue = this.slugPipe.transform(categoryValue, 50);
+    const slugCategoryValue = slugHelpers(categoryValue, 50);
     this.categoryName.set(slugCategoryValue);
 
     const category: Category = {
