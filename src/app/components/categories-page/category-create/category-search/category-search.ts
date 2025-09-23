@@ -83,7 +83,6 @@ export class CategorySearch implements OnInit, OnDestroy {
       )
       .subscribe({
         next: (search) => {
-          console.log(search);
           const filteredTracks = this.searchService.filterOnlyTracks(search);
           const updatedTracks = this.updateSelectedFlags(filteredTracks, this.selectedTracks());
 
