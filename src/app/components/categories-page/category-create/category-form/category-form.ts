@@ -1,20 +1,22 @@
 import { Component, DestroyRef, inject, signal } from '@angular/core';
-import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { Category } from '../../../models/category.model';
-import { SearchStateService } from '../../../core/services/search-state-service';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { slugHelpers } from '../../../shared/helpers/slug-helpers';
-import { Search } from '../search/search';
-import { LineLimiterPipe } from '../../../shared/pipes/line-limiter-pipe';
-import { ITunesTrack } from '../../../models/i-tunes.model';
-import { LeaderboardCategory } from '../../../models/leaderboard.model';
-import { CategoryService } from '../../../core/services/сategory-service/сategory-service';
-import { ToastService } from '../../../shared/services/toast/toast';
+import { FormGroup, FormControl, ReactiveFormsModule } from '@angular/forms';
+import { SearchStateService } from '../../../../core/services/search-state-service';
+import { CategoryService } from '../../../../core/services/сategory-service/сategory-service';
+import { Category } from '../../../../models/category.model';
+import { ITunesTrack } from '../../../../models/i-tunes.model';
+import { LeaderboardCategory } from '../../../../models/leaderboard.model';
+import { slugHelpers } from '../../../../shared/helpers/slug-helpers';
+import { ToastService } from '../../../../shared/services/toast/toast';
+
+import { LineLimiterPipe } from '../../../../shared/pipes/line-limiter-pipe';
+import { CategorySearch } from '../category-search/category-search';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-category-form',
   imports: [ReactiveFormsModule, LineLimiterPipe],
-  providers: [Search],
+  providers: [CategorySearch],
   templateUrl: './category-form.html',
   styleUrl: './category-form.scss',
 })
@@ -31,7 +33,8 @@ export class CategoryForm {
 
   private categoryService = inject(CategoryService);
   private destroyRef = inject(DestroyRef);
-  private search = inject(Search);
+  private search = inject(CategorySearch);
+  private router = inject(Router);
 
   public createCategory(): void {
     const categoryValue = this.categoryForm.get('categoryName')!.value!;
@@ -59,10 +62,12 @@ export class CategoryForm {
           this.toast.show(`Category "${category.title}" has been successfully created`, 'success');
           this.categoryForm.reset();
           this.searchState.clearSelectedTracks();
+          void this.router.navigate(['/categories']);
         },
         error: (error) => {
           this.toast.show('An error occurred when creating the category', 'error');
           console.error('Error creating category', error);
+          void this.router.navigate(['/categories']);
         },
       });
     this.search.clearSearch();

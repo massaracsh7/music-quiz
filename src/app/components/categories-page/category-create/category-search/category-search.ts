@@ -1,19 +1,19 @@
 import { Component, DestroyRef, inject, OnDestroy, OnInit } from '@angular/core';
-import { Subject, switchMap } from 'rxjs';
-import { SearchService } from '../../../core/services/search-service';
-import { SearchStateService } from '../../../core/services/search-state-service';
+import { SearchService } from '../../../../core/services/search-service';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { Subject, switchMap } from 'rxjs';
+import { SearchStateService } from '../../../../core/services/search-state-service';
+import { ITunesTrack } from '../../../../models/i-tunes.model';
 import { FormsModule } from '@angular/forms';
-import { LineLimiterPipe } from '../../../shared/pipes/line-limiter-pipe';
-import { ITunesTrack } from '../../../models/i-tunes.model';
+import { LineLimiterPipe } from '../../../../shared/pipes/line-limiter-pipe';
 
 @Component({
-  selector: 'app-search',
+  selector: 'app-category-search',
   imports: [FormsModule, LineLimiterPipe],
-  templateUrl: './search.html',
-  styleUrl: './search.scss',
+  templateUrl: './category-search.html',
+  styleUrl: './category-search.scss',
 })
-export class Search implements OnInit, OnDestroy {
+export class CategorySearch implements OnInit, OnDestroy {
   public searchState = inject(SearchStateService);
 
   public tracks = this.searchState.tracks;
@@ -83,7 +83,8 @@ export class Search implements OnInit, OnDestroy {
       )
       .subscribe({
         next: (search) => {
-          const filteredTracks = this.searchService.filterOnlyTracks(search.results);
+          console.log(search);
+          const filteredTracks = this.searchService.filterOnlyTracks(search);
           const updatedTracks = this.updateSelectedFlags(filteredTracks, this.selectedTracks());
 
           this.tracks.set(updatedTracks);

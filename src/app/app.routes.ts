@@ -40,6 +40,11 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./components/create-category-page/create-category-page').then(
         (m) => m.CreateCategoryPage,
+      import('./components/categories-page/category-create/category-create').then(
+        (m) => m.CategoryCreate,
+      ),
+    canActivate: [roleGuard(['admin', 'super_user'])],
+  },
       ),
     resolve: { users: usersResolver },
     canActivate: [roleGuard(['admin', 'super_user'])],
