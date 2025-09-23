@@ -7,7 +7,6 @@ import { getAuthError } from '../../../shared/utils/get-auth-error';
 import { Router } from '@angular/router';
 import { catchError, of } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { ShowPasswordPipe } from '../../../shared/pipes/show-password-pipe';
 import { CommonModule } from '@angular/common';
 import { InputPassword } from '../input-password/input-password';
 import { ToastService } from '../../../shared/services/toast/toast';
@@ -28,12 +27,31 @@ export class RegisterForm {
 
   public nameFocus = viewChild<ElementRef>("nameInput");
 
-  constructor() {
-    effect(() => {
-      const input = this.nameFocus();
-      if (input) input.nativeElement.focus();
+constructor() {
+  effect(() => {
+    const input = this.nameFocus();
+    if (input) input.nativeElement.focus();
+  });
+
+  const draft = localStorage.getItem('registerFormDraft');
+  if (draft) {
+    const value = JSON.parse(draft);
+    this.form.patchValue({
+      name: value.name ?? '',
+      email: value.email ?? '',
     });
   }
+
+  this.form.valueChanges.subscribe((value) => {
+    const { name, email } = value;
+    if (name || email) {
+      localStorage.setItem('registerFormDraft', JSON.stringify({ name, email }));
+    } else {
+      localStorage.removeItem('registerFormDraft');
+    }
+  });
+}
+
   public form = new FormGroup({
     name: new FormControl('', [Validators.required, Validators.minLength(2)]),
     email: new FormControl('', [Validators.required, Validators.email]),
@@ -69,6 +87,7 @@ export class RegisterForm {
       .subscribe((user) => {
         if (user) {
           this.toast.show(`Welcome, ${user.displayName}!`, 'success');
+          localStorage.removeItem('registerFormDraft');
           this.router.navigate(['/']);
         }
       });
