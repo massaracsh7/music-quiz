@@ -27,7 +27,8 @@ export class CategoryService {
       setDoc(categoryDocumentReference, {
         ...category,
       }),
-    ).pipe(switchMap(() => this.itunesService.cacheTracks(category.tracks || [])),
+    ).pipe(
+      switchMap(() => this.itunesService.cacheTracks(category.tracks || [])),
       map(() => category.id),
       catchError((error) => {
         console.error('Error creating category:', error);

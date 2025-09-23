@@ -1,4 +1,13 @@
-import { ChangeDetectionStrategy, Component, DestroyRef, effect, ElementRef, inject, signal, viewChild } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  DestroyRef,
+  effect,
+  ElementRef,
+  inject,
+  signal,
+  viewChild,
+} from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthService } from '../../../core/services/auth-service';
 import { firebasePasswordValidator, namePatternValidator } from '../../../shared/utils/validators';
@@ -24,8 +33,18 @@ export class RegisterForm {
   public auth = inject(AuthService);
   public toast = inject(ToastService);
   public error = signal('');
-
-  public nameFocus = viewChild<ElementRef>("nameInput");
+  public nameFocus = viewChild<ElementRef>('nameInput');
+  public form = new FormGroup({
+    name: new FormControl('', [Validators.required, Validators.minLength(2), namePatternValidator]),
+    email: new FormControl('', [Validators.required, Validators.email]),
+    password: new FormControl('', {
+      validators: [Validators.required],
+      asyncValidators: [firebasePasswordValidator()],
+      updateOn: 'blur',
+    }),
+  });
+  public getErrorMessage = getErrorMessage;
+  public destroyRef = inject(DestroyRef);
 
   constructor() {
     effect(() => {
@@ -51,24 +70,6 @@ export class RegisterForm {
       }
     });
   }
-
-  public form = new FormGroup({
-    name: new FormControl('', [
-      Validators.required,
-      Validators.minLength(2),
-      namePatternValidator,
-    ]),
-    email: new FormControl('', [Validators.required, Validators.email]),
-    password: new FormControl('', {
-      validators: [Validators.required],
-      asyncValidators: [firebasePasswordValidator()],
-      updateOn: 'blur',
-    }),
-  });
-
-  public getErrorMessage = getErrorMessage;
-
-  private destroyRef = inject(DestroyRef);
 
   public submit(): void {
     if (this.form.invalid) return;

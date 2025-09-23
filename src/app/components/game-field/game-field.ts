@@ -56,10 +56,10 @@ export class GameField {
     const trackNames = tracks.map((track) => track.trackName);
     const randomNames = [];
     if (currentTrack?.trackName) randomNames.push(currentTrack?.trackName);
-    for (let i = 0; i < 3; i += 1) {
-      trackNames[i] !== currentTrack?.trackName
-        ? randomNames.push(trackNames[i])
-        : randomNames.push(trackNames[trackNames.length - 1]);
+    for (let index = 0; index < 3; index += 1) {
+      trackNames[index] === currentTrack?.trackName
+        ? randomNames.push(trackNames.at(-1))
+        : randomNames.push(trackNames[index]);
     }
     return randomNames
       .sort(() => 0.5 - Math.random())
@@ -83,7 +83,7 @@ export class GameField {
     effect(() => {
       const categories = this.categories();
       if (this.categoryId()) {
-        const category = categories.find(c => c.id === this.categoryId());
+        const category = categories.find((c) => c.id === this.categoryId());
         if (category) {
           this.currentCategory.set(category);
           return;
@@ -101,7 +101,7 @@ export class GameField {
         this.tracksLoader.getTracksByIds(category.tracks).subscribe((tracks) => {
           this.currentTracks.set(tracks);
           this.currentTrackIndex.set(0);
-          this.trackResults.set(new Array(tracks.length).fill(null));
+          this.trackResults.set(Array.from({ length: tracks.length }).fill(null));
           this.initCurrentTrack(false);
         });
       }
@@ -169,7 +169,7 @@ export class GameField {
       this.wavesurfer.play();
       setTimeout(() => {
         this.wavesurfer.stop();
-      }, 20000);
+      }, 20_000);
     }
   }
 

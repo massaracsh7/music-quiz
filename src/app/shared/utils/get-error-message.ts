@@ -12,6 +12,5 @@ export function getErrorMessage(control: FormControl, fieldName: string): string
   if (control.errors['minLength']) return 'Password must be at least 6 characters';
   if (control.errors['invalidName']) return `${fieldName} can contain only letters, space, - or '`;
 
-
   return null;
 }

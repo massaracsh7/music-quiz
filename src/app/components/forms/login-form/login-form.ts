@@ -33,15 +33,7 @@ export class LoginForm {
   public auth = inject(AuthService);
   public toast = inject(ToastService);
   public error = signal('');
-  public emailFocus = viewChild<ElementRef>("emailInput");
-
-  constructor() {
-    effect(() => {
-      const input = this.emailFocus();
-      if (input) input.nativeElement.focus();
-    });
-  }
-
+  public emailFocus = viewChild<ElementRef>('emailInput');
   public form = new FormGroup({
     email: new FormControl('', [Validators.required, Validators.email]),
     password: new FormControl('', {
@@ -51,7 +43,14 @@ export class LoginForm {
     }),
   });
   public getErrorMessage = getErrorMessage;
-  private destroyRef = inject(DestroyRef);
+  public destroyRef = inject(DestroyRef);
+
+  constructor() {
+    effect(() => {
+      const input = this.emailFocus();
+      if (input) input.nativeElement.focus();
+    });
+  }
 
   public submit(): void {
     if (this.form.invalid) return;

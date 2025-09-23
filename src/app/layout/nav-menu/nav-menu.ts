@@ -29,6 +29,6 @@ export class NavMenu {
         return this.users.canChangeRoles();
       }
       return true;
-    })
+    }),
   );
 }

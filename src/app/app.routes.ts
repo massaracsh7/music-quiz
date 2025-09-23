@@ -15,15 +15,13 @@ export const routes: Routes = [
   },
   {
     path: 'game/:categoryId',
-    loadComponent: () =>
-      import('./components/game-page/game-page').then(m => m.GamePage),
+    loadComponent: () => import('./components/game-page/game-page').then((m) => m.GamePage),
     canActivate: [authGuard],
   },
   {
     path: 'auth/:mode',
-    loadComponent: () =>
-      import('./components/auth-page/auth-page').then(m => m.AuthPage),
-    resolve: { users: usersResolver }
+    loadComponent: () => import('./components/auth-page/auth-page').then((m) => m.AuthPage),
+    resolve: { users: usersResolver },
   },
   { path: 'login', redirectTo: 'auth/login' },
   { path: 'register', redirectTo: 'auth/register' },
