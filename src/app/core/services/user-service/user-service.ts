@@ -22,17 +22,10 @@ export class UserService {
   public canChangeRoles = computed(() => this.isAdmin(this.currentUserRole()));
   public canCreateCategories = computed(() => this.canCreateCategoriesFn(this.currentUserRole()));
 
-  private currentUserSub: Subscription | null = null;
-
   constructor() {
     this.loadUsers();
-    effect(() => {
+    effect((onCleanup) => {
       const current = this.currentUser();
-
-      if (this.currentUserSub) {
-        this.currentUserSub.unsubscribe();
-        this.currentUserSub = null;
-      }
 
       if (!current?.uid) {
         this.currentUserData.set(null);
@@ -40,9 +33,13 @@ export class UserService {
       }
 
       const userDoc = doc(this.firestore, 'users', current.uid);
-      this.currentUserSub = docData(userDoc)
-        .pipe(switchMap(user => of(user as AppUser)))
+      const sub = docData(userDoc)
+        .pipe(
+          switchMap(user => of(user as AppUser))
+        )
         .subscribe(user => this.currentUserData.set(user));
+
+      onCleanup(() => sub.unsubscribe());
     });
   }
 
