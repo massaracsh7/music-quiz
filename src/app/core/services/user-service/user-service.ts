@@ -1,6 +1,13 @@
-import { inject, Injectable, signal, computed } from '@angular/core';
-import { Firestore, collection, collectionData, doc, updateDoc } from '@angular/fire/firestore';
-import { from, Observable, tap } from 'rxjs';
+import { inject, Injectable, signal, computed, effect } from '@angular/core';
+import {
+  Firestore,
+  collection,
+  collectionData,
+  doc,
+  docData,
+  updateDoc,
+} from '@angular/fire/firestore';
+import { firstValueFrom, from, Observable, of, Subscription, switchMap, tap } from 'rxjs';
 import { AuthService } from '../auth-service';
 import { AppUser, UserRole } from '../../../models/user.model';
 
@@ -12,11 +19,10 @@ export class UserService {
   public users = signal<(AppUser & { uid: string })[]>([]);
 
   public currentUser = computed(() => this.auth.currentUser());
+  public currentUserData = signal<AppUser | null>(null);
 
   public currentUserRole = computed<UserRole>(() => {
-    const current = this.currentUser();
-    const user = this.users().find((u) => u.uid === current?.uid);
-    return user?.role ?? 'user';
+    return this.currentUserData()?.role ?? 'user';
   });
 
   public canChangeRoles = computed(() => this.isAdmin(this.currentUserRole()));
@@ -24,6 +30,21 @@ export class UserService {
 
   constructor() {
     this.loadUsers();
+    effect((onCleanup) => {
+      const current = this.currentUser();
+
+      if (!current?.uid) {
+        this.currentUserData.set(null);
+        return;
+      }
+
+      const userDocument = doc(this.firestore, 'users', current.uid);
+      const sub = docData(userDocument)
+        .pipe(switchMap((user) => of(user as AppUser)))
+        .subscribe((user) => this.currentUserData.set(user));
+
+      onCleanup(() => sub.unsubscribe());
+    });
   }
 
   public updateUserRole(uid: string, role: UserRole): Observable<void> {
@@ -55,5 +76,21 @@ export class UserService {
 
   public canCreateCategoriesFn(role: UserRole): boolean {
     return role === 'admin' || role === 'super_user';
+  }
+
+  public prefetchUsersAsync(): Promise<void> {
+    const usersCollection = collection(this.firestore, 'users');
+    return firstValueFrom(
+      collectionData(usersCollection, { idField: 'uid' }).pipe(
+        tap((users) =>
+          this.users.set(
+            (users as (AppUser & { uid: string; role?: UserRole })[]).map((u) => ({
+              ...u,
+              role: u.role ?? 'user',
+            })),
+          ),
+        ),
+      ),
+    ).then(() => {});
   }
 }

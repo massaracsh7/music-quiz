@@ -29,3 +29,10 @@ export function firebasePasswordValidator() {
     );
   };
 }
+
+export function namePatternValidator(control: AbstractControl): ValidationErrors | null {
+  const value = control.value as string;
+  if (!value) return null;
+  const valid = /^[A-Za-z\s'-]+$/.test(value);
+  return valid ? null : { invalidName: true };
+}

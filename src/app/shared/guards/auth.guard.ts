@@ -17,15 +17,18 @@ export const authGuard: CanActivateFn = async () => {
     return true;
   }
   toast.show('Login or register to play game', 'error');
-  return router.createUrlTree(['/login']);
+  return router.createUrlTree(['/auth/login']);
 };
 
 export const roleGuard =
   (allowedRoles: UserRole[]): CanActivateFn =>
-  () => {
+  async () => {
     const userService = inject(UserService);
     const router = inject(Router);
     const toast = inject(ToastService);
+    if (userService.users()!.length === 0) {
+      await userService.prefetchUsersAsync();
+    }
 
     const role = userService.currentUserRole();
 

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, input } from '@angular/core';
 import { LoginForm } from '../forms/login-form/login-form';
 import { RegisterForm } from '../forms/register-form/register-form';
 import { NavigationEnd, Router } from '@angular/router';
@@ -16,17 +16,10 @@ import { CommonModule } from '@angular/common';
 })
 export class AuthPage {
   public router = inject(Router);
+  public mode = input<'login' | 'register'>('login');
 
-  public currentPath = toSignal(
-    this.router.events.pipe(
-      filter((event): event is NavigationEnd => event instanceof NavigationEnd),
-      map((event) => event.urlAfterRedirects),
-    ),
-    { initialValue: this.router.url },
-  );
-
-  public isLogin = computed(() => this.currentPath().endsWith('login'));
-  public isRegister = computed(() => this.currentPath().endsWith('register'));
+  public isLogin = computed(() => this.mode() === 'login');
+  public isRegister = computed(() => this.mode() === 'register');
 
   public loginTitle = 'Login to Your Account';
   public registerTitle = 'Create a New Account';

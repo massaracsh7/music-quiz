@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import { authGuard, roleGuard } from './shared/guards/auth.guard';
+import { usersResolver } from './shared/resolvers/users.resolver';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -13,13 +14,17 @@ export const routes: Routes = [
     canActivate: [authGuard],
   },
   {
-    path: 'login',
-    loadComponent: () => import('./components/auth-page/auth-page').then((m) => m.AuthPage),
+    path: 'game/:categoryId',
+    loadComponent: () => import('./components/game-page/game-page').then((m) => m.GamePage),
+    canActivate: [authGuard],
   },
   {
-    path: 'register',
+    path: 'auth/:mode',
     loadComponent: () => import('./components/auth-page/auth-page').then((m) => m.AuthPage),
+    resolve: { users: usersResolver },
   },
+  { path: 'login', redirectTo: 'auth/login' },
+  { path: 'register', redirectTo: 'auth/register' },
   {
     path: 'leaderboard',
     loadComponent: () =>
@@ -36,11 +41,13 @@ export const routes: Routes = [
       import('./components/create-category-page/create-category-page').then(
         (m) => m.CreateCategoryPage,
       ),
+    resolve: { users: usersResolver },
     canActivate: [roleGuard(['admin', 'super_user'])],
   },
   {
     path: 'admin',
     loadComponent: () => import('./components/admin-page/admin-page').then((m) => m.AdminPage),
+    resolve: { users: usersResolver },
     canActivate: [roleGuard(['admin'])],
   },
   {

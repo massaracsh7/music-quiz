@@ -7,6 +7,7 @@ import {
   computed,
   ChangeDetectionStrategy,
   DestroyRef,
+  input,
 } from '@angular/core';
 import { Wavesurfer } from '../../core/services/wavesurfer/wavesurfer';
 import { CategoryService } from '../../core/services/сategory-service/сategory-service';
@@ -28,6 +29,8 @@ import { AuthService } from '../../core/services/auth-service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class GameField {
+  public categoryId = input<string | null>(null);
+
   public categoriesLoader: CategoryService = inject(CategoryService);
   public tracksLoader: TracksLoader = inject(TracksLoader);
   public wavesurfer: Wavesurfer = inject(Wavesurfer);
@@ -47,7 +50,7 @@ export class GameField {
   public isPlaying = computed(() => this.wavesurfer.isPlaying());
   public isFinished = computed(() => this.wavesurfer.isFinished());
   public isBeforeFirstRound = signal(true);
-  public trackNames = computed(() => {
+ public trackNames = computed(() => {
     const currentTrack = this.currentTrack();
     const tracks = this.currentTracks();
     const trackNames = tracks.map((track) => track.trackName);
@@ -79,6 +82,14 @@ export class GameField {
   constructor() {
     effect(() => {
       const categories = this.categories();
+      if (this.categoryId()) {
+        const category = categories.find((c) => c.id === this.categoryId());
+        if (category) {
+          this.currentCategory.set(category);
+          return;
+        }
+      }
+
       if (categories.length > 0 && !this.currentCategory()) {
         this.currentCategory.set(categories[0]);
       }
@@ -158,7 +169,7 @@ export class GameField {
       this.wavesurfer.play();
       setTimeout(() => {
         this.wavesurfer.stop();
-      }, 20000);
+      }, 20_000);
     }
   }
 
