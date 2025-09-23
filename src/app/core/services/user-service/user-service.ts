@@ -1,6 +1,6 @@
 import { inject, Injectable, signal, computed, effect } from '@angular/core';
 import { Firestore, collection, collectionData, doc, docData, updateDoc } from '@angular/fire/firestore';
-import { firstValueFrom, from, Observable, tap } from 'rxjs';
+import { firstValueFrom, from, Observable, of, Subscription, switchMap, tap } from 'rxjs';
 import { AuthService } from '../auth-service';
 import { AppUser, UserRole } from '../../../models/user.model';
 
@@ -17,23 +17,31 @@ export class UserService {
 
   public currentUserRole = computed<UserRole>(() => {
     return this.currentUserData()?.role ?? 'user';
-  });
+  })
 
   public canChangeRoles = computed(() => this.isAdmin(this.currentUserRole()));
   public canCreateCategories = computed(() => this.canCreateCategoriesFn(this.currentUserRole()));
 
+  private currentUserSub: Subscription | null = null;
+
   constructor() {
-    this.loadUsers();
     effect(() => {
       const current = this.currentUser();
-      if (current) {
-        const userDoc = doc(this.firestore, 'users', current.uid);
-        docData(userDoc).subscribe((user) => {
-          this.currentUserData.set(user as AppUser);
-        });
-      } else {
-        this.currentUserData.set(null);
+
+      if (this.currentUserSub) {
+        this.currentUserSub.unsubscribe();
+        this.currentUserSub = null;
       }
+
+      if (!current?.uid) {
+        this.currentUserData.set(null);
+        return;
+      }
+
+      const userDoc = doc(this.firestore, 'users', current.uid);
+      this.currentUserSub = docData(userDoc)
+        .pipe(switchMap(user => of(user as AppUser)))
+        .subscribe(user => this.currentUserData.set(user));
     });
   }
 
@@ -83,4 +91,5 @@ export class UserService {
       ),
     ).then(() => undefined);
   }
+
 }
