@@ -1,0 +1,186 @@
+<div class="container-fluid py-4">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <div class="d-flex gap-2">
+      @if (loading()) {
+      <a class="text-decoration-none" [routerLink]="['/categories']">
+        <h2 class="mb-0">
+          <i class="bi bi-collection me-2"></i>
+          Categories /
+        </h2>
+      </a>
+      } @else if (category()) {
+      <div class="d-flex gap-2">
+        <a class="text-decoration-none" [routerLink]="['/categories']">
+          <h2 class="mb-0">
+            <i class="bi bi-collection me-2"></i>
+            Categories
+          </h2>
+        </a>
+
+        <h2 class="mb-0">/ {{ category()?.title }}</h2>
+      </div>
+      }
+    </div>
+    <button class="btn btn-primary" [routerLink]="['/categories']">
+      <i class="bi bi-arrow-left me-2"></i>
+      Back to Categories
+    </button>
+  </div>
+
+  <div class="row">
+    <!-- Левая колонка: Выбранные треки и управление -->
+    <div class="col-lg-6">
+      <div class="card shadow mb-4">
+        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center py-3">
+          <h5 class="card-title mb-0">
+            <i class="bi bi-list-check me-2"></i>
+            Category Tracks ({{ categoryTracks().length }})
+          </h5>
+          <div class="d-flex gap-2">
+            <button class="btn btn-success" (click)="updateCategory()"
+              [disabled]="!categoryForm.valid || saving() || categoryTracks().length < 8">
+              @if (saving()) {
+              <span class="spinner-border spinner-border-sm me-1" role="status"></span>
+              } @else {
+              <i class="bi bi-check-circle me-1"></i>
+              }
+              Update
+            </button>
+            <button class="btn btn-danger" (click)="categoryDelete()" [disabled]="saving()">
+              <i class="bi bi-trash me-1"></i>
+              Delete
+            </button>
+          </div>
+        </div>
+
+        <div class="card-body">
+          @if (loading()) {
+          <div class="text-center py-3">
+            <div class="spinner-border text-primary" role="status">
+              <span class="visually-hidden">Loading...</span>
+            </div>
+            <p class="mt-2 text-muted">Loading category tracks...</p>
+          </div>
+          } @else {
+          @if (categoryTracks().length === 0) {
+          <div class="alert alert-warning text-center">
+            <span class="bi bi-exclamation-triangle me-2"></span>
+            No tracks in this category. Add at least 8 tracks.
+          </div>
+          } @else {
+          @if (categoryTracks().length < 8) { <p class="alert alert-info">Minimum 8 tracks required.</p>
+            }
+
+            <div class="row g-3">
+              @for (track of categoryTracks(); track track.trackId; let i = $index) {
+              <div class="col-md-4" style="height: 230px">
+                <div class="card h-100">
+                  <div
+                    class="card-body text-center d-flex flex-column gap-2 align-items-center justify-content-between">
+                    @if (track.artworkUrl60) {
+                    <img [src]="track.artworkUrl60" [alt]="track.trackName" class="rounded-3"
+                      style="width: 60px; height: 60px" />
+                    }
+                    <h6 class="card-title m-0">{{ track.trackName | lineLimiter: 20 }}</h6>
+                    <p class="card-text text-muted small">
+                      {{ track.artistName | lineLimiter: 20 }}
+                    </p>
+                  </div>
+                  <div class="card-footer bg-transparent">
+                    <button class="btn btn-outline-danger btn-sm w-100"
+                      (click)="removeTrackFromCategory(track.trackId)">
+                      <i class="bi bi-trash me-1"></i>
+                      Remove
+                    </button>
+                  </div>
+                </div>
+              </div>
+              }
+            </div>
+            }
+            }
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-6">
+      <div class="card shadow">
+        <div class="card-header bg-primary">
+          <h5 class="card-title mb-0 text-white">
+            <i class="bi bi-search me-2"></i>
+            Search Tracks
+          </h5>
+        </div>
+
+        <div class="card-body">
+          <div class="input-group mb-3">
+            <button class="btn btn-primary input-group-text" type="button" (click)="onSearch()"
+              [disabled]="searchLoading() || searchQuery().length < 2">
+              @if (searchLoading()) {
+              <span class="spinner-border spinner-border-sm" role="status"></span>
+              } @else {
+              <span class="bi bi-search"></span>
+              }
+            </button>
+            <input #searchInput type="text" class="form-control" [(ngModel)]="searchQuery" [disabled]="isSearching()"
+              placeholder="Search tracks on iTunes..." (keydown.enter)="onSearch()" />
+            @if (searchQuery()) {
+            <button class="btn btn-outline-primary" type="button" (click)="clearSearch()">
+              <i class="bi bi-x"></i>
+            </button>
+            }
+          </div>
+
+          @if (searchLoading()) {
+          <div class="text-center py-3">
+            <div class="spinner-border text-primary" role="status">
+              <span class="visually-hidden">Searching...</span>
+            </div>
+            <p class="mt-2 text-muted">Searching iTunes...</p>
+          </div>
+          }
+          @if (searchResults().length > 0 && !searchLoading()) {
+          <div class="search-results d-flex flex-wrap align-items-center gap-3">
+            @for (track of searchResults(); track track.trackId) {
+            <div class="card h-100" style="min-height: 230px; width: 180px">
+              <div class="card-body text-center">
+                <div class="d-flex align-items-center flex-column justify-content-between gap-2">
+                  @if (track.artworkUrl60) {
+                  <img [src]="track.artworkUrl60" [alt]="track.trackName" class="card-img rounded-3"
+                    style="width: 60px; height: 60px" />
+                  }
+
+                  <h6 class="card-title">{{ track.trackName | lineLimiter: 20 }}</h6>
+                  <p class="card-subtitle mb-0">{{ track.artistName | lineLimiter: 20 }}</p>
+                </div>
+              </div>
+              <div class="card-footer bg-transparent">
+                <button type="button" class="btn btn-sm w-100 text-white" (click)="addTrackToCategory(track)"
+                  [disabled]="isTrackInCategory(track.trackId)" [class.bg-success]="isTrackInCategory(track.trackId)"
+                  [class.bg-primary]="!isTrackInCategory(track.trackId)" title="Add to category">
+                  {{ isTrackInCategory(track.trackId) ? 'Selected' : 'Add' }}
+                </button>
+              </div>
+            </div>
+            }
+          </div>
+          } @else if (
+          searchResults().length === 0 && searchQuery() && isSearching() && !searchLoading()
+          ) {
+          <div class="alert alert-warning text-center">
+            <p class="m-0">
+              <span class="bi bi-exclamation-octagon me-2"></span>
+              No tracks found for "{{ searchQuery() }}"
+            </p>
+          </div>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-category-confirm-delete-modal [showCategoryDeleteDialog]="showCategoryDeleteDialog()"
+  [selectedCategory]="currentCategory()" (onCategorySelectDelete)="onCategorySelectDelete($event)"
+  (closeCategoryDialog)="closeCategoryDialog()">
+</app-category-confirm-delete-modal>

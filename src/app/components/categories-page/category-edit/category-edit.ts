@@ -1,0 +1,216 @@
+import {
+  AfterViewInit,
+  Component,
+  DestroyRef,
+  ElementRef,
+  inject,
+  signal,
+  ViewChild,
+  WritableSignal,
+} from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { FormGroup, FormControl, Validators, FormsModule } from '@angular/forms';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { SearchService } from '../../../core/services/search-service';
+import { CategoryService } from '../../../core/services/сategory-service/сategory-service';
+import { Category } from '../../../models/category.model';
+import { ITunesTrack } from '../../../models/i-tunes.model';
+import { ToastService } from '../../../shared/services/toast/toast';
+import { LineLimiterPipe } from '../../../shared/pipes/line-limiter-pipe';
+import { CategoryConfirmDeleteModal } from '../../modals/category-confirm-delete-modal/category-confirm-delete-modal';
+
+@Component({
+  selector: 'app-category-edit',
+  imports: [LineLimiterPipe, FormsModule, RouterLink, CategoryConfirmDeleteModal],
+  templateUrl: './category-edit.html',
+  styleUrl: './category-edit.scss',
+})
+export class CategoryEdit implements AfterViewInit {
+  @ViewChild('searchInput') public searchInput!: ElementRef<HTMLInputElement>;
+
+  public category = signal<Category | null>(null);
+  public loading = signal(true);
+  public saving = signal(false);
+
+  public searchQuery = signal('');
+  public searchResults = signal<ITunesTrack[]>([]);
+  public searchLoading = signal(false);
+  public isSearching = signal<boolean>(false);
+  public categoryTracks = signal<ITunesTrack[]>([]);
+
+  public showCategoryDeleteDialog = signal(false);
+  public currentCategory: WritableSignal<string> = signal('');
+
+  public categoryForm = new FormGroup({
+    title: new FormControl('', [Validators.required, Validators.minLength(3)]),
+  });
+
+  private router = inject(Router);
+  private route = inject(ActivatedRoute);
+  private categoryService = inject(CategoryService);
+  private searchService = inject(SearchService);
+  private toast = inject(ToastService);
+  private destroyRef = inject(DestroyRef);
+
+  constructor() {
+    const categoryId = this.route.snapshot.paramMap.get('id');
+    if (categoryId) {
+      this.loadCategory(categoryId);
+    }
+  }
+
+  public ngAfterViewInit(): void {
+    this.searchInput.nativeElement.focus();
+  }
+
+  public loadCategory(id: string): void {
+    this.loading.set(true);
+    this.categoryService
+      .getCategoryById(id)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        next: (category) => {
+          if (category) {
+            this.category.set(category);
+            this.categoryForm.patchValue({
+              title: category.title,
+            });
+            this.loadCategoryTracks(category.tracks || []);
+          }
+          this.loading.set(false);
+        },
+        error: () => {
+          this.toast.show('Error loading category', 'error');
+          this.loading.set(false);
+        },
+      });
+  }
+
+  public loadCategoryTracks(trackIds: number[]): void {
+    if (trackIds.length === 0) {
+      this.categoryTracks.set([]);
+      this.loading.set(false);
+      return;
+    }
+
+    this.categoryService
+      .getTracksByIds(trackIds)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        next: (tracks) => {
+          this.categoryTracks.set(tracks);
+          this.loading.set(false);
+        },
+        error: () => {
+          this.toast.show('Error loading tracks', 'error');
+        },
+      });
+  }
+
+  public onSearch(): void {
+    const query = this.searchQuery().trim();
+    if (query.length < 2) return;
+    this.isSearching.set(true);
+
+    this.searchLoading.set(true);
+    this.searchResults.set([]);
+
+    this.searchService
+      .searchTracks(query)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        next: (tracks) => {
+          this.searchResults.set(tracks);
+          this.searchLoading.set(false);
+        },
+        error: (error) => {
+          this.searchLoading.set(false);
+          this.searchResults.set([]);
+          this.toast.show('Error searching iTunes. Please try again.', 'error');
+          console.error('Search error:', error);
+        },
+      });
+  }
+
+  public clearSearch(): void {
+    this.searchQuery.set('');
+    this.searchResults.set([]);
+    this.isSearching.set(false);
+    this.searchInput.nativeElement.focus();
+  }
+
+  public isTrackInCategory(trackId: number): boolean {
+    return this.categoryTracks().some((track) => track.trackId === trackId);
+  }
+
+  public addTrackToCategory(track: ITunesTrack): void {
+    const currentTracks = this.categoryTracks();
+    this.categoryTracks.set([...currentTracks, track]);
+  }
+
+  public removeTrackFromCategory(trackId: number): void {
+    const currentTracks = this.categoryTracks();
+    this.categoryTracks.set(currentTracks.filter((track) => track.trackId !== trackId));
+  }
+
+  public updateCategory(): void {
+    if (this.categoryForm.valid && this.category() && this.categoryForm.value.title) {
+      this.saving.set(true);
+
+      this.categoryService
+        .updateCategory({
+          ...this.category()!,
+          title: this.categoryForm.value.title,
+          tracks: this.categoryTracks().map((track) => track.trackId),
+        })
+        .pipe(takeUntilDestroyed(this.destroyRef))
+        .subscribe({
+          next: () => {
+            this.toast.show('Category updated successfully', 'success');
+            this.saving.set(false);
+            void this.router.navigate(['/categories']);
+          },
+          error: () => {
+            this.toast.show('Error updating category', 'error');
+            this.saving.set(false);
+          },
+        });
+    }
+  }
+
+  public deleteCategory(): void {
+    this.saving.set(true);
+
+    this.categoryService
+      .deleteCategory(this.category()!.id)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        next: () => {
+          this.toast.show('Category deleted successfully', 'success');
+          void this.router.navigate(['/categories']);
+        },
+        error: () => {
+          this.toast.show('Error deleting category', 'error');
+          this.saving.set(false);
+        },
+      });
+    this.categoryService
+      .deleteLeaderboardCategory(this.category()!.id)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe();
+  }
+
+  public onCategorySelectDelete(id: string): void {
+    this.showCategoryDeleteDialog.set(false);
+    this.deleteCategory();
+  }
+
+  public categoryDelete(): void {
+    this.showCategoryDeleteDialog.set(true);
+    this.currentCategory.set(this.category()!.id);
+  }
+
+  public closeCategoryDialog(): void {
+    this.showCategoryDeleteDialog.set(false);
+  }
+}

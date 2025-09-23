@@ -11,7 +11,7 @@
           Players: {{ statistics().totalPlayers }}
         </span>
       </div>
-      @if (isLoading) {
+      @if (isLoading()) {
         <div class="text-center py-4">
           <span class="spinner-border"></span>
           <p class="">Loading leaderboard...</p>

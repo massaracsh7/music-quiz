@@ -1,0 +1,70 @@
+<div class="card shadow">
+  <div class="card-header bg-primary">
+    <h5 class="card-title m-0 text-white">
+      <i class="bi bi-search me-2"></i>
+      Search Tracks
+    </h5>
+  </div>
+  <div class="card-body">
+    <div class="input-group mb-3">
+      <button class="btn btn-primary input-group-text" type="button" (click)="onSearchInput()"
+        [disabled]="isLoading() || searchQuery().length < 2">
+        @if (isLoading()) {
+        <span class="spinner-border spinner-border-sm" role="status"></span>
+        } @else {
+        <span class="bi bi-search"></span>
+        }
+      </button>
+      <input type="text" class="form-control" [disabled]="isSearching()" [(ngModel)]="searchQuery"
+        placeholder="Search tracks on iTunes..." (keydown.enter)="onSearchInput()" />
+      @if (searchQuery()) {
+      <button class="btn btn-outline-primary" type="button" (click)="clearSearch()" [disabled]="isLoading()">
+        <span class="bi bi-x"></span>
+      </button>
+      }
+    </div>
+
+    @if (isLoading()) {
+    <div class="text-center py-3">
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Searching...</span>
+      </div>
+      <p class="mt-2 text-muted">Searching iTunes...</p>
+    </div>
+    }
+
+    @if (tracks().length > 0 && !isLoading()) {
+    <div class="d-flex flex-wrap justify-content-center gap-3">
+      @for (track of tracks(); track track.trackId) {
+      <button type="button" class="card d-flex flex-column pt-2 px-0" style="width: 200px; height: 250px"
+        (click)="onTrackSelect(track)">
+        <div class="card-body d-flex flex-column align-items-center justify-content-between gap-1">
+          @if (track.artworkUrl60) {
+          <img [src]="track.artworkUrl60" [alt]="track.trackName" class="card-img rounded-3"
+            style="width: 60px; height: 60px" />
+          }
+
+          <p class="card-title">{{ track.trackName | lineLimiter: 30 }}</p>
+          <p class="card-subtitle">{{ track.artistName | lineLimiter: 30 }}</p>
+        </div>
+        <div class="card-footer bg-transparent">
+          <span class="btn w-100 text-white" [class.bg-success]="track.isSelected"
+            [class.bg-primary]="!track.isSelected">
+            {{ track.isSelected ? 'Selected' : 'Add' }}
+          </span>
+        </div>
+      </button>
+      }
+    </div>
+    }
+
+    @if (tracks().length === 0 && searchQuery() && !isLoading() && isSearching()) {
+    <div class="alert alert-warning text-center">
+      <p class="m-0">
+        <span class="bi bi-exclamation-octagon me-2"></span>
+        No tracks found for "{{ searchQuery() }}"
+      </p>
+    </div>
+    }
+  </div>
+</div>
