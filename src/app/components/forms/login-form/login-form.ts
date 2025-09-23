@@ -2,6 +2,8 @@ import {
   ChangeDetectionStrategy,
   Component,
   DestroyRef,
+  effect,
+  ElementRef,
   inject,
   signal,
   viewChild,
@@ -31,6 +33,15 @@ export class LoginForm {
   public auth = inject(AuthService);
   public toast = inject(ToastService);
   public error = signal('');
+  public emailFocus = viewChild<ElementRef>("emailInput");
+
+  constructor() {
+    effect(() => {
+      const input = this.emailFocus();
+      if (input) input.nativeElement.focus();
+    });
+  }
+
   public form = new FormGroup({
     email: new FormControl('', [Validators.required, Validators.email]),
     password: new FormControl('', {

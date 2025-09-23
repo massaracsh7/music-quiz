@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, DestroyRef, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, effect, ElementRef, inject, signal, viewChild } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthService } from '../../../core/services/auth-service';
 import { firebasePasswordValidator } from '../../../shared/utils/validators';
@@ -25,6 +25,15 @@ export class RegisterForm {
   public auth = inject(AuthService);
   public toast = inject(ToastService);
   public error = signal('');
+
+  public nameFocus = viewChild<ElementRef>("nameInput");
+
+  constructor() {
+    effect(() => {
+      const input = this.nameFocus();
+      if (input) input.nativeElement.focus();
+    });
+  }
   public form = new FormGroup({
     name: new FormControl('', [Validators.required, Validators.minLength(2)]),
     email: new FormControl('', [Validators.required, Validators.email]),
