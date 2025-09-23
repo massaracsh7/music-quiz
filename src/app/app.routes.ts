@@ -49,6 +49,11 @@ export const routes: Routes = [
       ),
     canActivate: [roleGuard(['admin', 'super_user'])],
   },
+  {
+    path: 'categories/:id',
+    loadComponent: () =>
+      import('./components/categories-page/category-edit/category-edit').then(
+        (m) => m.CategoryEdit,
       ),
     resolve: { users: usersResolver },
     canActivate: [roleGuard(['admin', 'super_user'])],
