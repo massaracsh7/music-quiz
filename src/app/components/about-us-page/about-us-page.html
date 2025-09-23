@@ -1,10 +1,10 @@
 <section class="about-us-page">
   <div class="container">
     <h1 class="text-center mb-5 fw-bold">
-      <span class="bi bi-people-fill me-3"></span>Our Development
+      <span class="bi bi-people-fill me-3"></span>{{ 'ABOUT_US.TITLE' | translate }}
     </h1>
     <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
-      @for (student of students; track student.name) {
+      @for (student of translatedStudents; track student.name) {
         <div class="col">
           <div class="card h-100 border-0 shadow-sm">
             <div
@@ -50,7 +50,7 @@
                   target="_blank"
                   class="btn btn-outline-dark btn-sm d-flex gap-2"
                 >
-                  <span class="bi bi-github"></span>GitHub Profile
+                  <span class="bi bi-github"></span>{{ 'ABOUT_US.GITHUB_PROFILE' | translate }}
                 </a>
               </div>
             </div>

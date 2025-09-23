@@ -1,6 +1,108 @@
 {
+  "NAV": {
+    "HOME": "Home",
+    "GAME": "Game",
+    "LEADERBOARD": "Leaderboard",
+    "ABOUT_US": "About Us",
+    "CREATE_CATEGORY": "Create category"
+  },
+  "AUTH": {
+    "USER_MENU": {
+      "GREETING": "Hello, {{username}}",
+      "LOGOUT": "Logout",
+      "LOGIN": "Login",
+      "SIGN_UP": "Sign up"
+    },
+    "PAGE_TITLES": {
+      "LOGIN": "Login to Your Account",
+      "REGISTER": "Create a New Account"
+    },
+    "LOGIN": {
+      "TITLE": "Login",
+      "EMAIL": "Email",
+      "EMAIL_PLACEHOLDER": "Enter your email",
+      "PASSWORD": "Password",
+      "PASSWORD_PLACEHOLDER": "Enter your password",
+      "SUBMIT": "Sign In",
+      "ERRORS": {
+        "REQUIRED": "This field is required",
+        "EMAIL": "Please enter a valid email address"
+      }
+    },
+    "REGISTER": {
+      "TITLE": "Create Account",
+      "NAME": "Name",
+      "NAME_PLACEHOLDER": "Enter your name (min 2 characters)",
+      "EMAIL": "Email",
+      "EMAIL_PLACEHOLDER": "Enter a valid email",
+      "PASSWORD": "Password",
+      "PASSWORD_PLACEHOLDER": "Enter your password",
+      "SUBMIT": "Register",
+      "ERRORS": {
+        "REQUIRED": "This field is required",
+        "EMAIL": "Please enter a valid email address",
+        "NAME_MIN_LENGTH": "Name must be at least 2 characters long"
+      }
+    }
+  },
   "GAME_FIELD": {
     "TITLE": "Categories",
-    "CATEGORY_TITLE": "Current category:"
+    "CATEGORY_TITLE": "Current category:",
+    "SONG": "Song",
+    "SCORE": "Score",
+    "CURRENT_TIME": "⏱ Current time:",
+    "PLAY": "Play",
+    "SONG_QUESTION": "What's the name of this song?",
+    "DONT_KNOW": "I don't know"
+  },
+  "HOME": {
+    "TITLE": "Music Quiz",
+    "SUBTITLE": "Guess the song from the very first second!",
+    "PLAY_BUTTON": "Let's Play",
+    "RULES": [
+      "You have only a few seconds to guess the song.",
+      "The faster you answer, the more points you earn.",
+      "Check your skills and see if you can top the leaderboard!"
+    ]
+  },
+  "LEADERBOARD": {
+    "TITLE": "Leaderboard",
+    "PLAYERS_COUNT": "Players: {{count}}",
+    "LOADING": {
+      "TEXT": "Loading leaderboard..."
+    },
+    "NO_DATA": {
+      "TITLE": "No one has played in \"{{category}}\" category yet.",
+      "SUBTITLE": "Choose a different category"
+    },
+    "COLUMNS": {
+      "RANK": "#",
+      "PLAYER": "Player",
+      "SCORE": "Score"
+    },
+    "STATS": {
+      "PLAYERS_IN_CATEGORY": "Players in the category",
+      "SUCCESS_RATE": "Success rate",
+      "AVERAGE_SCORE": "Average score"
+    }
+  },
+  "ABOUT_US": {
+    "TITLE": "Our Development Team",
+    "GITHUB_PROFILE": "GitHub Profile",
+    "STUDENT_ROLE": "Student",
+    "STUDENTS": {
+      "KATSIARYNA": {
+        "NAME": "Katsiaryna Tatarynava",
+        "DESCRIPTION": "Katsiaryna configured and integrated the Firebase cloud platform for data storage, implemented the database structure and optimized queries. She has developed a complete authentication and authorization system, including registration and login. She also developed a home page with intuitive navigation and optimized production. The project also implements a theme design system with switching between light and dark modes."
+      },
+      "DZMITRY": {
+        "NAME": "Dzmitry Turok",
+        "DESCRIPTION": "Dzmitry created the project architecture from scratch, configured the build and configuration of the development environment. Implemented an audio playback system with advanced configuration and management. He have set up a routing system on the website. He also developed a game page with interactive elements and animations."
+      },
+      "EVGENIYA": {
+        "NAME": "Evgeniya Tsel",
+        "DESCRIPTION": "Evgeniya has developed a leaderboard with dynamic data updates, sorting and visualization of user achievements. She also created an information page about the project developers. Implemented the functionality of creating categories, including API search in iTunes."
+      }
+    }
   }
 }

@@ -3,10 +3,11 @@ import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../core/services/auth-service';
 import { NAV_LIST } from './nav-list.const';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-nav-menu',
-  imports: [RouterModule, CommonModule],
+  imports: [RouterModule, CommonModule, TranslatePipe],
   templateUrl: './nav-menu.html',
   styleUrl: './nav-menu.scss',
   standalone: true,

@@ -14,6 +14,7 @@ import { ShowPasswordPipe } from '../../../shared/pipes/show-password-pipe';
 })
 export class InputPassword {
   @Input({ required: true }) public control!: FormControl;
+  @Input() public placeholder: string = '';
 
   public showPassword = signal(false);
   public errorId = 'password-error';

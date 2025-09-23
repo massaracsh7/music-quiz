@@ -4,11 +4,12 @@ import { LeaderboardService } from '../../core/services/leaderboard-service';
 import { LeaderboardUser } from '../../models/leaderboard.model';
 import { switchMap } from 'rxjs';
 import { takeUntilDestroyed, toObservable, toSignal } from '@angular/core/rxjs-interop';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-leaderboard-page',
   standalone: true,
-  imports: [],
+  imports: [TranslatePipe],
   providers: [LeaderboardService],
   templateUrl: './leaderboard-page.html',
   styleUrl: './leaderboard-page.scss',

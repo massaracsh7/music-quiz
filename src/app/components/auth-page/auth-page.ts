@@ -5,17 +5,19 @@ import { NavigationEnd, Router } from '@angular/router';
 import { filter, map } from 'rxjs';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { CommonModule } from '@angular/common';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-auth-page',
   standalone: true,
-  imports: [LoginForm, RegisterForm, CommonModule],
+  imports: [CommonModule, LoginForm, RegisterForm, TranslateModule],
   templateUrl: './auth-page.html',
   styleUrl: './auth-page.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AuthPage {
   public router = inject(Router);
+  public translate = inject(TranslateService);
 
   public currentPath = toSignal(
     this.router.events.pipe(
@@ -28,6 +30,6 @@ export class AuthPage {
   public isLogin = computed(() => this.currentPath().endsWith('login'));
   public isRegister = computed(() => this.currentPath().endsWith('register'));
 
-  public loginTitle = 'Login to Your Account';
-  public registerTitle = 'Create a New Account';
+  public loginTitle = 'AUTH.PAGE_TITLES.LOGIN';
+  public registerTitle = 'AUTH.PAGE_TITLES.REGISTER';
 }
