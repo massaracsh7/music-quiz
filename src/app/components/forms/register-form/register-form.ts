@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, DestroyRef, effect, ElementRef, inject, signal, viewChild } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthService } from '../../../core/services/auth-service';
-import { firebasePasswordValidator } from '../../../shared/utils/validators';
+import { firebasePasswordValidator, namePatternValidator } from '../../../shared/utils/validators';
 import { getErrorMessage } from '../../../shared/utils/get-error-message';
 import { getAuthError } from '../../../shared/utils/get-auth-error';
 import { Router } from '@angular/router';
@@ -27,33 +27,37 @@ export class RegisterForm {
 
   public nameFocus = viewChild<ElementRef>("nameInput");
 
-constructor() {
-  effect(() => {
-    const input = this.nameFocus();
-    if (input) input.nativeElement.focus();
-  });
+  constructor() {
+    effect(() => {
+      const input = this.nameFocus();
+      if (input) input.nativeElement.focus();
+    });
 
-  const draft = localStorage.getItem('registerFormDraft');
-  if (draft) {
-    const value = JSON.parse(draft);
-    this.form.patchValue({
-      name: value.name ?? '',
-      email: value.email ?? '',
+    const draft = localStorage.getItem('registerFormDraft');
+    if (draft) {
+      const value = JSON.parse(draft);
+      this.form.patchValue({
+        name: value.name ?? '',
+        email: value.email ?? '',
+      });
+    }
+
+    this.form.valueChanges.subscribe((value) => {
+      const { name, email } = value;
+      if (name || email) {
+        localStorage.setItem('registerFormDraft', JSON.stringify({ name, email }));
+      } else {
+        localStorage.removeItem('registerFormDraft');
+      }
     });
   }
 
-  this.form.valueChanges.subscribe((value) => {
-    const { name, email } = value;
-    if (name || email) {
-      localStorage.setItem('registerFormDraft', JSON.stringify({ name, email }));
-    } else {
-      localStorage.removeItem('registerFormDraft');
-    }
-  });
-}
-
   public form = new FormGroup({
-    name: new FormControl('', [Validators.required, Validators.minLength(2)]),
+    name: new FormControl('', [
+      Validators.required,
+      Validators.minLength(2),
+      namePatternValidator,
+    ]),
     email: new FormControl('', [Validators.required, Validators.email]),
     password: new FormControl('', {
       validators: [Validators.required],
