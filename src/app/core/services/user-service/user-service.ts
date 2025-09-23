@@ -25,6 +25,7 @@ export class UserService {
   private currentUserSub: Subscription | null = null;
 
   constructor() {
+    this.loadUsers();
     effect(() => {
       const current = this.currentUser();
 
