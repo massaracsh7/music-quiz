@@ -7,7 +7,6 @@ import { getAuthError } from '../../../shared/utils/get-auth-error';
 import { Router } from '@angular/router';
 import { catchError, of } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { ShowPasswordPipe } from '../../../shared/pipes/show-password-pipe';
 import { CommonModule } from '@angular/common';
 import { InputPassword } from '../input-password/input-password';
 import { ToastService } from '../../../shared/services/toast/toast';
