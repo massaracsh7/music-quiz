@@ -20,10 +20,11 @@ import { FinishModal } from '../modals/finish-modal/finish-modal';
 import { CategoryConfirmModal } from '../modals/category-confirm-modal/category-confirm-modal';
 import { LeaderboardService } from '../../core/services/leaderboard-service';
 import { AuthService } from '../../core/services/auth-service';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-game-page-field',
-  imports: [ResultModal, FinishModal, CategoryConfirmModal],
+  imports: [ResultModal, FinishModal, CategoryConfirmModal, TranslatePipe],
   templateUrl: './game-field.html',
   styleUrl: './game-field.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -50,7 +51,7 @@ export class GameField {
   public isPlaying = computed(() => this.wavesurfer.isPlaying());
   public isFinished = computed(() => this.wavesurfer.isFinished());
   public isBeforeFirstRound = signal(true);
- public trackNames = computed(() => {
+  public trackNames = computed(() => {
     const currentTrack = this.currentTrack();
     const tracks = this.currentTracks();
     const trackNames = tracks.map((track) => track.trackName);
@@ -169,7 +170,7 @@ export class GameField {
       this.wavesurfer.play();
       setTimeout(() => {
         this.wavesurfer.stop();
-      }, 20_000);
+      }, 20000);
     }
   }
 

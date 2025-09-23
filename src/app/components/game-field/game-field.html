@@ -1,5 +1,5 @@
 <div class="categories">
-  <h5 class="mb-3">Categories</h5>
+  <h5 class="mb-3">{{ 'GAME_FIELD.TITLE' | translate }}</h5>
   <div class="d-flex flex-wrap gap-2">
     @for (category of categories(); track category.id) {
       <span
@@ -18,18 +18,18 @@
   <div class="d-flex justify-content-around gap-2 flex-wrap">
     @if (currentCategory()) {
       <h5>
-        <span>Current category: </span>
+        <span>{{ 'GAME_FIELD.CATEGORY_TITLE' | translate }} </span>
         <span>{{ currentCategory()?.title }}</span>
       </h5>
     }
     <h5 class="text-center mb-3">
-      <span>Song: </span>
+      <span>{{ 'GAME_FIELD.SONG' | translate }}: </span>
       <span>
         <span>{{ currentTrackIndex() + 1 }}</span> / <span>{{ currentTracks().length }}</span></span
       >
     </h5>
     <h5 class="text-center mb-3">
-      <span>Score: </span>
+      <span>{{ 'GAME_FIELD.SCORE' | translate }}: </span>
       <span>{{ scoreCounter.score() }}</span>
     </h5>
   </div>
@@ -47,16 +47,18 @@
   </div>
   <div class="text-center mb-3">
     <div class="text-center mb-3">
-      <span>⏱ Current time:</span>
+      <span>{{ 'GAME_FIELD.CURRENT_TIME' | translate }}:</span>
       <span> {{ wavesurfer.currentTime() }}s</span>
     </div>
     @if (currentTrackIndex() === 0) {
       <div class="mt-4 text-center">
-        <button class="btn btn-primary me-2" (click)="onPlay()" [disabled]="isPlaying()">Play</button>
+        <button class="btn btn-primary me-2" (click)="onPlay()" [disabled]="isPlaying()">
+          {{ 'GAME_FIELD.PLAY' | translate }}
+        </button>
       </div>
     }
     <div class="mt-4 text-center">
-      <h6>What's the name of this song?</h6>
+      <h6>{{ 'GAME_FIELD.SONG_QUESTION' | translate }}</h6>
       <div class="d-flex justify-content-center gap-2 flex-wrap">
         @for (track of trackNames(); track track.id) {
           <button
@@ -70,7 +72,9 @@
       </div>
     </div>
     <div class="mt-4 text-center">
-      <button class="btn btn-danger" (click)="onDontKnowClick()">I don't know</button>
+      <button class="btn btn-danger" (click)="onDontKnowClick()">
+        {{ 'GAME_FIELD.DONT_KNOW' | translate }}
+      </button>
     </div>
     <app-result-modal
       [showResultDialog]="showResultDialog()"

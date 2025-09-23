@@ -4,17 +4,17 @@
       <div class="d-flex justify-content-center align-items-center gap-5">
         <h1>
           <span class="bi bi-trophy-fill"></span>
-          Leaderboard
+          {{ 'LEADERBOARD.TITLE' | translate }}
         </h1>
         <span class="badge bg-light text-dark fs-6 m-0">
           <span class="bi bi-person-arms-up me-1"></span>
-          Players: {{ statistics().totalPlayers }}
+          {{ 'LEADERBOARD.PLAYERS_COUNT' | translate: { count: statistics().totalPlayers } }}
         </span>
       </div>
       @if (isLoading()) {
         <div class="text-center py-4">
           <span class="spinner-border"></span>
-          <p class="">Loading leaderboard...</p>
+          <p class="">{{ 'LEADERBOARD.LOADING.TEXT' | translate }}</p>
         </div>
       } @else {
         <div class="card mb-2">
@@ -39,9 +39,9 @@
               <table class="table">
                 <thead>
                   <tr>
-                    <th class="text-center">#</th>
+                    <th class="text-center">{{ 'LEADERBOARD.COLUMNS.RANK' | translate }}</th>
                     <th (click)="toggleSort('username')">
-                      Player
+                      {{ 'LEADERBOARD.COLUMNS.PLAYER' | translate }}
                       @if (sortField() === 'username') {
                         <span
                           [class.bi-sort-alpha-down-alt]="sortDirection() === 'desc'"
@@ -53,7 +53,7 @@
                       }
                     </th>
                     <th style="width: 50%" (click)="toggleSort('score')">
-                      Score
+                      {{ 'LEADERBOARD.COLUMNS.SCORE' | translate }}
                       @if (sortField() === 'score') {
                         <span
                           [class.bi-sort-numeric-down]="sortDirection() === 'asc'"
@@ -86,9 +86,9 @@
                         <div>
                           <span class="bi bi-universal-access display-4 d-block mb-2"></span>
                           <p class="h5">
-                            No one has played in "{{ currentCategoryTitle() }}" category yet.
+                            {{ 'LEADERBOARD.NO_DATA.TITLE' | translate: { category: currentCategoryTitle() } }}
                           </p>
-                          <p class="text-muted">Choose a different category</p>
+                          <p class="text-muted">{{ 'LEADERBOARD.NO_DATA.SUBTITLE' | translate }}</p>
                         </div>
                       </td>
                     </tr>
@@ -107,7 +107,7 @@
                   <h3 class="card-title display-5 fw-bold">
                     {{ statistics().currentDataCount }}
                   </h3>
-                  <p class="card-text fs-5">Players in the category</p>
+                  <p class="card-text fs-5">{{ 'LEADERBOARD.STATS.PLAYERS_IN_CATEGORY' | translate }}</p>
                   <i class="bi bi-people-fill display-2"></i>
                 </div>
               </div>
@@ -117,7 +117,7 @@
               <div class="card bg-success text-white">
                 <div class="card-body text-center">
                   <h3 class="card-title display-5 fw-bold">{{ statistics().successRate }}%</h3>
-                  <p class="card-text fs-5">Success rate</p>
+                  <p class="card-text fs-5">{{ 'LEADERBOARD.STATS.SUCCESS_RATE' | translate }}</p>
                   <i class="bi bi-graph-up display-2"></i>
                 </div>
               </div>
@@ -129,7 +129,7 @@
                   <h3 class="card-title display-5 fw-bold">
                     {{ statistics().currentAverage }} / {{ maxScore }}
                   </h3>
-                  <p class="card-text fs-5">Average score</p>
+                  <p class="card-text fs-5">{{ 'LEADERBOARD.STATS.AVERAGE_SCORE' | translate }}</p>
                   <i class="bi bi-bar-chart-fill display-2"></i>
                 </div>
               </div>
