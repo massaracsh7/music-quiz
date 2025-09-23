@@ -101,7 +101,7 @@ export class GameField {
         this.tracksLoader.getTracksByIds(category.tracks).subscribe((tracks) => {
           this.currentTracks.set(tracks);
           this.currentTrackIndex.set(0);
-          this.trackResults.set(Array.from({ length: tracks.length }).fill(null));
+          this.trackResults.set(new Array(tracks.length).fill(null));
           this.initCurrentTrack(false);
         });
       }
