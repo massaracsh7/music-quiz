@@ -36,10 +36,14 @@ export const routes: Routes = [
       import('./components/about-us-page/about-us-page').then((m) => m.AboutUsPage),
   },
   {
-    path: 'create-category',
+    path: 'categories',
     loadComponent: () =>
-      import('./components/create-category-page/create-category-page').then(
-        (m) => m.CreateCategoryPage,
+      import('./components/categories-page/categories-page').then((m) => m.CategoriesPage),
+    canActivate: [roleGuard(['admin', 'super_user'])],
+  },
+  {
+    path: 'categories/create-category',
+    loadComponent: () =>
       import('./components/categories-page/category-create/category-create').then(
         (m) => m.CategoryCreate,
       ),
