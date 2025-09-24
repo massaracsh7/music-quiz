@@ -1,32 +1,39 @@
-<form [formGroup]="form" aria-labelledby="login-form-title" (ngSubmit)="submit()" class="p-3 border rounded">
+<form [formGroup]="form" (ngSubmit)="submit()" class="p-3 border rounded">
+  <h2 class="text-center mb-4">{{ 'AUTH.LOGIN.TITLE' | translate }}</h2>
+
   <div class="mb-3">
-    <label for="email">Email</label>
+    <label for="email">{{ 'AUTH.LOGIN.EMAIL' | translate }}</label>
     <input
       #emailInput
       id="email"
       type="email"
       formControlName="email"
       class="form-control"
-      placeholder="Enter a valid email"
+      [placeholder]="'AUTH.LOGIN.EMAIL_PLACEHOLDER' | translate"
       aria-describedby="email-error"
       required
     />
     @if (form.controls.email.touched && form.controls.email.invalid) {
       <div id="email-error" class="text-danger" role="alert">
-        {{ getErrorMessage(form.controls.email, 'Email') }}
+        {{ getErrorMessage(form.controls.email, 'AUTH.LOGIN.EMAIL') }}
       </div>
     }
   </div>
 
   <div class="mb-3">
-    <label for="password">Password</label>
-    <app-input-password [control]="form.controls.password"></app-input-password>
+    <label for="password">{{ 'AUTH.LOGIN.PASSWORD' | translate }}</label>
+    <app-input-password
+      [control]="form.controls.password"
+      [placeholder]="'AUTH.LOGIN.PASSWORD_PLACEHOLDER' | translate"
+    ></app-input-password>
   </div>
 
-  <button type="submit" class="btn btn-primary w-100" [disabled]="form.invalid">Login</button>
+  <button type="submit" class="btn btn-primary w-100" [disabled]="form.invalid">
+    {{ 'AUTH.LOGIN.SUBMIT' | translate }}
+  </button>
 
   @if (error()) {
-    <div class="text-danger mb-3" role="alert">
+    <div class="text-danger mb-3 mt-3 text-center" role="alert">
       {{ error() }}
     </div>
   }

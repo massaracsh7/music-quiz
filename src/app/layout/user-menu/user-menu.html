@@ -1,9 +1,15 @@
 <div class="d-flex align-items-center">
   @if (auth.isLoggedIn()) {
-    <span class="me-2">Hello, {{ auth.currentUserName() }}</span>
-    <button type="button" class="btn btn-outline-danger" (click)="logout()">Logout</button>
+    <span class="me-2">{{ 'AUTH.USER_MENU.GREETING' | translate:{username: auth.currentUserName()} }}</span>
+    <button type="button" class="btn btn-outline-danger" (click)="logout()">
+      {{ 'AUTH.USER_MENU.LOGOUT' | translate }}
+    </button>
   } @else {
-    <button type="button" class="btn btn-outline-primary me-2" routerLink="/auth/login">Login</button>
-    <button type="button" class="btn btn-primary" routerLink="/auth/register">Sign-up</button>
+    <button type="button" class="btn btn-outline-primary me-2" routerLink="/login">
+      {{ 'AUTH.USER_MENU.LOGIN' | translate }}
+    </button>
+    <button type="button" class="btn btn-primary" routerLink="/register">
+      {{ 'AUTH.USER_MENU.SIGN_UP' | translate }}
+    </button>
   }
 </div>

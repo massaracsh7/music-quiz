@@ -2,22 +2,24 @@
 
 <div class="text-center">
   <section class="text-center py-5">
-    <h1 class="display-5 fw-bold">Music Quiz</h1>
-    <p class="lead mb-4">Guess the song from the very first second!</p>
-    <button class="btn btn-success btn-lg" [routerLink]="['/game']">Let's Play</button>
+    <h1 class="display-5 fw-bold">{{ 'HOME.TITLE' | translate }}</h1>
+    <p class="lead mb-4">{{ 'HOME.SUBTITLE' | translate }}</p>
+    <button class="btn btn-success btn-lg" [routerLink]="['/game']">
+      {{ 'HOME.PLAY_BUTTON' | translate }}
+    </button>
   </section>
 
   <section class="container py-5 text-center">
     <div class="rules">
-      <p class="rule" style="animation-delay: 0s; margin-left: 0rem">
-        You have only a few seconds to guess the song.
-      </p>
-      <p class="rule" style="animation-delay: 0.5s; margin-left: 1rem">
-        The faster you answer, the more points you earn.
-      </p>
-      <p class="rule" style="animation-delay: 1s; margin-left: 2rem">
-        Check your skills and see if you can top the leaderboard!
-      </p>
+      @for (rule of 'HOME.RULES' | translate; track $index; let i = $index) {
+        <p
+          class="rule"
+          [style.animation-delay]="i * 0.5 + 's'"
+          [style.margin-left]="i + 'rem'"
+        >
+          {{ rule }}
+        </p>
+      }
     </div>
   </section>
 </div>

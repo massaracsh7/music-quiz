@@ -1,50 +1,57 @@
-<form [formGroup]="form" aria-labelledby="register-form-title" (ngSubmit)="submit()" class="p-3 border rounded">
+<form [formGroup]="form" (ngSubmit)="submit()" class="p-3 border rounded">
+  <h2 class="text-center mb-4">{{ 'AUTH.REGISTER.TITLE' | translate }}</h2>
+
   <div class="mb-3">
-    <label for="name">Name</label>
+    <label for="name">{{ 'AUTH.REGISTER.NAME' | translate }}</label>
     <input
     #nameInput
       id="name"
       type="text"
       formControlName="name"
       class="form-control"
-      placeholder="Enter your name (min 2 chars, letters, space, - or ')"
+      [placeholder]="'AUTH.REGISTER.NAME_PLACEHOLDER' | translate"
       aria-describedby="name-error"
       required
     />
     @if (form.controls.name.touched && form.controls.name.invalid) {
       <div id="name-error" class="text-danger" role="alert">
-        {{ getErrorMessage(form.controls.name, 'Name') }}
+        {{ getErrorMessage(form.controls.name, 'AUTH.REGISTER.NAME') }}
       </div>
     }
   </div>
 
   <div class="mb-3">
-    <label for="email">Email</label>
+    <label for="email">{{ 'AUTH.REGISTER.EMAIL' | translate }}</label>
     <input
       id="email"
       type="email"
       formControlName="email"
       class="form-control"
-      placeholder="Enter a valid email"
+      [placeholder]="'AUTH.REGISTER.EMAIL_PLACEHOLDER' | translate"
       aria-describedby="email-error"
       required
     />
     @if (form.controls.email.touched && form.controls.email.invalid) {
       <div id="email-error" class="text-danger" role="alert">
-        {{ getErrorMessage(form.controls.email, 'Email') }}
+        {{ getErrorMessage(form.controls.email, 'AUTH.REGISTER.EMAIL') }}
       </div>
     }
   </div>
 
   <div class="mb-3">
-    <label for="password">Password</label>
-    <app-input-password [control]="form.controls.password"></app-input-password>
+    <label for="password">{{ 'AUTH.REGISTER.PASSWORD' | translate }}</label>
+    <app-input-password
+      [control]="form.controls.password"
+      [placeholder]="'AUTH.REGISTER.PASSWORD_PLACEHOLDER' | translate"
+    ></app-input-password>
   </div>
 
-  <button type="submit" class="btn btn-primary w-100" [disabled]="form.invalid">Register</button>
+  <button type="submit" class="btn btn-primary w-100" [disabled]="form.invalid">
+    {{ 'AUTH.REGISTER.SUBMIT' | translate }}
+  </button>
 
   @if (error()) {
-    <div class="text-danger mb-3" role="alert">
+    <div class="text-danger mb-3 mt-3 text-center" role="alert">
       {{ error() }}
     </div>
   }

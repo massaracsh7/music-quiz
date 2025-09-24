@@ -18,6 +18,5 @@ export class Header {
   constructor(private languageService: LanguageService) {}
   public switchLang(lang: string) {
     this.languageService.switchLang(lang);
-    console.log(this.currentLang());
   }
 }
