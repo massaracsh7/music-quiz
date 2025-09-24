@@ -126,5 +126,10 @@
         "DESCRIPTION": "Evgeniya has developed a leaderboard with dynamic data updates, sorting and visualization of user achievements. She also created an information page about the project developers. Implemented the functionality of creating categories, including API search in iTunes."
       }
     }
+  },
+  "NOT_FOUND": {
+    "TITLE": "404 - Page not found",
+    "MESSAGE": "The page you are looking for doesn't exist or has been moved.",
+    "HOME_BUTTON": "Go to Home"
   }
 }
