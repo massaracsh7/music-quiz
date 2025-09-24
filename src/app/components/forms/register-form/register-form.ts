@@ -63,14 +63,15 @@ export class RegisterForm {
       });
     }
 
-    this.form.valueChanges.subscribe((value) => {
-      const { name, email } = value;
-      if (name || email) {
-        localStorage.setItem('registerFormDraft', JSON.stringify({ name, email }));
-      } else {
-        localStorage.removeItem('registerFormDraft');
-      }
-    });
+    this.form.valueChanges.pipe(
+      takeUntilDestroyed(this.destroyRef)).subscribe((value) => {
+        const { name, email } = value;
+        if (name || email) {
+          localStorage.setItem('registerFormDraft', JSON.stringify({ name, email }));
+        } else {
+          localStorage.removeItem('registerFormDraft');
+        }
+      });
   }
 
   public submit(): void {
