@@ -1,7 +1,7 @@
 <header
-  class="d-flex flex-wrap justify-content-between align-items-center py-3 mb-4 border-bottom gap-4"
+  class="d-flex flex-wrap justify-content-between align-items-center py-3 mb-4 border-bottom gap-2 gap-md-4"
 >
-  <div class="d-flex align-items-center gap-4">
+  <div class="d-flex align-items-center gap-2 gap-md-4">
     <a
       href="/"
       [routerLink]="['/']"
@@ -35,8 +35,35 @@
     </div>
   </div>
 
-  <div class="d-flex align-items-center gap-3">
+  <button
+    class="btn d-lg-none"
+    type="button"
+    data-bs-toggle="offcanvas"
+    data-bs-target="#offcanvasMenu"
+    aria-controls="offcanvasMenu"
+    aria-label="Toggle menu"
+  >
+    <span class="bi bi-list fs-3"></span>
+  </button>
+
+  <div class="d-none d-lg-flex gap-3">
     <app-nav-menu></app-nav-menu>
     <app-user-menu></app-user-menu>
   </div>
 </header>
+
+<div
+  class="offcanvas offcanvas-start"
+  tabindex="-1"
+  id="offcanvasMenu"
+  aria-labelledby="offcanvasMenuLabel"
+>
+  <div class="offcanvas-header gap-4">
+    <h5 class="offcanvas-title" id="offcanvasMenuLabel">Music Quiz</h5>
+    <app-user-menu data-bs-dismiss="offcanvas"></app-user-menu>
+    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+  </div>
+  <div class="offcanvas-body d-flex flex-column gap-3">
+    <app-nav-menu data-bs-dismiss="offcanvas"></app-nav-menu>
+  </div>
+</div>
