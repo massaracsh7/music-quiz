@@ -1,7 +1,6 @@
 import { Component, computed, inject } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { AuthService } from '../../core/services/auth-service';
 import { NAV_LIST } from './nav-list.const';
 import { UserService } from '../../core/services/user-service/user-service';
 import { TranslatePipe } from '@ngx-translate/core';
