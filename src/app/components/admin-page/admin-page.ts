@@ -1,6 +1,6 @@
 import { Component, inject, computed, signal, DestroyRef } from '@angular/core';
 import { UserService } from '../../core/services/user-service/user-service';
-import { AppUser, RoleOption, UserInfo, UserRole } from '../../models/user.model';
+import { RoleOption, UserInfo, UserRole } from '../../models/user.model';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { catchError, of, tap } from 'rxjs';
