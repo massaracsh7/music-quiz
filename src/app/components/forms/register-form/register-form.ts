@@ -19,11 +19,12 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { CommonModule } from '@angular/common';
 import { InputPassword } from '../input-password/input-password';
 import { ToastService } from '../../../shared/services/toast/toast';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-register-form',
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule, InputPassword],
+  imports: [ReactiveFormsModule, CommonModule, InputPassword, TranslatePipe],
   templateUrl: './register-form.html',
   styleUrl: './register-form.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

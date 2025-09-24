@@ -4,10 +4,11 @@ import { CategoryConfirmDeleteModal } from '../modals/category-confirm-delete-mo
 import { CategoryService } from '../../core/services/сategory-service/сategory-service';
 import { ToastService } from '../../shared/services/toast/toast';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-categories-page',
-  imports: [RouterLink, CategoryConfirmDeleteModal],
+  imports: [RouterLink, CategoryConfirmDeleteModal, TranslatePipe],
   templateUrl: './categories-page.html',
   styleUrl: './categories-page.scss',
 })

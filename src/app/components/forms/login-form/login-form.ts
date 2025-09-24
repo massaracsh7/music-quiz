@@ -2,11 +2,11 @@ import {
   ChangeDetectionStrategy,
   Component,
   DestroyRef,
-  effect,
   ElementRef,
   inject,
   signal,
   viewChild,
+  effect,
 } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthService } from '../../../core/services/auth-service';
@@ -19,21 +19,23 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { CommonModule } from '@angular/common';
 import { InputPassword } from '../input-password/input-password';
 import { ToastService } from '../../../shared/services/toast/toast';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-login-form',
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule, InputPassword],
+  imports: [ReactiveFormsModule, CommonModule, InputPassword, TranslateModule],
   templateUrl: './login-form.html',
-  styleUrl: './login-form.scss',
+  styleUrls: ['./login-form.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LoginForm {
   public router = inject(Router);
   public auth = inject(AuthService);
   public toast = inject(ToastService);
+  public translate = inject(TranslateService);
   public error = signal('');
-  public emailFocus = viewChild<ElementRef>('emailInput');
+  public emailFocus = viewChild<ElementRef<HTMLInputElement>>('emailInput');
   public form = new FormGroup({
     email: new FormControl('', [Validators.required, Validators.email]),
     password: new FormControl('', {
@@ -42,14 +44,23 @@ export class LoginForm {
       updateOn: 'blur',
     }),
   });
-  public getErrorMessage = getErrorMessage;
-  public destroyRef = inject(DestroyRef);
+  private destroyRef = inject(DestroyRef);
 
   constructor() {
     effect(() => {
       const input = this.emailFocus();
       if (input) input.nativeElement.focus();
     });
+  }
+
+  public getErrorMessage(control: FormControl, fieldName: string): string | null {
+    if (control.hasError('required')) {
+      return this.translate.instant('AUTH.LOGIN.ERRORS.REQUIRED');
+    }
+    if (control.hasError('email')) {
+      return this.translate.instant('AUTH.LOGIN.ERRORS.EMAIL');
+    }
+    return getErrorMessage(control, fieldName);
   }
 
   public submit(): void {

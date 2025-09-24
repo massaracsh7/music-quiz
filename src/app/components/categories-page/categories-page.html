@@ -1,55 +1,72 @@
 <div class="container-fluid py-4">
-  <div class="d-flex justify-content-between align-items-center mb-4">
+  <div class="d-flex justify-content-between align-items-center mb-3">
     <h2 class="mb-0">
       <i class="bi bi-collection me-2"></i>
-      Categories
+      {{ 'CATEGORIES_PAGE.TITLE' | translate }}
     </h2>
     <button class="btn btn-primary" [routerLink]="['/categories/create-category']">
       <i class="bi bi-plus-circle me-2"></i>
-      Create new Category
+      {{ 'CATEGORIES_PAGE.CREATE_BUTTON' | translate }}
     </button>
   </div>
 
   <div class="row g-3">
     @for (category of categoriesWithArtwork(); track category.id) {
-    <div class="col-md-6 col-lg-4">
-      <div class="card h-100 shadow-sm p-2">
-        @if (category.artworkUrl) {
-        <div class="card-header d-flex justify-content-center">
-          <img [src]="category.artworkUrl" [alt]="category.title" class="card-img"
-            style="height: 200px; width: 200px; object-fit: contain" />
-        </div>
-        } @else {
-        <div class="card-img bg-light d-flex align-items-center justify-content-center" style="height: 200px">
-          <i class="bi bi-music-note-beamed display-4 text-muted"></i>
-        </div>
-        }
+      <div class="col-md-6 col-lg-3">
+        <div class="card h-100 shadow-sm p-2">
+          @if (category.artworkUrl) {
+            <div class="d-flex justify-content-center">
+              <img
+                [src]="category.artworkUrl"
+                [alt]="category.title"
+                class="img-fluid"
+                style="object-fit: contain"
+              />
+            </div>
+          } @else {
+            <div
+              class="card-img bg-light d-flex align-items-center justify-content-center"
+              style="height: 200px"
+            >
+              <i class="bi bi-music-note-beamed display-4 text-muted"></i>
+            </div>
+          }
 
-        <div class="card-body">
-          <h5 class="card-title text-truncate">{{ category.title }}</h5>
-          <p class="card-text text-muted">
-            <i class="bi bi-music-note-list me-1"></i>
-            {{ category.tracks.length || 0 }} tracks
-          </p>
-        </div>
-        <div class="card-footer">
-          <div class="d-flex gap-2 justify-content-between">
-            <button class="btn btn-outline-primary w-100" [routerLink]="['/categories/', category.id]">
-              <i class="bi bi-pencil me-1"></i>
-              Edit
-            </button>
-            <button class="btn btn-outline-danger w-100" (click)="categoryDelete(category.id)">
-              <i class="bi bi-trash me-1"></i>
-              Delete
-            </button>
+          <div class="card-body">
+            <h5 class="card-title text-truncate">{{ category.title }}</h5>
+            <p class="card-text text-muted">
+              <i class="bi bi-music-note-list me-1"></i>
+              {{
+                'CATEGORIES_PAGE.TRACKS_COUNT' | translate: { count: category.tracks.length || 0 }
+              }}
+            </p>
+          </div>
+          <div class="">
+            <div class="d-flex gap-2 justify-content-between">
+              <button
+                class="btn btn-outline-primary w-100"
+                style="text-overflow: ellipsis; overflow: hidden; white-space: nowrap"
+                [routerLink]="['/categories/', category.id]"
+              >
+                <i class="bi bi-pencil me-1"></i>
+                {{ 'CATEGORIES_PAGE.EDIT_BUTTON' | translate }}
+              </button>
+              <button class="btn btn-outline-danger w-100" (click)="categoryDelete(category.id)">
+                <i class="bi bi-trash me-1"></i>
+                {{ 'CATEGORIES_PAGE.DELETE_BUTTON' | translate }}
+              </button>
+            </div>
           </div>
         </div>
       </div>
-    </div>
     }
   </div>
 </div>
 
-<app-category-confirm-delete-modal [showCategoryDeleteDialog]="showCategoryDeleteDialog()"
-  [selectedCategory]="currentCategory()" (onCategorySelectDelete)="onCategorySelectDelete($event)"
-  (closeCategoryDialog)="closeCategoryDialog()"></app-category-confirm-delete-modal>
+<app-category-confirm-delete-modal
+  [showCategoryDeleteDialog]="showCategoryDeleteDialog()"
+  [selectedCategory]="currentCategory()"
+  (onCategorySelectDelete)="onCategorySelectDelete($event)"
+  (closeCategoryDialog)="closeCategoryDialog()"
+>
+</app-category-confirm-delete-modal>

@@ -12,10 +12,11 @@ import { ToastService } from '../../../../shared/services/toast/toast';
 import { LineLimiterPipe } from '../../../../shared/pipes/line-limiter-pipe';
 import { CategorySearch } from '../category-search/category-search';
 import { Router } from '@angular/router';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-category-form',
-  imports: [ReactiveFormsModule, LineLimiterPipe],
+  imports: [ReactiveFormsModule, LineLimiterPipe, TranslatePipe],
   providers: [CategorySearch],
   templateUrl: './category-form.html',
   styleUrl: './category-form.scss',

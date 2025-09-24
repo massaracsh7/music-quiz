@@ -4,14 +4,14 @@
       <a class="text-decoration-none" [routerLink]="['/categories']">
         <h2 class="mb-0">
           <i class="bi bi-collection me-2"></i>
-          Categories
+          {{ 'CATEGORIES_PAGE.TITLE' | translate }}
         </h2>
       </a>
-      <h2 class="mb-0">/ Create Category</h2>
+      <h2 class="mb-0">{{ 'CATEGORY_CREATE_PAGE.BREADCRUMB' | translate }}</h2>
     </div>
     <button class="btn btn-primary" [routerLink]="['/categories']">
       <i class="bi bi-arrow-left me-2"></i>
-      Back to Categories
+      {{ 'CATEGORY_CREATE_PAGE.BACK_BUTTON' | translate }}
     </button>
   </div>
   <div class="row">
