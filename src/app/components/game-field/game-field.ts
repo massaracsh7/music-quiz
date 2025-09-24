@@ -20,10 +20,11 @@ import { FinishModal } from '../modals/finish-modal/finish-modal';
 import { CategoryConfirmModal } from '../modals/category-confirm-modal/category-confirm-modal';
 import { LeaderboardService } from '../../core/services/leaderboard-service';
 import { AuthService } from '../../core/services/auth-service';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-game-page-field',
-  imports: [ResultModal, FinishModal, CategoryConfirmModal],
+  imports: [ResultModal, FinishModal, CategoryConfirmModal, TranslatePipe],
   templateUrl: './game-field.html',
   styleUrl: './game-field.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
