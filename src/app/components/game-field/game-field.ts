@@ -50,16 +50,16 @@ export class GameField {
   public isPlaying = computed(() => this.wavesurfer.isPlaying());
   public isFinished = computed(() => this.wavesurfer.isFinished());
   public isBeforeFirstRound = signal(true);
- public trackNames = computed(() => {
+  public trackNames = computed(() => {
     const currentTrack = this.currentTrack();
     const tracks = this.currentTracks();
     const trackNames = tracks.map((track) => track.trackName);
     const randomNames = [];
     if (currentTrack?.trackName) randomNames.push(currentTrack?.trackName);
-    for (let i = 0; i < 3; i += 1) {
-      trackNames[i] !== currentTrack?.trackName
-        ? randomNames.push(trackNames[i])
-        : randomNames.push(trackNames[trackNames.length - 1]);
+    for (let index = 0; index < 3; index += 1) {
+      trackNames[index] === currentTrack?.trackName
+        ? randomNames.push(trackNames.at(-1))
+        : randomNames.push(trackNames[index]);
     }
     return randomNames
       .sort(() => 0.5 - Math.random())
@@ -68,7 +68,7 @@ export class GameField {
         name: name,
       }));
   });
-  public trackResults = signal<boolean[]>([]);
+  public trackResults = signal<Array<boolean | null>>([]);
 
   public currentTrack = computed(() => {
     const tracks = this.currentTracks();
@@ -101,7 +101,7 @@ export class GameField {
         this.tracksLoader.getTracksByIds(category.tracks).subscribe((tracks) => {
           this.currentTracks.set(tracks);
           this.currentTrackIndex.set(0);
-          this.trackResults.set(new Array(tracks.length).fill(null));
+          this.trackResults.set(Array.from<boolean | null>({ length: tracks.length }).fill(null));
           this.initCurrentTrack(false);
         });
       }
@@ -150,6 +150,10 @@ export class GameField {
     if (!currentTrack) return;
 
     this.onFalseAnswer();
+    const isCorrect = false;
+    const results = [...this.trackResults()];
+    results[this.currentTrackIndex()] = isCorrect;
+    this.trackResults.set(results);
 
     this.showResult();
     this.scoreCounter.increaseScore(30);
@@ -163,7 +167,7 @@ export class GameField {
     this.trackResults.set(results);
   }
 
-  public onDialogPlay() {
+  public onDialogPlay(): void {
     if (this.wavesurfer) {
       this.wavesurfer.stop();
       this.wavesurfer.play();
@@ -220,7 +224,7 @@ export class GameField {
     this.showCategoryDialog.set(false);
   }
 
-  public onPlay() {
+  public onPlay(): void {
     this.wavesurfer.play();
     this.isBeforeFirstRound.set(false);
   }
