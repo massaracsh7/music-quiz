@@ -1,4 +1,4 @@
-import { Component, effect, OnInit } from '@angular/core';
+import { Component, effect } from '@angular/core';
 import { students } from './students-data.const';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { StudentInterface } from './student.interface';
