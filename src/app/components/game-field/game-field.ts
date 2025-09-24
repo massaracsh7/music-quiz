@@ -165,12 +165,6 @@ export class GameField {
     this.onDialogPlay();
   }
 
-  public onFalseAnswer(): void {
-    const results = [...this.trackResults()];
-    results[this.currentTrackIndex()] = false;
-    this.trackResults.set(results);
-  }
-
   public onDialogPlay(): void {
     if (this.wavesurfer) {
       this.wavesurfer.stop();
@@ -179,6 +173,12 @@ export class GameField {
         this.wavesurfer.stop();
       }, 20_000);
     }
+  }
+
+  public onFalseAnswer(): void {
+    const results = [...this.trackResults()];
+    results[this.currentTrackIndex()] = false;
+    this.trackResults.set(results);
   }
 
   public onAnswerSelected(answer: string): void {
