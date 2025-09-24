@@ -54,7 +54,13 @@
     "CURRENT_TIME": "⏱ Current time:",
     "PLAY": "Play",
     "SONG_QUESTION": "What's the name of this song?",
-    "DONT_KNOW": "I don't know"
+    "DONT_KNOW": "I don't know",
+    "RESULT_MODAL": {
+      "TITLE_CORRECT": "Excellent!",
+      "TITLE_INCORRECT": "You don't know!",
+      "CORRECT_ANSWER": "The correct answer was:",
+      "OK_BUTTON": "OK"
+    }
   },
   "HOME": {
     "TITLE": "Music Quiz",

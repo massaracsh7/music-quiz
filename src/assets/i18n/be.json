@@ -54,7 +54,13 @@
     "CURRENT_TIME": "⏱ Бягучы час",
     "PLAY": "Прайграць",
     "SONG_QUESTION": "Як называецца гэтая песня?",
-    "DONT_KNOW": "Не ведаю"
+    "DONT_KNOW": "Не ведаю",
+    "RESULT_MODAL": {
+      "TITLE_CORRECT": "Выдатна!",
+      "TITLE_INCORRECT": "Вы не ведаеце!",
+      "CORRECT_ANSWER": "Правільны адказ:",
+      "OK_BUTTON": "Добра"
+    }
   },
   "HOME": {
     "TITLE": "Music Quiz",

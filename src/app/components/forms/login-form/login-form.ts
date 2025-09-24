@@ -6,6 +6,7 @@ import {
   inject,
   signal,
   viewChild,
+  effect,
 } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthService } from '../../../core/services/auth-service';
@@ -25,7 +26,7 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
   standalone: true,
   imports: [ReactiveFormsModule, CommonModule, InputPassword, TranslateModule],
   templateUrl: './login-form.html',
-  styleUrl: './login-form.scss',
+  styleUrls: ['./login-form.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LoginForm {
@@ -34,7 +35,7 @@ export class LoginForm {
   public toast = inject(ToastService);
   public translate = inject(TranslateService);
   public error = signal('');
-  public emailFocus = viewChild<ElementRef>('emailInput');
+  public emailFocus = viewChild<ElementRef<HTMLInputElement>>('emailInput');
   public form = new FormGroup({
     email: new FormControl('', [Validators.required, Validators.email]),
     password: new FormControl('', {
@@ -43,8 +44,16 @@ export class LoginForm {
       updateOn: 'blur',
     }),
   });
+  private destroyRef = inject(DestroyRef);
 
-  public getErrorMessage = (control: any, fieldName: string): string | null => {
+  constructor() {
+    effect(() => {
+      const input = this.emailFocus();
+      if (input) input.nativeElement.focus();
+    });
+  }
+
+  public getErrorMessage(control: FormControl, fieldName: string): string | null {
     if (control.hasError('required')) {
       return this.translate.instant('AUTH.LOGIN.ERRORS.REQUIRED');
     }
@@ -52,9 +61,7 @@ export class LoginForm {
       return this.translate.instant('AUTH.LOGIN.ERRORS.EMAIL');
     }
     return getErrorMessage(control, fieldName);
-  };
-
-  private destroyRef = inject(DestroyRef);
+  }
 
   public submit(): void {
     if (this.form.invalid) return;
