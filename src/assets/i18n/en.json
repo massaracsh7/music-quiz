@@ -157,6 +157,23 @@
     "ADD_BUTTON": "Add",
     "SELECTED_BUTTON": "Selected"
   },
+  "ADMIN": {
+    "USERS": {
+      "TITLE": "Users",
+      "TOTAL": "Total",
+      "EMAIL": "Email",
+      "DISPLAY_NAME": "Display Name",
+      "ROLE": "Role",
+      "CHANGE_ROLE": "Change Role",
+      "NO_USERS": "No users found",
+      "INVITE_USERS": "Invite users to see them here"
+    },
+    "ROLES": {
+      "ADMIN": "Administrator",
+      "USER": "User",
+      "MODERATOR": "Moderator"
+    }
+  },
   "NOT_FOUND": {
     "TITLE": "404 - Page not found",
     "MESSAGE": "The page you are looking for doesn't exist or has been moved.",

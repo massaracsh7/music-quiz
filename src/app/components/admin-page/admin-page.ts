@@ -6,12 +6,13 @@ import { FormsModule } from '@angular/forms';
 import { catchError, of, tap } from 'rxjs';
 import { ToastService } from '../../shared/services/toast/toast';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-admin-page',
   templateUrl: './admin-page.html',
   styleUrl: './admin-page.scss',
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, TranslatePipe],
 })
 export class AdminPage {
   public userService = inject(UserService);
