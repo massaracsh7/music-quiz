@@ -20,7 +20,7 @@ export class LanguageService {
       .subscribe((event) => this.currentLang.set(event.lang));
   }
 
-  public switchLang(lang: string) {
+  public switchLang(lang: string): void {
     this.translateService.use(lang);
     this.currentLang.set(lang);
   }

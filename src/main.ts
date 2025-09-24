@@ -1,4 +1,4 @@
-import 'bootstrap/dist/css/bootstrap.min.css';
+// TODO check why bootstrap js is needed here, it's also imported in angular.json
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 
 import { bootstrapApplication } from '@angular/platform-browser';

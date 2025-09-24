@@ -17,18 +17,19 @@ export class NavMenu {
 
   public navList = NAV_LIST;
 
-  // public onlyAdminRoutes = ['/admin'];
-  // public superUserRoutes = ['/create-category'];
-
   public navShowList = computed(() =>
     this.navList.filter((item) => {
-      if (item.path === '/create-category') {
-        return this.users.canCreateCategories();
+      switch (item.path) {
+        case '/categories': {
+          return this.users.canCreateCategories();
+        }
+        case '/admin': {
+          return this.users.canChangeRoles();
+        }
+        default: {
+          return true;
+        }
       }
-      if (item.path === '/admin') {
-        return this.users.canChangeRoles();
-      }
-      return true;
     }),
   );
 }

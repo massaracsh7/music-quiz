@@ -2,20 +2,19 @@
   <h5 class="mb-3">{{ 'GAME_FIELD.TITLE' | translate }}</h5>
   <div class="d-flex flex-wrap gap-2">
     @for (category of categories(); track category.id) {
-      <span
-        class="badge badge-hover btn-outline-secondary"
-        [class.badge-success]="currentCategory()?.id === category.id"
-        [class.bg-primary]="currentCategory()?.id !== category.id"
+      <button
+        class="btn btn-outline-primary"
+        [class.active]="currentCategory()?.id === category.id"
         (click)="onCategorySelected(category)"
       >
         {{ category.title }}
-      </span>
+      </button>
     }
   </div>
 </div>
 
 <div class="container py-4">
-  <div class="d-flex justify-content-around gap-2 flex-wrap">
+  <div class="d-flex justify-content-between gap-2 flex-wrap">
     @if (currentCategory()) {
       <h5>
         <span>{{ 'GAME_FIELD.CATEGORY_TITLE' | translate }} </span>
@@ -52,7 +51,7 @@
     </div>
     @if (currentTrackIndex() === 0) {
       <div class="mt-4 text-center">
-        <button class="btn btn-primary me-2" (click)="onPlay()" [disabled]="isPlaying()">
+        <button class="btn btn-success btn-lg me-2" (click)="onPlay()" [disabled]="isPlaying()">
           {{ 'GAME_FIELD.PLAY' | translate }}
         </button>
       </div>
