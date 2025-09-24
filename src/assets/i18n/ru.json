@@ -65,6 +65,16 @@
       "SCORE": "Счет",
       "TRACKS_OVER": "Треки в этой категории закончились. Выберите другую категорию",
       "EXIT_BUTTON": "Выход"
+    },
+    "CATEGORY_CONFIRM_MODAL": {
+      "TITLE": "Вы хотите изменить категорию на {{categoryName}}?",
+      "CANCEL_BUTTON": "Отмена",
+      "CONFIRM_BUTTON": "ОК"
+    },
+    "CATEGORY_DELETE_MODAL": {
+      "TITLE": "Вы действительно хотите удалить эту категорию?",
+      "CANCEL_BUTTON": "Отмена",
+      "CONFIRM_BUTTON": "ОК"
     }
   },
   "HOME": {

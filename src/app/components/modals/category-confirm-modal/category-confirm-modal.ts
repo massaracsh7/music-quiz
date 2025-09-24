@@ -1,9 +1,10 @@
 import { Component, effect, input, output } from '@angular/core';
 import { Category } from '../../../models/category.model';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-category-confirm-modal',
-  imports: [],
+  imports: [TranslatePipe],
   templateUrl: './category-confirm-modal.html',
   styleUrl: './category-confirm-modal.scss',
 })

@@ -3,16 +3,16 @@
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-body">
-        <h5 class="modal-title text-center">Do you delete this category?</h5>
+        <h5 class="modal-title text-center">{{ 'GAME_FIELD.CATEGORY_DELETE_MODAL.TITLE' | translate }}</h5>
       </div>
       <div class="modal-footer">
         <div class="d-flex justify-content-between gap-2 w-100">
           <button type="button" class="btn btn-primary bg-danger w-100" (click)="closeCategoryDialog.emit()">
-            Cancel
+            {{ 'GAME_FIELD.CATEGORY_DELETE_MODAL.CANCEL_BUTTON' | translate }}
           </button>
           <button type="button" class="btn btn-primary bg-success w-100"
             (click)="onCategorySelectDelete.emit(selectedCategory())">
-            OK
+            {{ 'GAME_FIELD.CATEGORY_DELETE_MODAL.CONFIRM_BUTTON' | translate }}
           </button>
         </div>
       </div>

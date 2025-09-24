@@ -1,8 +1,9 @@
 import { Component, effect, input, output } from '@angular/core';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-category-confirm-delete-modal',
-  imports: [],
+  imports: [TranslatePipe],
   templateUrl: './category-confirm-delete-modal.html',
   styleUrl: './category-confirm-delete-modal.scss',
 })

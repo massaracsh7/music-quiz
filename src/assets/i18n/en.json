@@ -65,6 +65,16 @@
       "SCORE": "Score",
       "TRACKS_OVER": "Tracks in this category are over. Choose another category",
       "EXIT_BUTTON": "Exit"
+    },
+    "CATEGORY_CONFIRM_MODAL": {
+      "TITLE": "Do you want to change category to {{categoryName}}?",
+      "CANCEL_BUTTON": "Cancel",
+      "CONFIRM_BUTTON": "OK"
+    },
+    "CATEGORY_DELETE_MODAL": {
+      "TITLE": "Do you want to delete this category?",
+      "CANCEL_BUTTON": "Cancel",
+      "CONFIRM_BUTTON": "OK"
     }
   },
   "HOME": {
