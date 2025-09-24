@@ -123,6 +123,10 @@ export class GameField {
         this.showResult();
         this.scoreCounter.increaseScore(30);
         this.wavesurfer.isFinished.set(false);
+        const isCorrect = false;
+        const results = [...this.trackResults()];
+        results[this.currentTrackIndex()] = isCorrect;
+        this.trackResults.set(results);
       }
     });
 
