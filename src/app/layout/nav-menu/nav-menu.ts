@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, computed, inject } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../core/services/auth-service';
@@ -17,9 +17,6 @@ export class NavMenu {
   public users = inject(UserService);
 
   public navList = NAV_LIST;
-
-  // public onlyAdminRoutes = ['/admin'];
-  // public superUserRoutes = ['/create-category'];
 
   public navShowList = computed(() =>
     this.navList.filter((item) => {

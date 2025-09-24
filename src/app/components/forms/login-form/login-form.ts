@@ -1,4 +1,13 @@
-import { ChangeDetectionStrategy, Component, DestroyRef, inject, signal } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  DestroyRef,
+  ElementRef,
+  effect,
+  inject,
+  signal,
+  viewChild,
+} from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthService } from '../../../core/services/auth-service';
 import { firebasePasswordValidator } from '../../../shared/utils/validators';
@@ -25,8 +34,11 @@ export class LoginForm {
   public auth = inject(AuthService);
   public toast = inject(ToastService);
   public translate = inject(TranslateService);
+  public destroyRef = inject(DestroyRef);
+
   public error = signal('');
   public emailFocus = viewChild<ElementRef>('emailInput');
+
   public form = new FormGroup({
     email: new FormControl('', [Validators.required, Validators.email]),
     password: new FormControl('', {
@@ -35,8 +47,6 @@ export class LoginForm {
       updateOn: 'blur',
     }),
   });
-  public getErrorMessage = getErrorMessage;
-  public destroyRef = inject(DestroyRef);
 
   constructor() {
     effect(() => {
@@ -45,7 +55,7 @@ export class LoginForm {
     });
   }
 
-  public getErrorMessage = (control: any, fieldName: string): string | null => {
+  public getErrorMessage(control: any, fieldName: string): string | null {
     if (control.hasError('required')) {
       return this.translate.instant('AUTH.LOGIN.ERRORS.REQUIRED');
     }
@@ -53,9 +63,7 @@ export class LoginForm {
       return this.translate.instant('AUTH.LOGIN.ERRORS.EMAIL');
     }
     return getErrorMessage(control, fieldName);
-  };
-
-  private destroyRef = inject(DestroyRef);
+  }
 
   public submit(): void {
     if (this.form.invalid) return;
