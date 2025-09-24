@@ -1,10 +1,11 @@
 import { Component, input, output, effect } from '@angular/core';
 import { Track } from '../../../models/types/track.type';
 import { CommonModule } from '@angular/common';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-result-modal',
-  imports: [CommonModule],
+  imports: [CommonModule, TranslatePipe],
   templateUrl: './result-modal.html',
   styleUrl: './result-modal.scss',
 })

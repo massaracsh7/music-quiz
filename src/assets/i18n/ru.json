@@ -54,7 +54,13 @@
     "CURRENT_TIME": "⏱ Текущее время:",
     "PLAY": "Играть",
     "SONG_QUESTION": "Как называется эта песня?",
-    "DONT_KNOW": "Не знаю"
+    "DONT_KNOW": "Не знаю",
+    "RESULT_MODAL": {
+      "TITLE_CORRECT": "Отлично!",
+      "TITLE_INCORRECT": "Вы не знаете!",
+      "CORRECT_ANSWER": "Правильный ответ:",
+      "OK_BUTTON": "ОК"
+    }
   },
   "HOME": {
     "TITLE": "Music Quiz",
