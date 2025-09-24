@@ -4,7 +4,7 @@
     "GAME": "Игра",
     "LEADERBOARD": "Рейтинг",
     "ABOUT_US": "О нас",
-    "CREATE_CATEGORY": "Создать категорию",
+    "CATEGORY": "Категории",
     "ADMIN": "Админ"
   },
   "AUTH": {
@@ -107,6 +107,36 @@
       "SUCCESS_RATE": "Процент успеха",
       "AVERAGE_SCORE": "Средний счет"
     }
+  },
+  "CATEGORIES_PAGE": {
+    "TITLE": "Категории",
+    "CREATE_BUTTON": "Создать категорию",
+    "TRACKS_COUNT": "{{count}} треков",
+    "EDIT_BUTTON": "Редактировать",
+    "DELETE_BUTTON": "Удалить"
+  },
+  "CATEGORY_CREATE_PAGE": {
+    "TITLE": "Создание категории",
+    "BREADCRUMB": "/ Создание категории",
+    "BACK_BUTTON": "Назад к категориям"
+  },
+  "CATEGORY_FORM": {
+    "TITLE": "Создать новую категорию",
+    "NAME_LABEL": "Название категории",
+    "NAME_PLACEHOLDER": "Введите название категории",
+    "SUBMIT_BUTTON": "Создать категорию",
+    "MIN_TRACKS_MESSAGE": "Выберите минимум 8 треков для создания категории",
+    "SELECTED_TRACKS": "Выбранные треки ({{count}})",
+    "REMOVE_BUTTON": "Удалить"
+  },
+  "CATEGORY_SEARCH": {
+    "TITLE": "Поиск треков",
+    "PLACEHOLDER": "Поиск треков в iTunes...",
+    "SEARCHING": "Поиск...",
+    "SEARCHING_ITUNES": "Ищем в iTunes...",
+    "NO_RESULTS": "Треки по запросу \"{{query}}\" не найдены",
+    "ADD_BUTTON": "Добавить",
+    "SELECTED_BUTTON": "Выбрано"
   },
   "ABOUT_US": {
     "TITLE": "Наша команда разработчиков",

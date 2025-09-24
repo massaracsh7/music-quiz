@@ -4,12 +4,12 @@
     "GAME": "Гульня",
     "LEADERBOARD": "Рэйтынг",
     "ABOUT_US": "Пра нас",
-    "CREATE_CATEGORY": "Стварыць катэгорыю",
+    "CATEGORY": "Катэгорыi",
     "ADMIN": "Адмiн"
   },
   "AUTH": {
     "USER_MENU": {
-      "GREETING": "Прывітанне, {{username}}",
+      "GREETING": "Вітаем, {{username}}",
       "LOGOUT": "Выйсці",
       "LOGIN": "Уваход",
       "SIGN_UP": "Рэгістрацыя"
@@ -107,6 +107,36 @@
       "SUCCESS_RATE": "Працэнт поспеху",
       "AVERAGE_SCORE": "Сярэдні бал"
     }
+  },
+  "CATEGORIES_PAGE": {
+    "TITLE": "Катэгорыі",
+    "CREATE_BUTTON": "Стварыць катэгорыю",
+    "TRACKS_COUNT": "{{count}} трэкаў",
+    "EDIT_BUTTON": "Рэдагаваць",
+    "DELETE_BUTTON": "Выдаліць"
+  },
+  "CATEGORY_CREATE_PAGE": {
+    "TITLE": "Стварэнне катэгорыі",
+    "BREADCRUMB": "/ Стварэнне катэгорыі",
+    "BACK_BUTTON": "Назад да катэгорый"
+  },
+  "CATEGORY_FORM": {
+    "TITLE": "Стварыць новую катэгорыю",
+    "NAME_LABEL": "Назва катэгорыі",
+    "NAME_PLACEHOLDER": "Увядзіце назву катэгорыі",
+    "SUBMIT_BUTTON": "Стварыць катэгорыю",
+    "MIN_TRACKS_MESSAGE": "Абярыце мінімум 8 трэкаў для стварэння катэгорыі",
+    "SELECTED_TRACKS": "Абраныя трэкі ({{count}})",
+    "REMOVE_BUTTON": "Выдаліць"
+  },
+  "CATEGORY_SEARCH": {
+    "TITLE": "Пошук трэкаў",
+    "PLACEHOLDER": "Пошук трэкаў у iTunes...",
+    "SEARCHING": "Пошук...",
+    "SEARCHING_ITUNES": "Шукаем у iTunes...",
+    "NO_RESULTS": "Трэкаў па запыце \"{{query}}\" не знойдзена",
+    "ADD_BUTTON": "Дадаць",
+    "SELECTED_BUTTON": "Абрана"
   },
   "ABOUT_US": {
     "TITLE": "Наша каманда распрацоўшчыкаў",

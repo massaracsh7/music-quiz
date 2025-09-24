@@ -8,9 +8,8 @@ describe('CategoryEdit', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [CategoryEdit]
-    })
-    .compileComponents();
+      imports: [CategoryEdit],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(CategoryEdit);
     component = fixture.componentInstance;

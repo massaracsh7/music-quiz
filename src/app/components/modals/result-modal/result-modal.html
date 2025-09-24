@@ -14,7 +14,11 @@
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" [ngClass]="isCorrect ? 'text-success' : 'text-danger'">
-          {{ isCorrect ? ('GAME_FIELD.RESULT_MODAL.TITLE_CORRECT' | translate) : ('GAME_FIELD.RESULT_MODAL.TITLE_INCORRECT' | translate) }}
+          {{
+            isCorrect
+              ? ('GAME_FIELD.RESULT_MODAL.TITLE_CORRECT' | translate)
+              : ('GAME_FIELD.RESULT_MODAL.TITLE_INCORRECT' | translate)
+          }}
         </h5>
       </div>
 

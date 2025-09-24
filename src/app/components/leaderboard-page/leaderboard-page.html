@@ -86,7 +86,10 @@
                         <div>
                           <span class="bi bi-universal-access display-4 d-block mb-2"></span>
                           <p class="h5">
-                            {{ 'LEADERBOARD.NO_DATA.TITLE' | translate: { category: currentCategoryTitle() } }}
+                            {{
+                              'LEADERBOARD.NO_DATA.TITLE'
+                                | translate: { category: currentCategoryTitle() }
+                            }}
                           </p>
                           <p class="text-muted">{{ 'LEADERBOARD.NO_DATA.SUBTITLE' | translate }}</p>
                         </div>
@@ -107,7 +110,9 @@
                   <h3 class="card-title display-5 fw-bold">
                     {{ statistics().currentDataCount }}
                   </h3>
-                  <p class="card-text fs-5">{{ 'LEADERBOARD.STATS.PLAYERS_IN_CATEGORY' | translate }}</p>
+                  <p class="card-text fs-5">
+                    {{ 'LEADERBOARD.STATS.PLAYERS_IN_CATEGORY' | translate }}
+                  </p>
                   <i class="bi bi-people-fill display-2"></i>
                 </div>
               </div>

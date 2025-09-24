@@ -6,10 +6,11 @@ import { SearchStateService } from '../../../../core/services/search-state-servi
 import { ITunesTrack } from '../../../../models/i-tunes.model';
 import { FormsModule } from '@angular/forms';
 import { LineLimiterPipe } from '../../../../shared/pipes/line-limiter-pipe';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-category-search',
-  imports: [FormsModule, LineLimiterPipe],
+  imports: [FormsModule, LineLimiterPipe, TranslatePipe],
   templateUrl: './category-search.html',
   styleUrl: './category-search.scss',
 })

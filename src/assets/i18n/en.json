@@ -4,7 +4,7 @@
     "GAME": "Game",
     "LEADERBOARD": "Leaderboard",
     "ABOUT_US": "About Us",
-    "CREATE_CATEGORY": "Create category",
+    "CATEGORY": "Categories",
     "ADMIN": "Admin"
   },
   "AUTH": {
@@ -126,6 +126,36 @@
         "DESCRIPTION": "Evgeniya has developed a leaderboard with dynamic data updates, sorting and visualization of user achievements. She also created an information page about the project developers. Implemented the functionality of creating categories, including API search in iTunes."
       }
     }
+  },
+  "CATEGORIES_PAGE": {
+    "TITLE": "Categories",
+    "CREATE_BUTTON": "Create new Category",
+    "TRACKS_COUNT": "{{count}} tracks",
+    "EDIT_BUTTON": "Edit",
+    "DELETE_BUTTON": "Delete"
+  },
+  "CATEGORY_CREATE_PAGE": {
+    "TITLE": "Create Category",
+    "BREADCRUMB": "/ Create Category",
+    "BACK_BUTTON": "Back to Categories"
+  },
+  "CATEGORY_FORM": {
+    "TITLE": "Create new Category",
+    "NAME_LABEL": "Category name",
+    "NAME_PLACEHOLDER": "Enter category name",
+    "SUBMIT_BUTTON": "Create category",
+    "MIN_TRACKS_MESSAGE": "Select at least 8 tracks to create a category",
+    "SELECTED_TRACKS": "Selected Tracks ({{count}})",
+    "REMOVE_BUTTON": "Remove"
+  },
+  "CATEGORY_SEARCH": {
+    "TITLE": "Search Tracks",
+    "PLACEHOLDER": "Search tracks on iTunes...",
+    "SEARCHING": "Searching...",
+    "SEARCHING_ITUNES": "Searching iTunes...",
+    "NO_RESULTS": "No tracks found for \"{{query}}\"",
+    "ADD_BUTTON": "Add",
+    "SELECTED_BUTTON": "Selected"
   },
   "NOT_FOUND": {
     "TITLE": "404 - Page not found",
