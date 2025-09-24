@@ -61,7 +61,7 @@
         @for (track of trackNames(); track track.id) {
           <button
             class="btn btn-outline-primary"
-            (click)="onAnswerSelected(track.name)"
+            (click)="onAnswerSelected(track.name || '')"
             [disabled]="isBeforeFirstRound()"
           >
             {{ track.name }}

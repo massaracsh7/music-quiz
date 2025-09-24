@@ -15,7 +15,7 @@ export class ResultModal {
   public totalTracks = input<number>();
   public isCorrectSignal = input<boolean>(false);
   public closeDialog = output<void>();
-  public trackResults = input<boolean[]>([]);
+  public trackResults = input<Array<boolean | null>>([]);
 
   constructor() {
     effect(() => {
