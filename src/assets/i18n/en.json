@@ -60,6 +60,11 @@
       "TITLE_INCORRECT": "You don't know!",
       "CORRECT_ANSWER": "The correct answer was:",
       "OK_BUTTON": "OK"
+    },
+    "FINISH_MODAL": {
+      "SCORE": "Score",
+      "TRACKS_OVER": "Tracks in this category are over. Choose another category",
+      "EXIT_BUTTON": "Exit"
     }
   },
   "HOME": {

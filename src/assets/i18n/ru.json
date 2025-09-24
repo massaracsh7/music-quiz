@@ -60,6 +60,11 @@
       "TITLE_INCORRECT": "Вы не знаете!",
       "CORRECT_ANSWER": "Правильный ответ:",
       "OK_BUTTON": "ОК"
+    },
+    "FINISH_MODAL": {
+      "SCORE": "Счет",
+      "TRACKS_OVER": "Треки в этой категории закончились. Выберите другую категорию",
+      "EXIT_BUTTON": "Выход"
     }
   },
   "HOME": {

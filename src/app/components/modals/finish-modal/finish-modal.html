@@ -8,10 +8,10 @@
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header d-flex">
-        <h5>Score: {{ score() }}</h5>
+        <h5>{{ 'GAME_FIELD.FINISH_MODAL.SCORE' | translate }}: {{ score() }}</h5>
       </div>
       <div class="modal-body d-flex flex-column gap-3">
-        <h5 class="modal-title">Track in category is over. Choose another category</h5>
+        <h5 class="modal-title">{{ 'GAME_FIELD.FINISH_MODAL.TRACKS_OVER' | translate }}</h5>
         <div class="d-flex flex-wrap gap-2">
           @for (category of categories(); track category.id) {
             <span
@@ -25,7 +25,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-primary" (click)="onExit(); closeDialog.emit()">
-          Exit
+          {{ 'GAME_FIELD.FINISH_MODAL.EXIT_BUTTON' | translate }}
         </button>
       </div>
     </div>

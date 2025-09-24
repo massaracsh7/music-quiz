@@ -1,10 +1,11 @@
 import { Component, effect, inject, input, output } from '@angular/core';
 import { Category } from '../../../models/category.model';
 import { Router } from '@angular/router';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-finish-modal',
-  imports: [],
+  imports: [TranslatePipe],
   templateUrl: './finish-modal.html',
   styleUrl: './finish-modal.scss',
 })

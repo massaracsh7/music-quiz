@@ -60,6 +60,11 @@
       "TITLE_INCORRECT": "Вы не ведаеце!",
       "CORRECT_ANSWER": "Правільны адказ:",
       "OK_BUTTON": "Добра"
+    },
+    "FINISH_MODAL": {
+      "SCORE": "Балы",
+      "TRACKS_OVER": "Трэкі ў гэтай катэгорыі скончыліся. Абярыце іншую катэгорыю",
+      "EXIT_BUTTON": "Выйсці"
     }
   },
   "HOME": {
