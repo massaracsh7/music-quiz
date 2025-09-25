@@ -20,6 +20,7 @@ export class AdminPage {
   public destroyRef = inject(DestroyRef);
 
   public users = this.userService.users;
+  public loadingUsers = this.userService.loadingUsers;
   public roles: UserRole[] = ['admin', 'super_user', 'user'];
   public currentUserRole = this.userService.currentUserRole;
   public canChangeRoles = this.userService.canChangeRoles;

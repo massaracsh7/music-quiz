@@ -7,7 +7,7 @@ import {
   docData,
   updateDoc,
 } from '@angular/fire/firestore';
-import { firstValueFrom, from, Observable, of, Subscription, switchMap, tap } from 'rxjs';
+import { catchError, firstValueFrom, from, Observable, of, Subscription, switchMap, tap } from 'rxjs';
 import { AuthService } from '../auth-service';
 import { AppUser, UserRole } from '../../../models/user.model';
 
@@ -20,6 +20,7 @@ export class UserService {
 
   public currentUser = computed(() => this.auth.currentUser());
   public currentUserData = signal<AppUser | null>(null);
+  public loadingUsers = signal<boolean>(true);
 
   public currentUserRole = computed<UserRole>(() => {
     return this.currentUserData()?.role ?? 'user';
@@ -58,17 +59,27 @@ export class UserService {
     );
   }
 
-  public loadUsers(): void {
-    const usersCollection = collection(this.firestore, 'users');
-    collectionData(usersCollection, { idField: 'uid' }).subscribe((users) => {
-      this.users.set(
-        (users as (AppUser & { uid: string; role?: UserRole })[]).map((u) => ({
-          ...u,
-          role: u.role ?? 'user',
-        })),
-      );
-    });
-  }
+public loadUsers(): void {
+  this.loadingUsers.set(true)
+  const usersCollection = collection(this.firestore, 'users');
+  collectionData(usersCollection, { idField: 'uid' })
+    .pipe(
+      tap((users) =>
+        this.users.set(
+          (users as (AppUser & { uid: string; role?: UserRole })[]).map((u) => ({
+            ...u,
+            role: u.role ?? 'user',
+          }))
+        )
+      ),
+      catchError((err) => {
+        console.error('Failed to load users', err);
+        return of([]);
+      }),
+      tap(() => this.loadingUsers.set(false))
+    )
+    .subscribe();
+}
 
   public isAdmin(role: UserRole): boolean {
     return role === 'admin';
