@@ -3,8 +3,7 @@ import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { getErrorMessage } from '../../../shared/utils/get-error-message';
 import { CommonModule } from '@angular/common';
 import { ShowPasswordPipe } from '../../../shared/pipes/show-password-pipe';
-import { TranslatePipe, TranslateService } from '@ngx-translate/core';
-import { translate } from '@angular/localize/tools';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-input-password',
