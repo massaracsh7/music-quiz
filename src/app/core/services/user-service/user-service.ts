@@ -10,11 +10,13 @@ import {
 import { catchError, firstValueFrom, from, Observable, of, Subscription, switchMap, tap } from 'rxjs';
 import { AuthService } from '../auth-service';
 import { AppUser, UserRole } from '../../../models/user.model';
+import { ToastService } from '../../../shared/services/toast/toast';
 
 @Injectable({ providedIn: 'root' })
 export class UserService {
   public firestore = inject(Firestore);
   public auth = inject(AuthService);
+  public toast = inject(ToastService);
 
   public users = signal<(AppUser & { uid: string })[]>([]);
 
@@ -59,27 +61,27 @@ export class UserService {
     );
   }
 
-public loadUsers(): void {
-  this.loadingUsers.set(true)
-  const usersCollection = collection(this.firestore, 'users');
-  collectionData(usersCollection, { idField: 'uid' })
-    .pipe(
-      tap((users) =>
-        this.users.set(
-          (users as (AppUser & { uid: string; role?: UserRole })[]).map((u) => ({
-            ...u,
-            role: u.role ?? 'user',
-          }))
-        )
-      ),
-      catchError((err) => {
-        console.error('Failed to load users', err);
-        return of([]);
-      }),
-      tap(() => this.loadingUsers.set(false))
-    )
-    .subscribe();
-}
+  public loadUsers(): void {
+    this.loadingUsers.set(true)
+    const usersCollection = collection(this.firestore, 'users');
+    collectionData(usersCollection, { idField: 'uid' })
+      .pipe(
+        tap((users) =>
+          this.users.set(
+            (users as (AppUser & { uid: string; role?: UserRole })[]).map((u) => ({
+              ...u,
+              role: u.role ?? 'user',
+            }))
+          )
+        ),
+        catchError((err) => {
+        this.toast.show('Failed to load users: ' + err.message, 'error');
+          return of([]);
+        }),
+        tap(() => this.loadingUsers.set(false))
+      )
+      .subscribe();
+  }
 
   public isAdmin(role: UserRole): boolean {
     return role === 'admin';
@@ -102,6 +104,6 @@ public loadUsers(): void {
           ),
         ),
       ),
-    ).then(() => {});
+    ).then(() => { });
   }
 }

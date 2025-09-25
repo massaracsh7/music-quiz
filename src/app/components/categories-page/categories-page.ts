@@ -16,6 +16,7 @@ export class CategoriesPage {
   public toast = inject(ToastService);
   public destroyRef = inject(DestroyRef);
   public categoryService = inject(CategoryService);
+  public loadingCategories = this.categoryService.loadingCategories;
 
   public showCategoryDeleteDialog = signal(false);
   public currentCategory: WritableSignal<string> = signal('');
