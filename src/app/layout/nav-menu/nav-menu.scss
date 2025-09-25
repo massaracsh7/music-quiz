@@ -22,14 +22,11 @@
   border-color: var(--bs-highlight-color);
 }
 
-@media (max-width: 1024px) {
+@media (max-width: 991px) {
   .nav-link,
   .nav-link {
     font-size: 1.4rem;
     font-weight: 700;
-  }
-
- .nav {
-    align-items: center;
+    width: 70%;
   }
 }

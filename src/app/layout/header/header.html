@@ -9,29 +9,31 @@
     >
       <span class="fs-4">Music Quiz</span>
     </a>
-    <app-theme-toggle></app-theme-toggle>
-    <div class="dropdown lang-switcher">
-      <button
-        class="btn dropdown-toggle"
-        type="button"
-        id="langDropdown"
-        data-bs-toggle="dropdown"
-        aria-expanded="false"
-      >
-        <i class="bi bi-globe2"></i> {{ currentLang() | uppercase }}
-      </button>
+    <div class="d-none d-lg-flex align-items-center">
+      <div><app-theme-toggle></app-theme-toggle></div>
+      <div class="dropdown lang-switcher">
+        <button
+          class="btn dropdown-toggle"
+          type="button"
+          id="langDropdown"
+          data-bs-toggle="dropdown"
+          aria-expanded="false"
+        >
+          <i class="bi bi-globe2"></i> {{ currentLang() | uppercase }}
+        </button>
 
-      <ul class="dropdown-menu" aria-labelledby="langDropdown">
-        <li>
-          <a class="dropdown-item cursor-pointer" (click)="switchLang('en')">English</a>
-        </li>
-        <li>
-          <a class="dropdown-item cursor-pointer" (click)="switchLang('be')">Беларуская</a>
-        </li>
-        <li>
-          <a class="dropdown-item cursor-pointer" (click)="switchLang('ru')">Русский</a>
-        </li>
-      </ul>
+        <ul class="dropdown-menu" aria-labelledby="langDropdown">
+          <li>
+            <a class="dropdown-item cursor-pointer" (click)="switchLang('en')">English</a>
+          </li>
+          <li>
+            <a class="dropdown-item cursor-pointer" (click)="switchLang('be')">Беларуская</a>
+          </li>
+          <li>
+            <a class="dropdown-item cursor-pointer" (click)="switchLang('ru')">Русский</a>
+          </li>
+        </ul>
+      </div>
     </div>
   </div>
 
@@ -43,7 +45,7 @@
     aria-controls="offcanvasMenu"
     aria-label="Toggle menu"
   >
-    <span class="bi bi-list fs-3"></span>
+    <span class="bi bi-list fs-1"></span>
   </button>
 
   <div class="d-none d-lg-flex gap-3">
@@ -63,7 +65,32 @@
     <app-user-menu data-bs-dismiss="offcanvas"></app-user-menu>
     <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
   </div>
-  <div class="offcanvas-body d-flex flex-column gap-3">
+
+<div class="offcanvas-body d-flex gap-4">
+  <div class="flex-fill">
     <app-nav-menu data-bs-dismiss="offcanvas"></app-nav-menu>
   </div>
+
+  <div class="d-flex flex-column gap-3 pt-2">
+    <app-theme-toggle></app-theme-toggle>
+    <div class="dropdown lang-switcher">
+      <button
+        class="btn dropdown-toggle"
+        type="button"
+        id="langDropdown"
+        data-bs-toggle="dropdown"
+        aria-expanded="false"
+      >
+        <i class="bi bi-globe2"></i> {{ currentLang() | uppercase }}
+      </button>
+
+      <ul class="dropdown-menu" aria-labelledby="langDropdown">
+        <li><a class="dropdown-item cursor-pointer" (click)="switchLang('en')">English</a></li>
+        <li><a class="dropdown-item cursor-pointer" (click)="switchLang('be')">Беларуская</a></li>
+        <li><a class="dropdown-item cursor-pointer" (click)="switchLang('ru')">Русский</a></li>
+      </ul>
+    </div>
+  </div>
+</div>
+
 </div>
