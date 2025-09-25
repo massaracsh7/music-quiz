@@ -56,6 +56,15 @@
       "UNEXPECTED_ERROR": "Адбылася нечаканая памылка. Калі ласка, паспрабуйце яшчэ раз"
     }
   },
+  "VALIDATION": {
+    "REQUIRED": "Поле {{fieldName}} абавязковае для запаўнення",
+    "MIN_LENGTH": "{{fieldName}} павінен змяшчаць прынамсі {{requiredLength}} сімвалаў",
+    "INVALID_EMAIL": "Няправільны фармат email",
+    "PASSWORD_LOWERCASE": "Пароль павінен змяшчаць малую літару",
+    "PASSWORD_NUMBER": "Пароль павінен змяшчаць лічбу",
+    "PASSWORD_MIN_LENGTH": "Пароль павінен змяшчаць прынамсі 6 сімвалаў",
+    "INVALID_NAME": "{{fieldName}} можа змяшчаць толькі літары, прабел, злучок або апостраф"
+  },
   "ADMIN": {
     "USERS": {
       "TITLE": "Карыстальнікі",

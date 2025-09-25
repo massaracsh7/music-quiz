@@ -18,6 +18,16 @@
       "LOGIN": "Вход в аккаунт",
       "REGISTER": "Создать новый аккаунт"
     },
+    "ERRORS": {
+      "REQUIRED": "Поле {{fieldName}} обязательно для заполнения",
+      "INVALID_EMAIL": "Введите корректный email адрес",
+      "INVALID_PASSWORD": "Пароль должен содержать не менее 6 символов",
+      "INVALID_CREDENTIALS": "Неверный email или пароль",
+      "USER_DISABLED": "Ваш аккаунт отключен",
+      "TOO_MANY_REQUESTS": "Слишком много попыток. Пожалуйста, попробуйте позже",
+      "WEAK_PASSWORD": "Пароль должен содержать не менее 6 символов",
+      "UNEXPECTED_ERROR": "Произошла непредвиденная ошибка. Пожалуйста, попробуйте снова"
+    },
     "LOGIN": {
       "TITLE": "Вход",
       "EMAIL": "Email",
@@ -26,35 +36,34 @@
       "PASSWORD_PLACEHOLDER": "Введите пароль",
       "SUBMIT": "Войти",
       "ERRORS": {
-        "REQUIRED": "Поле обязательно для заполнения",
+        "REQUIRED": "Поле {{fieldName}} обязательно для заполнения",
         "EMAIL": "Введите корректный email адрес"
       }
     },
     "REGISTER": {
-      "TITLE": "Создать аккаунт",
+      "TITLE": "Регистрация",
       "NAME": "Имя",
-      "NAME_PLACEHOLDER": "Введите ваше имя (минимум 2 символа)",
+      "NAME_PLACEHOLDER": "Введите ваше имя (не менее 2 символов)",
       "EMAIL": "Email",
-      "EMAIL_PLACEHOLDER": "Введите корректный email",
+      "EMAIL_PLACEHOLDER": "Введите email",
       "PASSWORD": "Пароль",
       "PASSWORD_PLACEHOLDER": "Введите пароль",
       "SUBMIT": "Зарегистрироваться",
       "ERRORS": {
-        "REQUIRED": "Поле обязательно для заполнения",
+        "REQUIRED": "Поле {{fieldName}} обязательно для заполнения",
         "EMAIL": "Введите корректный email адрес",
         "NAME_MIN_LENGTH": "Имя должно содержать минимум 2 символа"
       }
-    },
-    "ERRORS": {
-      "EMAIL_ALREADY_IN_USE": "Этот email уже зарегистрирован",
-      "INVALID_EMAIL": "Неверный формат email",
-      "INVALID_PASSWORD": "Пароль должен содержать не менее 6 символов",
-      "INVALID_CREDENTIALS": "Неверный email или пароль",
-      "USER_DISABLED": "Ваш аккаунт отключен",
-      "TOO_MANY_REQUESTS": "Слишком много попыток. Пожалуйста, попробуйте позже",
-      "WEAK_PASSWORD": "Пароль должен содержать не менее 6 символов",
-      "UNEXPECTED_ERROR": "Произошла непредвиденная ошибка. Пожалуйста, попробуйте снова"
     }
+  },
+  "VALIDATION": {
+    "REQUIRED": "Поле {{fieldName}} обязательно для заполнения",
+    "MIN_LENGTH": "{{fieldName}} должен содержать не менее {{requiredLength}} символов",
+    "INVALID_EMAIL": "Неверный формат email",
+    "PASSWORD_LOWERCASE": "Пароль должен содержать строчную букву",
+    "PASSWORD_NUMBER": "Пароль должен содержать цифру",
+    "PASSWORD_MIN_LENGTH": "Пароль должен содержать не менее 6 символов",
+    "INVALID_NAME": "{{fieldName}} может содержать только буквы, пробел, дефис или апостроф"
   },
   "ADMIN": {
     "USERS": {

@@ -56,6 +56,15 @@
       }
     }
   },
+  "VALIDATION": {
+    "REQUIRED": "{{fieldName}} is required",
+    "MIN_LENGTH": "{{fieldName}} must be at least {{requiredLength}} characters",
+    "INVALID_EMAIL": "Email is invalid",
+    "PASSWORD_LOWERCASE": "Password must contain a lowercase letter",
+    "PASSWORD_NUMBER": "Password must contain a number",
+    "PASSWORD_MIN_LENGTH": "Password must be at least 6 characters",
+    "INVALID_NAME": "{{fieldName}} can contain only letters, space, - or '"
+  },
   "GAME_FIELD": {
     "TITLE": "Categories",
     "CATEGORY_TITLE": "Current category:",

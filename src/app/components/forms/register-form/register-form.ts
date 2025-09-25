@@ -19,7 +19,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { CommonModule } from '@angular/common';
 import { InputPassword } from '../input-password/input-password';
 import { ToastService } from '../../../shared/services/toast/toast';
-import { TranslatePipe } from '@ngx-translate/core';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-register-form',
@@ -44,6 +44,7 @@ export class RegisterForm {
       updateOn: 'blur',
     }),
   });
+  public translate = inject(TranslateService);
   public getErrorMessage = getErrorMessage;
   public destroyRef = inject(DestroyRef);
 

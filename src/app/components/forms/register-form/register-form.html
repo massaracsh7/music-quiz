@@ -15,7 +15,7 @@
     />
     @if (form.controls.name.touched && form.controls.name.invalid) {
       <div id="name-error" class="text-danger" role="alert">
-        {{ getErrorMessage(form.controls.name, 'AUTH.REGISTER.NAME') }}
+        {{ getErrorMessage(form.controls.name, 'AUTH.REGISTER.NAME', translate) }}
       </div>
     }
   </div>
@@ -33,7 +33,7 @@
     />
     @if (form.controls.email.touched && form.controls.email.invalid) {
       <div id="email-error" class="text-danger" role="alert">
-        {{ getErrorMessage(form.controls.email, 'AUTH.REGISTER.EMAIL') }}
+        {{ getErrorMessage(form.controls.email, 'AUTH.REGISTER.EMAIL', translate)}}
       </div>
     }
   </div>
@@ -52,7 +52,7 @@
 
   @if (error()) {
     <div class="text-danger mb-3 mt-3 text-center" role="alert">
-      {{ error() }}
+      {{ error() | translate }}
     </div>
   }
 </form>
