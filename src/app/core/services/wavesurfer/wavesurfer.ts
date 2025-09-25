@@ -25,6 +25,11 @@ export class Wavesurfer {
       url: songUrl,
     });
 
+    this.wavesurfer.on('error', (error) => {
+      console.error('Wavesurfer error:', error);
+      this.isPlaying.set(false);
+    });
+
     this.wavesurfer.on('audioprocess', (currentTime) => {
       this.currentTime.set(Math.floor(currentTime));
     });

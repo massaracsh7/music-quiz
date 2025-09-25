@@ -119,7 +119,7 @@ export class GameField {
 
     effect(() => {
       const finished = this.isFinished();
-      if (finished) {
+      if (finished && !this.showResultDialog()) {
         this.onFalseAnswer();
         this.showResult();
         this.scoreCounter.increaseScore(30);
@@ -169,11 +169,8 @@ export class GameField {
   public onDialogPlay(): void {
     if (this.wavesurfer) {
       this.wavesurfer.stop();
-      this.wavesurfer.play();
-      setTimeout(() => {
-        this.wavesurfer.stop();
-      }, 20_000);
     }
+    this.wavesurfer.play();
   }
 
   public onFalseAnswer(): void {
