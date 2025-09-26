@@ -39,10 +39,7 @@ export const routes: Routes = [
     path: 'categories',
     loadComponent: () =>
       import('./components/categories-page/categories-page').then((m) => m.CategoriesPage),
-<<<<<<< HEAD
-=======
     canActivate: [authGuard],
->>>>>>> 7b6b3af (refactor: update menu items)
   },
   {
     path: 'categories/create-category',
