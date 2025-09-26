@@ -16,17 +16,22 @@ import { LeaderboardCategory } from '../../../models/leaderboard.model';
 import { ItunesService } from '../itunes-service';
 import { TrackDocument, ITunesTrack } from '../../../models/i-tunes.model';
 import { resizeItunesArtworkUrl } from '../../../shared/helpers/image-helpers';
+import { ToastService } from '../../../shared/services/toast/toast';
 
 @Injectable({ providedIn: 'root' })
 export class CategoryService {
   public firestore = inject(Firestore);
   public itunesService = inject(ItunesService);
+  public toast = inject(ToastService);
 
   public categories: Signal<Category[]>;
 
   public categoriesSignal = signal<Category[]>([]);
   public allTracksSignal = signal<ITunesTrack[]>([]);
   public allTracks = this.allTracksSignal.asReadonly();
+
+  public loadingCategories = signal<boolean>(true);
+  public loadingTracks = signal<boolean>(true);
 
   constructor() {
     const categoriesCollection = collection(this.firestore, 'categories');
@@ -73,22 +78,30 @@ export class CategoryService {
 
   public loadCategories(): void {
     const categoriesCollection = collection(this.firestore, 'categories');
-
+    this.loadingCategories.set(true);
     onSnapshot(categoriesCollection, (snapshot) => {
       const categoriesData = snapshot.docs.map((document) => document.data() as Category);
       this.categoriesSignal.set(categoriesData);
+      this.loadingCategories.set(false);
+    }, (error) => {
+      this.toast.show('Failed to load categories: ' + error.message, 'error');
+      this.loadingCategories.set(false);
     });
   }
 
   public loadAllTracks(): void {
     const tracksCollection = collection(this.firestore, 'itunesTracks');
-
+    this.loadingTracks.set(true);
     onSnapshot(tracksCollection, (snapshot) => {
       const tracksData = snapshot.docs.map((document) => {
         const trackDocument = document.data() as TrackDocument;
         return trackDocument.track;
       });
       this.allTracksSignal.set(tracksData);
+      this.loadingTracks.set(false);
+    }, (error) => {
+      this.toast.show('Failed to load tracks: ' + error.message, 'error');
+      this.loadingTracks.set(false);
     });
   }
 

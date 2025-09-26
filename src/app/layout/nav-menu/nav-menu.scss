@@ -21,3 +21,12 @@
 .nav-link.active {
   border-color: var(--bs-highlight-color);
 }
+
+@media (max-width: 991px) {
+  .nav-link,
+  .nav-link {
+    font-size: 1.4rem;
+    font-weight: 700;
+    width: 70%;
+  }
+}
