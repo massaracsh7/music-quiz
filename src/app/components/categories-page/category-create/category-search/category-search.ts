@@ -5,12 +5,12 @@ import { Subject, switchMap } from 'rxjs';
 import { SearchStateService } from '../../../../core/services/search-state-service';
 import { ITunesTrack } from '../../../../models/i-tunes.model';
 import { FormsModule } from '@angular/forms';
-import { LineLimiterPipe } from '../../../../shared/pipes/line-limiter-pipe';
+import { Ellipsis } from '../../../../shared/directives/ellipsis/ellipsis';
 import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-category-search',
-  imports: [FormsModule, LineLimiterPipe, TranslatePipe],
+  imports: [FormsModule, Ellipsis, TranslatePipe],
   templateUrl: './category-search.html',
   styleUrl: './category-search.scss',
 })

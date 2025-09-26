@@ -8,15 +8,14 @@ import { ITunesTrack } from '../../../../models/i-tunes.model';
 import { LeaderboardCategory } from '../../../../models/leaderboard.model';
 import { slugHelpers } from '../../../../shared/helpers/slug-helpers';
 import { ToastService } from '../../../../shared/services/toast/toast';
-
-import { LineLimiterPipe } from '../../../../shared/pipes/line-limiter-pipe';
+import { Ellipsis } from '../../../../shared/directives/ellipsis/ellipsis';
 import { CategorySearch } from '../category-search/category-search';
 import { Router } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-category-form',
-  imports: [ReactiveFormsModule, LineLimiterPipe, TranslatePipe],
+  imports: [ReactiveFormsModule, Ellipsis, TranslatePipe],
   providers: [CategorySearch],
   templateUrl: './category-form.html',
   styleUrl: './category-form.scss',

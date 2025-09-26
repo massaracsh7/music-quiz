@@ -16,12 +16,12 @@ import { CategoryService } from '../../../core/services/сategory-service/сateg
 import { Category } from '../../../models/category.model';
 import { ITunesTrack } from '../../../models/i-tunes.model';
 import { ToastService } from '../../../shared/services/toast/toast';
-import { LineLimiterPipe } from '../../../shared/pipes/line-limiter-pipe';
+import { Ellipsis } from '../../../shared/directives/ellipsis/ellipsis';
 import { CategoryConfirmDeleteModal } from '../../modals/category-confirm-delete-modal/category-confirm-delete-modal';
 
 @Component({
   selector: 'app-category-edit',
-  imports: [LineLimiterPipe, FormsModule, RouterLink, CategoryConfirmDeleteModal],
+  imports: [Ellipsis, FormsModule, RouterLink, CategoryConfirmDeleteModal],
   templateUrl: './category-edit.html',
   styleUrl: './category-edit.scss',
 })

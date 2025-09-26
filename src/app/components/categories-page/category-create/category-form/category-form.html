@@ -39,23 +39,23 @@
       </div>
       <div class="list-group list-group-numbered" style="max-height: 400px; overflow-y: auto;">
         @for (track of selectedTracks(); track track.trackId) {
-          <div class="list-group-item d-flex align-items-center gap-2">
+          <div class="list-group-item d-grid align-items-center gap-2" style="grid-template-columns: auto auto 1fr auto;">
             @if (track.artworkUrl60) {
               <img
                 [src]="track.artworkUrl60"
                 [alt]="track.trackName"
-                class="rounded-3 flex-shrink-0"
+                class="rounded-3"
                 style="width: 50px; height: 50px;"
               />
             }
-            <div class="flex-grow-1">
-              <p class="mb-0 text-muted small text-truncate">
-                {{ track.artistName | lineLimiter: 30 }}
+            <div style="min-width: 0">
+              <p class="mb-0 text-muted small" appEllipsis>
+                {{ track.artistName }}
               </p>
-              <h6 class="m-0 text-truncate">{{ track.trackName | lineLimiter: 30 }}</h6>
+              <h6 class="m-0" appEllipsis >{{ track.trackName }}</h6>
             </div>
             <button
-              class="btn btn-outline-danger btn-sm flex-shrink-0"
+              class="btn btn-outline-danger btn-sm"
               (click)="onTrackSelect(track)"
               title="Remove from category"
             >

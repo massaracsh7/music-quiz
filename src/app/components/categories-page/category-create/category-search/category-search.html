@@ -48,41 +48,39 @@
     }
 
     @if (tracks().length > 0 && !isLoading()) {
-      <div style="max-height: 550px; overflow-y: auto;">
-        <div class="list-group list-group-numbered">
-          @for (track of tracks(); track track.trackId) {
-            <div class="list-group-item d-flex align-items-center gap-2">
-              @if (track.artworkUrl60) {
-                <img
-                  [src]="track.artworkUrl60"
-                  [alt]="track.trackName"
-                  class="rounded-3 flex-shrink-0"
-                  style="width: 40px; height: 40px; object-fit: cover;"
-                />
-              }
-              <div class="flex-grow-1">
-                <p class="mb-0 text-muted small">{{ track.artistName | lineLimiter: 30 }}</p>
-                <h6 class="m-0">{{ track.trackName | lineLimiter: 30 }}</h6>
-              </div>
-              <button
-                type="button"
-                class="btn btn-sm flex-shrink-0"
-                (click)="onTrackSelect(track)"
-                [class.btn-success]="track.isSelected"
-                [class.btn-primary]="!track.isSelected"
-                title="{{ track.isSelected? 'Remove from category' : 'Add to category' }}"
-              >
-                @if (track.isSelected) {
-                  <i class="bi bi-check-lg me-1"></i>
-                  Added
-                } @else {
-                  <i class="bi bi-plus-lg me-1"></i>
-                  Add
-                }
-              </button>
+      <div class="list-group list-group-numbered" style="max-height: 550px; overflow-y: auto;">
+        @for (track of tracks(); track track.trackId) {
+          <div class="list-group-item d-grid align-items-center gap-2" style="grid-template-columns: auto auto 1fr auto;">
+            @if (track.artworkUrl60) {
+              <img
+                [src]="track.artworkUrl60"
+                [alt]="track.trackName"
+                class="rounded-3"
+                style="width: 40px; height: 40px;"
+              />
+            }
+            <div style="min-width: 0">
+              <p class="mb-0 text-muted small" appEllipsis>{{ track.artistName }}</p>
+              <h6 class="m-0" appEllipsis >{{ track.trackName }}</h6>
             </div>
-          }
-        </div>
+            <button
+              type="button"
+              class="btn btn-sm"
+              (click)="onTrackSelect(track)"
+              [class.btn-success]="track.isSelected"
+              [class.btn-primary]="!track.isSelected"
+              title="{{ track.isSelected? 'Remove from category' : 'Add to category' }}"
+            >
+              @if (track.isSelected) {
+                <i class="bi bi-check-lg me-1"></i>
+                {{ 'CATEGORY_SEARCH.SELECTED_BUTTON' | translate }}
+              } @else {
+                <i class="bi bi-plus-lg me-1"></i>
+                {{ 'CATEGORY_SEARCH.ADD_BUTTON' | translate }}
+              }
+            </button>
+          </div>
+        }
       </div>
     }
 
