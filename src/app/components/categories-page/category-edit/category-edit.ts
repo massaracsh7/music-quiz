@@ -18,6 +18,7 @@ import { ITunesTrack } from '../../../models/i-tunes.model';
 import { ToastService } from '../../../shared/services/toast/toast';
 import { Ellipsis } from '../../../shared/directives/ellipsis/ellipsis';
 import { CategoryConfirmDeleteModal } from '../../modals/category-confirm-delete-modal/category-confirm-delete-modal';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-category-edit',
@@ -27,6 +28,7 @@ import { CategoryConfirmDeleteModal } from '../../modals/category-confirm-delete
 })
 export class CategoryEdit implements AfterViewInit {
   @ViewChild('searchInput') public searchInput!: ElementRef<HTMLInputElement>;
+  public translate = inject(TranslateService);
 
   public category = signal<Category | null>(null);
   public loading = signal(true);
@@ -80,8 +82,10 @@ export class CategoryEdit implements AfterViewInit {
           this.loading.set(false);
         },
         error: () => {
-          this.toast.show('Error loading category', 'error');
-          this.loading.set(false);
+          this.toast.show(
+            this.translate.instant('TOAST.CATEGORY_LOAD_ERROR'),
+            'error'
+          ); this.loading.set(false);
         },
       });
   }
@@ -102,7 +106,10 @@ export class CategoryEdit implements AfterViewInit {
           this.loading.set(false);
         },
         error: () => {
-          this.toast.show('Error loading tracks', 'error');
+          this.toast.show(
+            this.translate.instant('TOAST.TRACKS_LOAD_ERROR'),
+            'error'
+          );
         },
       });
   }
@@ -126,7 +133,10 @@ export class CategoryEdit implements AfterViewInit {
         error: (error) => {
           this.searchLoading.set(false);
           this.searchResults.set([]);
-          this.toast.show('Error searching iTunes. Please try again.', 'error');
+          this.toast.show(
+            this.translate.instant('TOAST.ITUNES_SEARCH_ERROR'),
+            'error'
+          );
           console.error('Search error:', error);
         },
       });
@@ -166,13 +176,18 @@ export class CategoryEdit implements AfterViewInit {
         .pipe(takeUntilDestroyed(this.destroyRef))
         .subscribe({
           next: () => {
-            this.toast.show('Category updated successfully', 'success');
+            this.toast.show(
+              this.translate.instant('TOAST.CATEGORY_UPDATED'),
+              'success'
+            );
             this.saving.set(false);
             void this.router.navigate(['/categories']);
           },
           error: () => {
-            this.toast.show('Error updating category', 'error');
-            this.saving.set(false);
+            this.toast.show(
+              this.translate.instant('TOAST.CATEGORY_UPDATE_FAILED'),
+              'error'
+            ); this.saving.set(false);
           },
         });
       this.categoryService
@@ -194,12 +209,17 @@ export class CategoryEdit implements AfterViewInit {
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: () => {
-          this.toast.show('Category deleted successfully', 'success');
+          this.toast.show(
+            this.translate.instant('TOAST.CATEGORY_DELETED'),
+            'success'
+          );
           void this.router.navigate(['/categories']);
         },
         error: () => {
-          this.toast.show('Error deleting category', 'error');
-          this.saving.set(false);
+          this.toast.show(
+            this.translate.instant('TOAST.CATEGORY_DELETE_FAILED'),
+            'error'
+          ); this.saving.set(false);
         },
       });
     this.categoryService

@@ -6,7 +6,7 @@ import { FormsModule } from '@angular/forms';
 import { catchError, of, tap } from 'rxjs';
 import { ToastService } from '../../shared/services/toast/toast';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { TranslatePipe } from '@ngx-translate/core';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-admin-page',
@@ -16,6 +16,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 })
 export class AdminPage {
   public userService = inject(UserService);
+  public translate = inject(TranslateService);
   public toast = inject(ToastService);
   public destroyRef = inject(DestroyRef);
 
@@ -46,11 +47,16 @@ export class AdminPage {
       .updateUserRole(user.uid, newRole)
       .pipe(
         tap(() => {
-          this.toast.show(`Role of "${user.email}" changed successfully`, 'success');
+          this.toast.show(
+            this.translate.instant('TOAST.ROLE_CHANGED', { email: user.email }),
+            'success'
+          );
         }),
         catchError((error) => {
-          this.toast.show(`Failed to change role: ${error.message}`, 'error');
-          return of();
+          this.toast.show(
+            this.translate.instant('TOAST.ROLE_CHANGE_FAILED', { message: error.message }),
+            'error'
+          ); return of();
         }),
         takeUntilDestroyed(this.destroyRef),
       )

@@ -94,7 +94,10 @@ export class RegisterForm {
       )
       .subscribe((user) => {
         if (user) {
-          this.toast.show(`Welcome, ${user.displayName}!`, 'success');
+          this.toast.show(
+            this.translate.instant('TOAST.WELCOME', { name: user.displayName }),
+            'success'
+          ); 
           localStorage.removeItem('registerFormDraft');
           this.router.navigate(['/']);
         }

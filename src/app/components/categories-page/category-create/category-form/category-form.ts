@@ -11,7 +11,7 @@ import { ToastService } from '../../../../shared/services/toast/toast';
 import { Ellipsis } from '../../../../shared/directives/ellipsis/ellipsis';
 import { CategorySearch } from '../category-search/category-search';
 import { Router } from '@angular/router';
-import { TranslatePipe } from '@ngx-translate/core';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-category-form',
@@ -31,6 +31,7 @@ export class CategoryForm {
   public categoryName = signal<string>('');
   public selectedTracks = this.searchState.selectedTracks;
 
+  public translate = inject(TranslateService);
   private categoryService = inject(CategoryService);
   private destroyRef = inject(DestroyRef);
   private search = inject(CategorySearch);
@@ -59,14 +60,18 @@ export class CategoryForm {
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: () => {
-          this.toast.show(`Category "${category.title}" has been successfully created`, 'success');
-          this.categoryForm.reset();
+          this.toast.show(
+            this.translate.instant('TOAST.CATEGORY_CREATED', { title: category.title }),
+            'success'
+          ); this.categoryForm.reset();
           this.searchState.clearSelectedTracks();
           void this.router.navigate(['/categories']);
         },
         error: (error) => {
-          this.toast.show('An error occurred when creating the category', 'error');
-          console.error('Error creating category', error);
+          this.toast.show(
+            this.translate.instant('TOAST.CATEGORY_CREATE_FAILED'),
+            'error'
+          ); console.error('Error creating category', error);
           void this.router.navigate(['/categories']);
         },
       });

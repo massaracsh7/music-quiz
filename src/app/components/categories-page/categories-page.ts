@@ -4,7 +4,7 @@ import { CategoryConfirmDeleteModal } from '../modals/category-confirm-delete-mo
 import { CategoryService } from '../../core/services/сategory-service/сategory-service';
 import { ToastService } from '../../shared/services/toast/toast';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { TranslatePipe } from '@ngx-translate/core';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { Ellipsis } from '../../shared/directives/ellipsis/ellipsis';
 import { UserService } from '../../core/services/user-service/user-service';
 
@@ -20,6 +20,7 @@ export class CategoriesPage {
   public categoryService = inject(CategoryService);
   public loadingCategories = this.categoryService.loadingCategories;
   public usersService = inject(UserService);
+  public translate = inject(TranslateService);
 
   public showCategoryDeleteDialog = signal(false);
   public currentCategory: WritableSignal<string> = signal('');
@@ -63,10 +64,16 @@ export class CategoriesPage {
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: () => {
-          this.toast.show('Category deleted successfully', 'success');
+          this.toast.show(
+            this.translate.instant('TOAST.CATEGORY_DELETED'),
+            'success'
+          );
         },
         error: () => {
-          this.toast.show('Error deleting category', 'error');
+          this.toast.show(
+            this.translate.instant('TOAST.CATEGORY_DELETE_FAILED'),
+            'error'
+          );
         },
       });
     this.categoryService

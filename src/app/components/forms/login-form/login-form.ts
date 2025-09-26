@@ -81,8 +81,10 @@ export class LoginForm {
       )
       .subscribe((user) => {
         if (user) {
-          this.toast.show(`Welcome, ${user.displayName}!`, 'success');
-          this.router.navigate(['/']);
+          this.toast.show(
+            this.translate.instant('TOAST.WELCOME', { name: user.displayName }),
+            'success'
+          ); this.router.navigate(['/']);
         }
       });
   }
