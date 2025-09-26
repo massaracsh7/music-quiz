@@ -2,29 +2,44 @@
   class="modal fade"
   #finishModal
   tabindex="-1"
+  role="dialog"
+  aria-modal="true"
+  [attr.aria-labelledby]="'finish-modal-title'"
   [class.show]="showFinishDialog()"
   [style.display]="showFinishDialog() ? 'block' : 'none'"
 >
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header d-flex">
-        <h5>{{ 'GAME_FIELD.FINISH_MODAL.SCORE' | translate }}: {{ score() }}</h5>
+        <h5 id="finish-modal-title" aria-live="polite">
+          {{ 'GAME_FIELD.FINISH_MODAL.SCORE' | translate }}: {{ score() }}
+        </h5>
       </div>
+
       <div class="modal-body d-flex flex-column gap-3">
         <h5 class="modal-title">{{ 'GAME_FIELD.FINISH_MODAL.TRACKS_OVER' | translate }}</h5>
-        <div class="d-flex flex-wrap gap-2">
+        <div class="d-flex flex-wrap gap-2" role="list" aria-label="Available categories">
           @for (category of categories(); track category.id) {
             <span
               class="badge bg-primary badge-hover"
+              role="button"
+              tabindex="0"
               (click)="onCategorySelected.emit(category); closeDialog.emit()"
+              (keydown.enter)="onCategorySelected.emit(category); closeDialog.emit()"
             >
               {{ category.title }}
             </span>
           }
         </div>
       </div>
+
       <div class="modal-footer">
-        <button type="button" class="btn btn-primary" (click)="onExit(); closeDialog.emit()">
+        <button
+          type="button"
+          class="btn btn-primary"
+          (click)="onExit(); closeDialog.emit()"
+          aria-label="{{ 'GAME_FIELD.FINISH_MODAL.EXIT_BUTTON' | translate }}"
+        >
           {{ 'GAME_FIELD.FINISH_MODAL.EXIT_BUTTON' | translate }}
         </button>
       </div>

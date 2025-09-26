@@ -1,12 +1,19 @@
 <div
   class="modal fade"
+  role="dialog"
+  aria-modal="true"
+  [attr.aria-labelledby]="'category-delete-title'"
   [class.show]="showCategoryDeleteDialog()"
   [style.display]="showCategoryDeleteDialog() ? 'block' : 'none'"
 >
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-body">
-        <h5 class="modal-title text-center">
+        <h5
+          id="category-delete-title"
+          class="modal-title text-center"
+          aria-live="polite"
+        >
           {{ 'GAME_FIELD.CATEGORY_DELETE_MODAL.TITLE' | translate }}
         </h5>
       </div>
@@ -16,6 +23,7 @@
             type="button"
             class="btn btn-primary bg-danger w-100"
             (click)="closeCategoryDialog.emit()"
+            aria-label="{{ 'GAME_FIELD.CATEGORY_DELETE_MODAL.CANCEL_BUTTON' | translate }}"
           >
             {{ 'GAME_FIELD.CATEGORY_DELETE_MODAL.CANCEL_BUTTON' | translate }}
           </button>
@@ -23,6 +31,7 @@
             type="button"
             class="btn btn-primary bg-success w-100"
             (click)="onCategorySelectDelete.emit(selectedCategory())"
+            aria-label="{{ 'GAME_FIELD.CATEGORY_DELETE_MODAL.CONFIRM_BUTTON' | translate }}"
           >
             {{ 'GAME_FIELD.CATEGORY_DELETE_MODAL.CONFIRM_BUTTON' | translate }}
           </button>
