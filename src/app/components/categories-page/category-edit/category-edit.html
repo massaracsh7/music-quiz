@@ -154,7 +154,30 @@
           </div>
         </div>
 
-        <div class="card-body">
+        <div class="card-body pt-0">
+          <div class="card-body">
+            <form [formGroup]="categoryForm">
+                <label for="categoryTitle" class="form-label">Category Name</label>
+                <input
+                  id="categoryTitle"
+                  type="text"
+                  class="form-control"
+                  formControlName="title"
+                  placeholder="Enter category name"
+                  [class.is-invalid]="categoryForm.get('title')?.invalid && categoryForm.get('title')?.touched"
+                />
+                @if (categoryForm.get('title')?.invalid && categoryForm.get('title')?.touched) {
+                  <div class="invalid-feedback">
+                    @if (categoryForm.get('title')?.errors?.['required']) {
+                      Category name is required
+                    }
+                    @if (categoryForm.get('title')?.errors?.['minlength']) {
+                      Category name must be at least 3 characters
+                    }
+                  </div>
+                }
+            </form>
+          </div>
           @if (loading()) {
             <div class="text-center py-3">
               <div class="spinner-border text-primary" role="status">
