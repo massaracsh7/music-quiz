@@ -5,7 +5,8 @@ import { CategoryService } from '../../core/services/сategory-service/сategory
 import { ToastService } from '../../shared/services/toast/toast';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { TranslatePipe } from '@ngx-translate/core';
-import {Ellipsis} from '../../shared/directives/ellipsis/ellipsis';
+import { Ellipsis } from '../../shared/directives/ellipsis/ellipsis';
+import { UserService } from '../../core/services/user-service/user-service';
 
 @Component({
   selector: 'app-categories-page',
@@ -18,6 +19,7 @@ export class CategoriesPage {
   public destroyRef = inject(DestroyRef);
   public categoryService = inject(CategoryService);
   public loadingCategories = this.categoryService.loadingCategories;
+  public usersService = inject(UserService);
 
   public showCategoryDeleteDialog = signal(false);
   public currentCategory: WritableSignal<string> = signal('');
