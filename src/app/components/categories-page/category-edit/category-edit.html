@@ -28,7 +28,6 @@
   </div>
 
   <div class="row">
-    <!-- Левая колонка: Выбранные треки и управление -->
     <div class="col-lg-6">
       <div class="card shadow mb-4">
         <div
@@ -144,7 +143,6 @@
               type="text"
               class="form-control"
               [(ngModel)]="searchQuery"
-              [disabled]="isSearching()"
               placeholder="Search tracks on iTunes..."
               (keydown.enter)="onSearch()"
             />

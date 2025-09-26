@@ -22,7 +22,6 @@
       <input
         type="text"
         class="form-control"
-        [disabled]="isSearching()"
         [(ngModel)]="searchQuery"
         [placeholder]="'CATEGORY_SEARCH.PLACEHOLDER' | translate"
         (keydown.enter)="onSearchInput()"
