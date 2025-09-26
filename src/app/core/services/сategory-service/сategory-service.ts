@@ -126,6 +126,13 @@ export class CategoryService {
     );
   }
 
+  public updateLeaderboardCategory(category: Category): Observable<void> {
+    const categoriesDocumentReference = doc(this.firestore, 'leaderboardCategories', category.id);
+    return from(setDoc(categoriesDocumentReference, category)).pipe(
+      switchMap(() => this.itunesService.cacheTracks(category.tracks || [])),
+    );
+  }
+
   public deleteCategory(id: string): Observable<void> {
     const categoriesDocumentReference = doc(this.firestore, 'categories', id);
     return from(deleteDoc(categoriesDocumentReference));

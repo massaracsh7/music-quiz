@@ -20,9 +20,6 @@ export class NavMenu {
   public navShowList = computed(() =>
     this.navList.filter((item) => {
       switch (item.path) {
-        case '/categories': {
-          return this.users.canCreateCategories();
-        }
         case '/admin': {
           return this.users.canChangeRoles();
         }

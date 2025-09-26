@@ -39,7 +39,6 @@ export const routes: Routes = [
     path: 'categories',
     loadComponent: () =>
       import('./components/categories-page/categories-page').then((m) => m.CategoriesPage),
-    canActivate: [roleGuard(['admin', 'super_user'])],
   },
   {
     path: 'categories/create-category',

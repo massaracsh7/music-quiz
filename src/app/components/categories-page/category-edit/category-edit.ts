@@ -9,19 +9,19 @@ import {
   WritableSignal,
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { FormGroup, FormControl, Validators, FormsModule } from '@angular/forms';
+import { FormGroup, FormControl, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { SearchService } from '../../../core/services/search-service';
 import { CategoryService } from '../../../core/services/сategory-service/сategory-service';
 import { Category } from '../../../models/category.model';
 import { ITunesTrack } from '../../../models/i-tunes.model';
 import { ToastService } from '../../../shared/services/toast/toast';
-import { LineLimiterPipe } from '../../../shared/pipes/line-limiter-pipe';
+import { Ellipsis } from '../../../shared/directives/ellipsis/ellipsis';
 import { CategoryConfirmDeleteModal } from '../../modals/category-confirm-delete-modal/category-confirm-delete-modal';
 
 @Component({
   selector: 'app-category-edit',
-  imports: [LineLimiterPipe, FormsModule, RouterLink, CategoryConfirmDeleteModal],
+  imports: [Ellipsis, FormsModule, RouterLink, CategoryConfirmDeleteModal, ReactiveFormsModule],
   templateUrl: './category-edit.html',
   styleUrl: './category-edit.scss',
 })
@@ -175,6 +175,14 @@ export class CategoryEdit implements AfterViewInit {
             this.saving.set(false);
           },
         });
+      this.categoryService
+        .updateLeaderboardCategory({
+          ...this.category()!,
+          title: this.categoryForm.value.title,
+          tracks: this.categoryTracks().map((track) => track.trackId),
+        })
+        .pipe(takeUntilDestroyed(this.destroyRef))
+        .subscribe();
     }
   }
 
