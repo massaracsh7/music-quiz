@@ -2,9 +2,11 @@ import {
   AfterViewInit,
   Component,
   DestroyRef,
+  effect,
   ElementRef,
   inject,
   signal,
+  viewChild,
   ViewChild,
   WritableSignal,
 } from '@angular/core';
@@ -26,8 +28,8 @@ import { TranslateService } from '@ngx-translate/core';
   templateUrl: './category-edit.html',
   styleUrl: './category-edit.scss',
 })
-export class CategoryEdit implements AfterViewInit {
-  @ViewChild('searchInput') public searchInput!: ElementRef<HTMLInputElement>;
+export class CategoryEdit {
+  public searchInput = viewChild<ElementRef<HTMLInputElement>>('searchInput');
   public translate = inject(TranslateService);
 
   public category = signal<Category | null>(null);
@@ -59,10 +61,11 @@ export class CategoryEdit implements AfterViewInit {
     if (categoryId) {
       this.loadCategory(categoryId);
     }
-  }
 
-  public ngAfterViewInit(): void {
-    this.searchInput.nativeElement.focus();
+    effect(() => {
+      const el = this.searchInput();
+      if (el) el.nativeElement.focus();
+    });
   }
 
   public loadCategory(id: string): void {
@@ -146,7 +149,6 @@ export class CategoryEdit implements AfterViewInit {
     this.searchQuery.set('');
     this.searchResults.set([]);
     this.isSearching.set(false);
-    this.searchInput.nativeElement.focus();
   }
 
   public isTrackInCategory(trackId: number): boolean {
