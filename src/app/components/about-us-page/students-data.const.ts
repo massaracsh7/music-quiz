@@ -26,4 +26,3 @@ export const students: StudentInterface[] = [
     linGit: 'https://github.com/jnuka',
   },
 ];
-

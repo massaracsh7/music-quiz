@@ -64,16 +64,10 @@ export class CategoriesPage {
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: () => {
-          this.toast.show(
-            this.translate.instant('TOAST.CATEGORY_DELETED'),
-            'success'
-          );
+          this.toast.show(this.translate.instant('TOAST.CATEGORY_DELETED'), 'success');
         },
         error: () => {
-          this.toast.show(
-            this.translate.instant('TOAST.CATEGORY_DELETE_FAILED'),
-            'error'
-          );
+          this.toast.show(this.translate.instant('TOAST.CATEGORY_DELETE_FAILED'), 'error');
         },
       });
     this.categoryService

@@ -81,34 +81,44 @@ export class CategoryService {
   public loadCategories(): void {
     const categoriesCollection = collection(this.firestore, 'categories');
     this.loadingCategories.set(true);
-    onSnapshot(categoriesCollection, (snapshot) => {
-      const categoriesData = snapshot.docs.map((document) => document.data() as Category);
-      this.categoriesSignal.set(categoriesData);
-      this.loadingCategories.set(false);
-    }, (error) => {
-      this.toast.show(
-        this.translate.instant('TOAST.CATEGORIES_LOAD_FAILED', { message: error.message }),
-        'error'
-      ); this.loadingCategories.set(false);
-    });
+    onSnapshot(
+      categoriesCollection,
+      (snapshot) => {
+        const categoriesData = snapshot.docs.map((document) => document.data() as Category);
+        this.categoriesSignal.set(categoriesData);
+        this.loadingCategories.set(false);
+      },
+      (error) => {
+        this.toast.show(
+          this.translate.instant('TOAST.CATEGORIES_LOAD_FAILED', { message: error.message }),
+          'error',
+        );
+        this.loadingCategories.set(false);
+      },
+    );
   }
 
   public loadAllTracks(): void {
     const tracksCollection = collection(this.firestore, 'itunesTracks');
     this.loadingTracks.set(true);
-    onSnapshot(tracksCollection, (snapshot) => {
-      const tracksData = snapshot.docs.map((document) => {
-        const trackDocument = document.data() as TrackDocument;
-        return trackDocument.track;
-      });
-      this.allTracksSignal.set(tracksData);
-      this.loadingTracks.set(false);
-    }, (error) => {
-      this.toast.show(
-        this.translate.instant('TOAST.TRACKS_LOAD_FAILED', { message: error.message }),
-        'error'
-      ); this.loadingTracks.set(false);
-    });
+    onSnapshot(
+      tracksCollection,
+      (snapshot) => {
+        const tracksData = snapshot.docs.map((document) => {
+          const trackDocument = document.data() as TrackDocument;
+          return trackDocument.track;
+        });
+        this.allTracksSignal.set(tracksData);
+        this.loadingTracks.set(false);
+      },
+      (error) => {
+        this.toast.show(
+          this.translate.instant('TOAST.TRACKS_LOAD_FAILED', { message: error.message }),
+          'error',
+        );
+        this.loadingTracks.set(false);
+      },
+    );
   }
 
   public getTracksByIds(trackIds: number[]): Observable<ITunesTrack[]> {

@@ -48,20 +48,23 @@
     }
 
     @if (tracks().length > 0 && !isLoading()) {
-      <div class="list-group list-group-numbered" style="max-height: 550px; overflow-y: auto;">
+      <div class="list-group list-group-numbered" style="max-height: 550px; overflow-y: auto">
         @for (track of tracks(); track track.trackId) {
-          <div class="list-group-item d-grid align-items-center gap-2" style="grid-template-columns: auto auto 1fr auto;">
+          <div
+            class="list-group-item d-grid align-items-center gap-2"
+            style="grid-template-columns: auto auto 1fr auto"
+          >
             @if (track.artworkUrl60) {
               <img
                 [src]="track.artworkUrl60"
                 [alt]="track.trackName"
                 class="rounded-3"
-                style="width: 40px; height: 40px;"
+                style="width: 40px; height: 40px"
               />
             }
             <div style="min-width: 0">
               <p class="mb-0 text-muted small" appEllipsis>{{ track.artistName }}</p>
-              <h6 class="m-0" appEllipsis >{{ track.trackName }}</h6>
+              <h6 class="m-0" appEllipsis>{{ track.trackName }}</h6>
             </div>
             <button
               type="button"
@@ -69,7 +72,7 @@
               (click)="onTrackSelect(track)"
               [class.btn-success]="track.isSelected"
               [class.btn-primary]="!track.isSelected"
-              title="{{ track.isSelected? 'Remove from category' : 'Add to category' }}"
+              title="{{ track.isSelected ? 'Remove from category' : 'Add to category' }}"
             >
               @if (track.isSelected) {
                 <i class="bi bi-check-lg me-1"></i>

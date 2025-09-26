@@ -1,13 +1,12 @@
 import { Directive, ElementRef, Renderer2 } from '@angular/core';
 
 @Directive({
-  selector: '[appEllipsis]'
+  selector: '[appEllipsis]',
 })
 export class Ellipsis {
-
   constructor(
     public element: ElementRef<HTMLElement>,
-    private renderer: Renderer2
+    private renderer: Renderer2,
   ) {
     this.addStylesToElement();
   }

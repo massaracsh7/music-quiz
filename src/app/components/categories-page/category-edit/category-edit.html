@@ -75,29 +75,40 @@
             </div>
           }
           @if (searchResults().length > 0 && !searchLoading()) {
-            <div style="max-height: 550px; overflow-y: auto;">
+            <div style="max-height: 550px; overflow-y: auto">
               <div class="list-group list-group-numbered">
                 @for (track of searchResults(); track track.trackId) {
-                  <div class="list-group-item d-grid align-items-center gap-2" style="grid-template-columns: auto auto 1fr auto;">
+                  <div
+                    class="list-group-item d-grid align-items-center gap-2"
+                    style="grid-template-columns: auto auto 1fr auto"
+                  >
                     @if (track.artworkUrl60) {
                       <img
                         [src]="track.artworkUrl60"
                         [alt]="track.trackName"
                         class="rounded-3"
-                        style="width: 40px; height: 40px;"
+                        style="width: 40px; height: 40px"
                       />
                     }
                     <div style="min-width: 0">
                       <p class="mb-0 text-muted small" appEllipsis>{{ track.artistName }}</p>
-                      <h6 class="m-0" appEllipsis> {{ track.trackName }}</h6>
+                      <h6 class="m-0" appEllipsis>{{ track.trackName }}</h6>
                     </div>
                     <button
                       type="button"
                       class="btn btn-sm"
-                      (click)="isTrackInCategory(track.trackId) ? removeTrackFromCategory(track.trackId) : addTrackToCategory(track)"
+                      (click)="
+                        isTrackInCategory(track.trackId)
+                          ? removeTrackFromCategory(track.trackId)
+                          : addTrackToCategory(track)
+                      "
                       [class.btn-success]="isTrackInCategory(track.trackId)"
                       [class.btn-primary]="!isTrackInCategory(track.trackId)"
-                      title="{{ isTrackInCategory(track.trackId) ? 'Remove from category' : 'Add to category' }}"
+                      title="{{
+                        isTrackInCategory(track.trackId)
+                          ? 'Remove from category'
+                          : 'Add to category'
+                      }}"
                     >
                       @if (isTrackInCategory(track.trackId)) {
                         <i class="bi bi-check-lg me-1"></i>
@@ -113,7 +124,7 @@
             </div>
           } @else if (
             searchResults().length === 0 && searchQuery() && isSearching() && !searchLoading()
-            ) {
+          ) {
             <div class="alert alert-warning text-center">
               <p class="m-0">
                 <span class="bi bi-exclamation-octagon me-2"></span>
@@ -157,25 +168,27 @@
         <div class="card-body pt-0">
           <div class="card-body">
             <form [formGroup]="categoryForm">
-                <label for="categoryTitle" class="form-label">Category Name</label>
-                <input
-                  id="categoryTitle"
-                  type="text"
-                  class="form-control"
-                  formControlName="title"
-                  placeholder="Enter category name"
-                  [class.is-invalid]="categoryForm.get('title')?.invalid && categoryForm.get('title')?.touched"
-                />
-                @if (categoryForm.get('title')?.invalid && categoryForm.get('title')?.touched) {
-                  <div class="invalid-feedback">
-                    @if (categoryForm.get('title')?.errors?.['required']) {
-                      Category name is required
-                    }
-                    @if (categoryForm.get('title')?.errors?.['minlength']) {
-                      Category name must be at least 3 characters
-                    }
-                  </div>
-                }
+              <label for="categoryTitle" class="form-label">Category Name</label>
+              <input
+                id="categoryTitle"
+                type="text"
+                class="form-control"
+                formControlName="title"
+                placeholder="Enter category name"
+                [class.is-invalid]="
+                  categoryForm.get('title')?.invalid && categoryForm.get('title')?.touched
+                "
+              />
+              @if (categoryForm.get('title')?.invalid && categoryForm.get('title')?.touched) {
+                <div class="invalid-feedback">
+                  @if (categoryForm.get('title')?.errors?.['required']) {
+                    Category name is required
+                  }
+                  @if (categoryForm.get('title')?.errors?.['minlength']) {
+                    Category name must be at least 3 characters
+                  }
+                </div>
+              }
             </form>
           </div>
           @if (loading()) {
@@ -196,15 +209,21 @@
                 <p class="alert alert-info">Minimum 8 tracks required.</p>
               }
 
-              <div class="list-group list-group-numbered" style="max-height: 575px; overflow-y: auto;">
+              <div
+                class="list-group list-group-numbered"
+                style="max-height: 575px; overflow-y: auto"
+              >
                 @for (track of categoryTracks(); track track.trackId) {
-                  <div class="list-group-item d-grid align-items-center gap-2" style="grid-template-columns: auto auto 1fr auto;">
+                  <div
+                    class="list-group-item d-grid align-items-center gap-2"
+                    style="grid-template-columns: auto auto 1fr auto"
+                  >
                     @if (track.artworkUrl60) {
                       <img
                         [src]="track.artworkUrl60"
                         [alt]="track.trackName"
                         class="rounded-3"
-                        style="width: 50px; height: 50px;"
+                        style="width: 50px; height: 50px"
                       />
                     }
                     <div style="min-width: 0">

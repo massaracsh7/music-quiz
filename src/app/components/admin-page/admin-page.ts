@@ -49,14 +49,15 @@ export class AdminPage {
         tap(() => {
           this.toast.show(
             this.translate.instant('TOAST.ROLE_CHANGED', { email: user.email }),
-            'success'
+            'success',
           );
         }),
         catchError((error) => {
           this.toast.show(
             this.translate.instant('TOAST.ROLE_CHANGE_FAILED', { message: error.message }),
-            'error'
-          ); return of();
+            'error',
+          );
+          return of();
         }),
         takeUntilDestroyed(this.destroyRef),
       )

@@ -66,31 +66,30 @@
     <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
   </div>
 
-<div class="offcanvas-body d-flex gap-4">
-  <div class="flex-fill">
-    <app-nav-menu data-bs-dismiss="offcanvas"></app-nav-menu>
-  </div>
+  <div class="offcanvas-body d-flex gap-4">
+    <div class="flex-fill">
+      <app-nav-menu data-bs-dismiss="offcanvas"></app-nav-menu>
+    </div>
 
-  <div class="d-flex flex-column gap-3 pt-2">
-    <app-theme-toggle></app-theme-toggle>
-    <div class="dropdown lang-switcher">
-      <button
-        class="btn dropdown-toggle"
-        type="button"
-        id="langDropdown"
-        data-bs-toggle="dropdown"
-        aria-expanded="false"
-      >
-        <i class="bi bi-globe2"></i> {{ currentLang() | uppercase }}
-      </button>
+    <div class="d-flex flex-column gap-3 pt-2">
+      <app-theme-toggle></app-theme-toggle>
+      <div class="dropdown lang-switcher">
+        <button
+          class="btn dropdown-toggle"
+          type="button"
+          id="langDropdown"
+          data-bs-toggle="dropdown"
+          aria-expanded="false"
+        >
+          <i class="bi bi-globe2"></i> {{ currentLang() | uppercase }}
+        </button>
 
-      <ul class="dropdown-menu" aria-labelledby="langDropdown">
-        <li><a class="dropdown-item cursor-pointer" (click)="switchLang('en')">English</a></li>
-        <li><a class="dropdown-item cursor-pointer" (click)="switchLang('be')">Беларуская</a></li>
-        <li><a class="dropdown-item cursor-pointer" (click)="switchLang('ru')">Русский</a></li>
-      </ul>
+        <ul class="dropdown-menu" aria-labelledby="langDropdown">
+          <li><a class="dropdown-item cursor-pointer" (click)="switchLang('en')">English</a></li>
+          <li><a class="dropdown-item cursor-pointer" (click)="switchLang('be')">Беларуская</a></li>
+          <li><a class="dropdown-item cursor-pointer" (click)="switchLang('ru')">Русский</a></li>
+        </ul>
+      </div>
     </div>
   </div>
-</div>
-
 </div>

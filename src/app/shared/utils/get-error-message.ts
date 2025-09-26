@@ -9,28 +9,28 @@ export function getErrorMessage(
   if (!control.errors) return null;
 
   const translatedFieldName = translate.instant(fieldNameKey);
-  const params = { fieldName: translatedFieldName };
+  const parameters = { fieldName: translatedFieldName };
 
   if (control.errors['required']) {
-    return translate.instant('VALIDATION.REQUIRED', params);
+    return translate.instant('VALIDATION.REQUIRED', parameters);
   }
   if (control.errors['minlength']) {
-    return translate.instant('VALIDATION.MIN_LENGTH', params);
+    return translate.instant('VALIDATION.MIN_LENGTH', parameters);
   }
   if (control.errors['email']) {
-    return translate.instant('VALIDATION.INVALID_EMAIL', params);
+    return translate.instant('VALIDATION.INVALID_EMAIL', parameters);
   }
   if (control.errors['lowercase']) {
-    return translate.instant('VALIDATION.PASSWORD_LOWERCASE', params);
+    return translate.instant('VALIDATION.PASSWORD_LOWERCASE', parameters);
   }
   if (control.errors['number']) {
-    return translate.instant('VALIDATION.PASSWORD_NUMBER', params);
+    return translate.instant('VALIDATION.PASSWORD_NUMBER', parameters);
   }
   if (control.errors['minLength']) {
-    return translate.instant('VALIDATION.PASSWORD_MIN_LENGTH', params);
+    return translate.instant('VALIDATION.PASSWORD_MIN_LENGTH', parameters);
   }
   if (control.errors['invalidName']) {
-    return translate.instant('VALIDATION.INVALID_NAME', params);
+    return translate.instant('VALIDATION.INVALID_NAME', parameters);
   }
 
   return null;

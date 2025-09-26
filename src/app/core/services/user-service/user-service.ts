@@ -7,7 +7,16 @@ import {
   docData,
   updateDoc,
 } from '@angular/fire/firestore';
-import { catchError, firstValueFrom, from, Observable, of, Subscription, switchMap, tap } from 'rxjs';
+import {
+  catchError,
+  firstValueFrom,
+  from,
+  Observable,
+  of,
+  Subscription,
+  switchMap,
+  tap,
+} from 'rxjs';
 import { AuthService } from '../auth-service';
 import { AppUser, UserRole } from '../../../models/user.model';
 import { ToastService } from '../../../shared/services/toast/toast';
@@ -64,7 +73,7 @@ export class UserService {
   }
 
   public loadUsers(): void {
-    this.loadingUsers.set(true)
+    this.loadingUsers.set(true);
     const usersCollection = collection(this.firestore, 'users');
     collectionData(usersCollection, { idField: 'uid' })
       .pipe(
@@ -73,16 +82,17 @@ export class UserService {
             (users as (AppUser & { uid: string; role?: UserRole })[]).map((u) => ({
               ...u,
               role: u.role ?? 'user',
-            }))
-          )
+            })),
+          ),
         ),
-        catchError((err) => {
+        catchError((error) => {
           this.toast.show(
-            this.translate.instant('TOAST.USERS_LOAD_FAILED', { message: err.message }),
-            'error'
-          ); return of([]);
+            this.translate.instant('TOAST.USERS_LOAD_FAILED', { message: error.message }),
+            'error',
+          );
+          return of([]);
         }),
-        tap(() => this.loadingUsers.set(false))
+        tap(() => this.loadingUsers.set(false)),
       )
       .subscribe();
   }
@@ -108,6 +118,6 @@ export class UserService {
           ),
         ),
       ),
-    ).then(() => { });
+    ).then(() => {});
   }
 }

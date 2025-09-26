@@ -18,17 +18,16 @@
     </h5>
   </div>
 
-  <div id="waveform" class="waveform" aria-label="Waveform visualization">
-    @if (!currentTrack()) {
-      <div class="waveform-placeholder">
-        <div class="waveform-placeholder__line"></div>
-        <div class="waveform-placeholder__line"></div>
-        <div class="waveform-placeholder__line"></div>
-        <div class="waveform-placeholder__line"></div>
-        <div class="waveform-placeholder__line"></div>
-      </div>
-    }
-  </div>
+  <div id="waveform" class="waveform" aria-label="Waveform visualization"></div>
+  @if (!currentTrack()) {
+    <div class="waveform-placeholder">
+      <div class="waveform-placeholder__line"></div>
+      <div class="waveform-placeholder__line"></div>
+      <div class="waveform-placeholder__line"></div>
+      <div class="waveform-placeholder__line"></div>
+      <div class="waveform-placeholder__line"></div>
+    </div>
+  }
 
   <div class="text-center mb-3">
     <div class="text-center mb-3">
@@ -41,7 +40,6 @@
         <button
           class="btn btn-success btn-lg me-2"
           (click)="onPlay()"
-          [disabled]="isPlaying()"
           aria-label="{{ 'GAME_FIELD.PLAY' | translate }}"
         >
           {{ 'GAME_FIELD.PLAY' | translate }}
@@ -51,7 +49,11 @@
 
     <div class="mt-4 text-center">
       <h6>{{ 'GAME_FIELD.SONG_QUESTION' | translate }}</h6>
-      <div class="d-flex justify-content-center gap-2 flex-wrap" role="list" aria-label="Answer options">
+      <div
+        class="d-flex justify-content-center gap-2 flex-wrap"
+        role="list"
+        aria-label="Answer options"
+      >
         @for (track of trackNames(); track track.id) {
           <button
             class="btn btn-outline-primary"

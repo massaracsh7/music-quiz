@@ -62,16 +62,15 @@ export class CategoryForm {
         next: () => {
           this.toast.show(
             this.translate.instant('TOAST.CATEGORY_CREATED', { title: category.title }),
-            'success'
-          ); this.categoryForm.reset();
+            'success',
+          );
+          this.categoryForm.reset();
           this.searchState.clearSelectedTracks();
           void this.router.navigate(['/categories']);
         },
         error: (error) => {
-          this.toast.show(
-            this.translate.instant('TOAST.CATEGORY_CREATE_FAILED'),
-            'error'
-          ); console.error('Error creating category', error);
+          this.toast.show(this.translate.instant('TOAST.CATEGORY_CREATE_FAILED'), 'error');
+          console.error('Error creating category', error);
           void this.router.navigate(['/categories']);
         },
       });

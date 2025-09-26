@@ -1,4 +1,4 @@
-<div class="card shadow"  style="height: 690px;">
+<div class="card shadow" style="height: 690px">
   <div class="card-header bg-primary">
     <h5 class="m-0 text-white">
       <i class="bi bi-list-check me-2"></i>
@@ -13,7 +13,7 @@
       class="d-flex flex-column gap-2 mb-2"
     >
       <label for="categoryName" class="fs-5 m-0">
-        {{'CATEGORY_FORM.NAME_LABEL' | translate }}
+        {{ 'CATEGORY_FORM.NAME_LABEL' | translate }}
       </label>
       <input
         id="categoryName"
@@ -33,26 +33,31 @@
         <h5 class="m-0">
           {{ 'CATEGORY_FORM.SELECTED_TRACKS' | translate: { count: getSelectedCount() } }}
           @if (selectedTracks().length < 8) {
-            <p class="m-0 text-danger small">{{ 'CATEGORY_FORM.MIN_TRACKS_MESSAGE' | translate }}</p>
+            <p class="m-0 text-danger small">
+              {{ 'CATEGORY_FORM.MIN_TRACKS_MESSAGE' | translate }}
+            </p>
           }
         </h5>
       </div>
-      <div class="list-group list-group-numbered" style="max-height: 400px; overflow-y: auto;">
+      <div class="list-group list-group-numbered" style="max-height: 400px; overflow-y: auto">
         @for (track of selectedTracks(); track track.trackId) {
-          <div class="list-group-item d-grid align-items-center gap-2" style="grid-template-columns: auto auto 1fr auto;">
+          <div
+            class="list-group-item d-grid align-items-center gap-2"
+            style="grid-template-columns: auto auto 1fr auto"
+          >
             @if (track.artworkUrl60) {
               <img
                 [src]="track.artworkUrl60"
                 [alt]="track.trackName"
                 class="rounded-3"
-                style="width: 50px; height: 50px;"
+                style="width: 50px; height: 50px"
               />
             }
             <div style="min-width: 0">
               <p class="mb-0 text-muted small" appEllipsis>
                 {{ track.artistName }}
               </p>
-              <h6 class="m-0" appEllipsis >{{ track.trackName }}</h6>
+              <h6 class="m-0" appEllipsis>{{ track.trackName }}</h6>
             </div>
             <button
               class="btn btn-outline-danger btn-sm"

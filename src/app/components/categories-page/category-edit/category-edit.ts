@@ -11,7 +11,13 @@ import {
   WritableSignal,
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { FormGroup, FormControl, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {
+  FormGroup,
+  FormControl,
+  Validators,
+  FormsModule,
+  ReactiveFormsModule,
+} from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { SearchService } from '../../../core/services/search-service';
 import { CategoryService } from '../../../core/services/сategory-service/сategory-service';
@@ -63,8 +69,8 @@ export class CategoryEdit {
     }
 
     effect(() => {
-      const el = this.searchInput();
-      if (el) el.nativeElement.focus();
+      const element = this.searchInput();
+      if (element) element.nativeElement.focus();
     });
   }
 
@@ -85,10 +91,8 @@ export class CategoryEdit {
           this.loading.set(false);
         },
         error: () => {
-          this.toast.show(
-            this.translate.instant('TOAST.CATEGORY_LOAD_ERROR'),
-            'error'
-          ); this.loading.set(false);
+          this.toast.show(this.translate.instant('TOAST.CATEGORY_LOAD_ERROR'), 'error');
+          this.loading.set(false);
         },
       });
   }
@@ -109,10 +113,7 @@ export class CategoryEdit {
           this.loading.set(false);
         },
         error: () => {
-          this.toast.show(
-            this.translate.instant('TOAST.TRACKS_LOAD_ERROR'),
-            'error'
-          );
+          this.toast.show(this.translate.instant('TOAST.TRACKS_LOAD_ERROR'), 'error');
         },
       });
   }
@@ -136,10 +137,7 @@ export class CategoryEdit {
         error: (error) => {
           this.searchLoading.set(false);
           this.searchResults.set([]);
-          this.toast.show(
-            this.translate.instant('TOAST.ITUNES_SEARCH_ERROR'),
-            'error'
-          );
+          this.toast.show(this.translate.instant('TOAST.ITUNES_SEARCH_ERROR'), 'error');
           console.error('Search error:', error);
         },
       });
@@ -178,18 +176,13 @@ export class CategoryEdit {
         .pipe(takeUntilDestroyed(this.destroyRef))
         .subscribe({
           next: () => {
-            this.toast.show(
-              this.translate.instant('TOAST.CATEGORY_UPDATED'),
-              'success'
-            );
+            this.toast.show(this.translate.instant('TOAST.CATEGORY_UPDATED'), 'success');
             this.saving.set(false);
             void this.router.navigate(['/categories']);
           },
           error: () => {
-            this.toast.show(
-              this.translate.instant('TOAST.CATEGORY_UPDATE_FAILED'),
-              'error'
-            ); this.saving.set(false);
+            this.toast.show(this.translate.instant('TOAST.CATEGORY_UPDATE_FAILED'), 'error');
+            this.saving.set(false);
           },
         });
       this.categoryService
@@ -211,17 +204,12 @@ export class CategoryEdit {
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: () => {
-          this.toast.show(
-            this.translate.instant('TOAST.CATEGORY_DELETED'),
-            'success'
-          );
+          this.toast.show(this.translate.instant('TOAST.CATEGORY_DELETED'), 'success');
           void this.router.navigate(['/categories']);
         },
         error: () => {
-          this.toast.show(
-            this.translate.instant('TOAST.CATEGORY_DELETE_FAILED'),
-            'error'
-          ); this.saving.set(false);
+          this.toast.show(this.translate.instant('TOAST.CATEGORY_DELETE_FAILED'), 'error');
+          this.saving.set(false);
         },
       });
     this.categoryService

@@ -19,31 +19,27 @@ export const authGuard: CanActivateFn = async () => {
   if (user) {
     return true;
   }
-  toast.show(
-    translate.instant('TOAST.LOGIN_REQUIRED'),
-    'error'
-  ); return router.createUrlTree(['/auth/login']);
+  toast.show(translate.instant('TOAST.LOGIN_REQUIRED'), 'error');
+  return router.createUrlTree(['/auth/login']);
 };
 
 export const roleGuard =
   (allowedRoles: UserRole[]): CanActivateFn =>
-    async () => {
-      const userService = inject(UserService);
-      const router = inject(Router);
-      const toast = inject(ToastService);
-      const translate = inject(TranslateService);
-      if (userService.users()!.length === 0) {
-        await userService.prefetchUsersAsync();
-      }
+  async () => {
+    const userService = inject(UserService);
+    const router = inject(Router);
+    const toast = inject(ToastService);
+    const translate = inject(TranslateService);
+    if (userService.users()!.length === 0) {
+      await userService.prefetchUsersAsync();
+    }
 
-      const role = userService.currentUserRole();
+    const role = userService.currentUserRole();
 
-      if (allowedRoles.includes(role)) {
-        return true;
-      }
+    if (allowedRoles.includes(role)) {
+      return true;
+    }
 
-      toast.show(
-        translate.instant('TOAST.ACCESS_DENIED'),
-        'error'
-      ); return router.createUrlTree(['/']);
-    };
+    toast.show(translate.instant('TOAST.ACCESS_DENIED'), 'error');
+    return router.createUrlTree(['/']);
+  };
