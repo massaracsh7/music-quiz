@@ -53,15 +53,7 @@ export class LoginForm {
     });
   }
 
-  public getErrorMessage(control: FormControl, fieldName: string): string | null {
-    if (control.hasError('required')) {
-      return this.translate.instant('AUTH.LOGIN.ERRORS.REQUIRED');
-    }
-    if (control.hasError('email')) {
-      return this.translate.instant('AUTH.LOGIN.ERRORS.EMAIL');
-    }
-    return getErrorMessage(control, fieldName, this.translate);
-  }
+  public getErrorMessage = getErrorMessage;
 
   public submit(): void {
     if (this.form.invalid) return;
