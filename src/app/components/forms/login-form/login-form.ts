@@ -60,7 +60,7 @@ export class LoginForm {
     if (control.hasError('email')) {
       return this.translate.instant('AUTH.LOGIN.ERRORS.EMAIL');
     }
-    return getErrorMessage(control, fieldName);
+    return getErrorMessage(control, fieldName, this.translate);
   }
 
   public submit(): void {

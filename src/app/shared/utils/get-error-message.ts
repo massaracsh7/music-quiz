@@ -1,16 +1,37 @@
 import { FormControl } from '@angular/forms';
+import { TranslateService } from '@ngx-translate/core';
 
-export function getErrorMessage(control: FormControl, fieldName: string): string | null {
+export function getErrorMessage(
+  control: FormControl,
+  fieldNameKey: string,
+  translate: TranslateService,
+): string | null {
   if (!control.errors) return null;
 
-  if (control.errors['required']) return `${fieldName} is required`;
-  if (control.errors['minlength'])
-    return `${fieldName} must be at least ${control.errors['minlength'].requiredLength} characters`;
-  if (control.errors['email']) return 'Email is invalid';
-  if (control.errors['lowercase']) return 'Password must contain a lowercase letter';
-  if (control.errors['number']) return 'Password must contain a number';
-  if (control.errors['minLength']) return 'Password must be at least 6 characters';
-  if (control.errors['invalidName']) return `${fieldName} can contain only letters, space, - or '`;
+  const translatedFieldName = translate.instant(fieldNameKey);
+  const params = { fieldName: translatedFieldName };
+
+  if (control.errors['required']) {
+    return translate.instant('VALIDATION.REQUIRED', params);
+  }
+  if (control.errors['minlength']) {
+    return translate.instant('VALIDATION.MIN_LENGTH', params);
+  }
+  if (control.errors['email']) {
+    return translate.instant('VALIDATION.INVALID_EMAIL', params);
+  }
+  if (control.errors['lowercase']) {
+    return translate.instant('VALIDATION.PASSWORD_LOWERCASE', params);
+  }
+  if (control.errors['number']) {
+    return translate.instant('VALIDATION.PASSWORD_NUMBER', params);
+  }
+  if (control.errors['minLength']) {
+    return translate.instant('VALIDATION.PASSWORD_MIN_LENGTH', params);
+  }
+  if (control.errors['invalidName']) {
+    return translate.instant('VALIDATION.INVALID_NAME', params);
+  }
 
   return null;
 }

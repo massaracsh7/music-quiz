@@ -9,6 +9,7 @@ import {
 } from '@angular/core';
 import { ToastService } from '../../services/toast/toast';
 import { Toast as BsToast } from 'bootstrap';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-toast',
@@ -16,6 +17,7 @@ import { Toast as BsToast } from 'bootstrap';
   templateUrl: './toast.html',
   styleUrl: './toast.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [TranslatePipe],
 })
 export class Toast {
   public toastService = inject(ToastService);

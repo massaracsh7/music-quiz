@@ -1,8 +1,9 @@
-import { ChangeDetectionStrategy, Component, Input, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, Input, signal } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { getErrorMessage } from '../../../shared/utils/get-error-message';
 import { CommonModule } from '@angular/common';
 import { ShowPasswordPipe } from '../../../shared/pipes/show-password-pipe';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-input-password',
@@ -16,6 +17,7 @@ export class InputPassword {
   @Input({ required: true }) public control!: FormControl;
   @Input() public placeholder: string = '';
 
+  public translate = inject(TranslateService);
   public showPassword = signal(false);
   public errorId = 'password-error';
 

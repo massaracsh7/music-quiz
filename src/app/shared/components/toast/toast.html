@@ -14,7 +14,7 @@
       [class.text-bg-danger]="toast.type === 'error'"
     >
       <div class="d-flex">
-        <div class="toast-body">{{ toast.message }}</div>
+        <div class="toast-body">{{ toast.message | translate }}</div>
         <button
           type="button"
           class="btn-close btn-close-white me-2 m-auto"

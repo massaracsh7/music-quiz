@@ -18,6 +18,16 @@
       "LOGIN": "Login to Your Account",
       "REGISTER": "Create a New Account"
     },
+    "ERRORS": {
+      "EMAIL_ALREADY_IN_USE": "This email is already in use",
+      "INVALID_EMAIL": "Invalid email address",
+      "INVALID_PASSWORD": "Password must be at least 6 characters",
+      "INVALID_CREDENTIALS": "Incorrect email or password",
+      "USER_DISABLED": "Your account has been disabled",
+      "TOO_MANY_REQUESTS": "Too many attempts. Please try again later",
+      "WEAK_PASSWORD": "Password should be at least 6 characters",
+      "UNEXPECTED_ERROR": "An unexpected error occurred. Please try again"
+    },
     "LOGIN": {
       "TITLE": "Login",
       "EMAIL": "Email",
@@ -45,6 +55,15 @@
         "NAME_MIN_LENGTH": "Name must be at least 2 characters long"
       }
     }
+  },
+  "VALIDATION": {
+    "REQUIRED": "{{fieldName}} is required",
+    "MIN_LENGTH": "{{fieldName}} must be at least {{requiredLength}} characters",
+    "INVALID_EMAIL": "Email is invalid",
+    "PASSWORD_LOWERCASE": "Password must contain a lowercase letter",
+    "PASSWORD_NUMBER": "Password must contain a number",
+    "PASSWORD_MIN_LENGTH": "Password must be at least 6 characters",
+    "INVALID_NAME": "{{fieldName}} can contain only letters, space, - or '"
   },
   "GAME_FIELD": {
     "TITLE": "Categories",
@@ -156,6 +175,23 @@
     "NO_RESULTS": "No tracks found for \"{{query}}\"",
     "ADD_BUTTON": "Add",
     "SELECTED_BUTTON": "Selected"
+  },
+  "ADMIN": {
+    "USERS": {
+      "TITLE": "Users",
+      "TOTAL": "Total",
+      "EMAIL": "Email",
+      "DISPLAY_NAME": "Display Name",
+      "ROLE": "Role",
+      "CHANGE_ROLE": "Change Role",
+      "NO_USERS": "No users found",
+      "INVITE_USERS": "Invite users to see them here"
+    },
+    "ROLES": {
+      "ADMIN": "Administrator",
+      "USER": "User",
+      "MODERATOR": "Moderator"
+    }
   },
   "NOT_FOUND": {
     "TITLE": "404 - Page not found",
