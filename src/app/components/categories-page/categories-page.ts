@@ -5,10 +5,11 @@ import { CategoryService } from '../../core/services/сategory-service/сategory
 import { ToastService } from '../../shared/services/toast/toast';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { TranslatePipe } from '@ngx-translate/core';
+import {Ellipsis} from '../../shared/directives/ellipsis/ellipsis';
 
 @Component({
   selector: 'app-categories-page',
-  imports: [RouterLink, CategoryConfirmDeleteModal, TranslatePipe],
+  imports: [RouterLink, CategoryConfirmDeleteModal, TranslatePipe, Ellipsis],
   templateUrl: './categories-page.html',
   styleUrl: './categories-page.scss',
 })
@@ -23,6 +24,8 @@ export class CategoriesPage {
 
   public categories = this.categoryService.categories;
 
+  public hoveredCategoryId = signal<string>('');
+
   public categoriesWithArtwork = computed(() => {
     return this.categories().map((category) => {
       const artworkUrl = this.categoryService.getFirstTrackArtwork(category);
@@ -32,6 +35,10 @@ export class CategoriesPage {
       };
     });
   });
+
+  public setHoveredCategory(categoryId: string): void {
+    this.hoveredCategoryId.set(categoryId);
+  }
 
   public onCategorySelectDelete(id: string): void {
     this.showCategoryDeleteDialog.set(false);

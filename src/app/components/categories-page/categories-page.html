@@ -12,69 +12,63 @@
 
   <div class="row g-3">
     @if (loadingCategories()) {
-      <div class="d-flex justify-content-center my-5">
-        <div class="spinner-border text-primary" role="status">
-          <span class="visually-hidden">Loading...</span>
-        </div>
+    <div class="d-flex justify-content-center my-5">
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Loading...</span>
       </div>
+    </div>
     } @else {
-      @for (category of categoriesWithArtwork(); track category.id) {
-        <div class="col-md-6 col-lg-3">
-          <div class="card h-100 shadow-sm p-2">
-            @if (category.artworkUrl) {
-              <div class="d-flex justify-content-center">
-                <img
-                  [src]="category.artworkUrl"
-                  [alt]="category.title"
-                  class="img-fluid"
-                  style="object-fit: contain"
-                />
-              </div>
-            } @else {
-              <div
-                class="card-img bg-light d-flex align-items-center justify-content-center"
-                style="height: 200px"
-              >
-                <i class="bi bi-music-note-beamed display-4 text-muted"></i>
-              </div>
-            }
+    @for (category of categoriesWithArtwork(); track category.id) {
+    <div class="col-md-6 col-lg-3">
+      <div class="card h-100 shadow-sm p-2">
+        <div class="position-relative" (mouseenter)="setHoveredCategory(category.id)"
+          (mouseleave)="setHoveredCategory('')">
+          @if (category.artworkUrl) {
+          <img [src]="category.artworkUrl" [alt]="category.title" class="img-fluid" style="object-fit: contain;" />
+          } @else {
+          <div class="card-img bg-light d-flex align-items-center justify-content-center">
+            <i class="bi bi-music-note-beamed display-4 text-muted"></i>
+          </div>
+          }
 
-            <div class="card-body">
-              <h5 class="card-title text-truncate">{{ category.title }}</h5>
-              <p class="card-text text-muted">
-                <i class="bi bi-music-note-list me-1"></i>
-                {{
-                  'CATEGORIES_PAGE.TRACKS_COUNT' | translate: { count: category.tracks.length || 0 }
-                }}
-              </p>
-            </div>
-            <div class="">
-              <div class="d-flex gap-2 justify-content-between">
-                <button
-                  class="btn btn-outline-primary w-100"
-                  style="text-overflow: ellipsis; overflow: hidden; white-space: nowrap"
-                  [routerLink]="['/categories/', category.id]"
-                >
-                  <i class="bi bi-pencil me-1"></i>
-                  {{ 'CATEGORIES_PAGE.EDIT_BUTTON' | translate }}
-                </button>
-                <button class="btn btn-outline-danger w-100" (click)="categoryDelete(category.id)">
-                  <i class="bi bi-trash me-1"></i>
-                  {{ 'CATEGORIES_PAGE.DELETE_BUTTON' | translate }}
-                </button>
-              </div>
-            </div>
+          @if (hoveredCategoryId() === category.id) {
+          <div class="position-absolute top-0 start-0 w-100 h-100
+                          bg-black bg-opacity-50 d-flex align-items-center justify-content-center"
+            style="cursor: pointer;" [routerLink]="['/game', category.id]">
+            <span class="text-white text-center bi bi-play-fill display-3"></span>
+          </div>
+          }
+        </div>
+
+        <div class="card-body">
+          <h5 class="card-title" appEllipsis>{{ category.title }}</h5>
+          <p class="card-text text-muted">
+            <i class="bi bi-music-note-list me-1"></i>
+            {{
+            'CATEGORIES_PAGE.TRACKS_COUNT' | translate: { count: category.tracks.length || 0 }
+            }}
+          </p>
+        </div>
+        <div class="">
+          <div class="d-flex gap-2 justify-content-between">
+            <button class="btn btn-outline-primary w-100" appEllipsis [routerLink]="['/categories/', category.id]">
+              <i class="bi bi-pencil me-1"></i>
+              {{ 'CATEGORIES_PAGE.EDIT_BUTTON' | translate }}
+            </button>
+            <button class="btn btn-outline-danger w-100" appEllipsis (click)="categoryDelete(category.id)">
+              <i class="bi bi-trash me-1"></i>
+              {{ 'CATEGORIES_PAGE.DELETE_BUTTON' | translate }}
+            </button>
           </div>
         </div>
-      }
+      </div>
+    </div>
+    }
     }
   </div>
 </div>
 
-<app-category-confirm-delete-modal
-  [showCategoryDeleteDialog]="showCategoryDeleteDialog()"
-  [selectedCategory]="currentCategory()"
-  (onCategorySelectDelete)="onCategorySelectDelete($event)"
-  (closeCategoryDialog)="closeCategoryDialog()"
->
+<app-category-confirm-delete-modal [showCategoryDeleteDialog]="showCategoryDeleteDialog()"
+  [selectedCategory]="currentCategory()" (onCategorySelectDelete)="onCategorySelectDelete($event)"
+  (closeCategoryDialog)="closeCategoryDialog()">
 </app-category-confirm-delete-modal>
