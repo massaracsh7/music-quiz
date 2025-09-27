@@ -19,7 +19,7 @@
 
 1. Clone the repository:  
 ```bash
-    git clone <repo-url>
+    git clone https://github.com/massaracsh7/music-quiz.git
     cd music-quiz
 ```
 
@@ -44,9 +44,12 @@
 ```
 
 6. Lint and format code:  
+
 ```bash
-    npm run lint
-    npm run format
+    npm run lint            # Check code with ESLint
+    npm run lint:fix        # Auto-fix lint errors
+    npm run format          # Format code using Prettier
+    npm run prettier-check  # Verify all `.ts` files follow Prettier rules
 ```
 
 ---
