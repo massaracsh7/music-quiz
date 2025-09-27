@@ -1,6 +1,17 @@
 # 🎵 Music Quiz
 
-Music Quiz is an Angular application for music quizzes with categories, a leaderboard, user roles, dark mode, localization, and a notification system.
+## Music Quiz is an engaging game where users guess songs from the first 30 seconds of the track.  ##
+> The goal of the project is to create an engaging and dynamic experience with a beautiful interface and fast response.  
+> Players can compete in multiple categories, track scores on the leaderboard, and enjoy features like dark mode, localization, and notifications.
+> 
+### Key Features
+
+- 🎨 **Creation, editing, and deletion of categories**  
+- 🎵 **Multiple game categories**  
+- 🏆 **Leaderboard by categories**  
+- 👤 **User roles management** and **role-based content visibility**  
+- 🌙 **Dark mode and localization**  
+- 🔔 **Notifications system**
 
 ---
 
