@@ -1,22 +1,24 @@
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { map, Observable } from 'rxjs';
-import { Track } from '../../../models/types/track.type';
-import { ITunesResponse } from '../../../models/types/itunes-response';
+import { Injectable, inject, signal } from '@angular/core';
+import { Observable, of } from 'rxjs';
+import { map, tap } from 'rxjs/operators';
+import { Firestore, collection, collectionData } from '@angular/fire/firestore';
+import { ITunesTrack, TrackDocument } from '../../../models/i-tunes.model';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable({ providedIn: 'root' })
 export class TracksLoader {
-  private baseUrl = 'https://itunes.apple.com/lookup';
+  private firestore = inject(Firestore);
 
-  constructor(private http: HttpClient) {}
+  public getTracksByIds(trackIds: number[]): Observable<ITunesTrack[]> {
+    if (trackIds.length === 0) return of([]);
 
-  public getTracksByIds(idArray: number[]): Observable<Track[]> {
-    const url = `${this.baseUrl}?entity=song&id=${idArray.join(',')}`;
+    const tracksCollection = collection(this.firestore, 'itunesTracks');
 
-    return this.http
-      .get<ITunesResponse>(url)
-      .pipe(map((response: ITunesResponse): Track[] => response.results));
+
+    return collectionData(tracksCollection).pipe(
+      map((docs) =>
+        docs
+          .map(doc => (doc as TrackDocument).track)
+          .filter(track => trackIds.includes(track.trackId))
+      ));
   }
 }
