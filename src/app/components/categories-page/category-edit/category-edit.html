@@ -2,37 +2,37 @@
   <div class="d-flex justify-content-between align-items-center mb-4">
     <div class="d-flex gap-2">
       @if (loading()) {
-        <a class="text-decoration-none" [routerLink]="['/categories']">
+        <a class="text-decoration-none" [routerLink]="['/categories']" aria-label="Go to categories">
           <h2 class="mb-0">
-            <i class="bi bi-collection me-2"></i>
+            <i class="bi bi-collection me-2" aria-hidden="true"></i>
             Categories /
           </h2>
         </a>
       } @else if (category()) {
         <div class="d-flex gap-2">
-          <a class="text-decoration-none" [routerLink]="['/categories']">
+          <a class="text-decoration-none" [routerLink]="['/categories']" aria-label="Go to categories">
             <h2 class="mb-0">
-              <i class="bi bi-collection me-2"></i>
+              <i class="bi bi-collection me-2" aria-hidden="true"></i>
               Categories
             </h2>
           </a>
 
-          <h2 class="mb-0">/ {{ category()?.title }}</h2>
+          <h2 class="mb-0" aria-current="page">/ {{ category()?.title }}</h2>
         </div>
       }
     </div>
-    <button class="btn btn-primary" [routerLink]="['/categories']">
-      <i class="bi bi-arrow-left me-2"></i>
+    <button class="btn btn-primary" [routerLink]="['/categories']" aria-label="Back to categories">
+      <i class="bi bi-arrow-left me-2" aria-hidden="true"></i>
       Back to Categories
     </button>
   </div>
 
   <div class="row">
     <div class="col-lg-6">
-      <div class="card shadow">
+      <div class="card shadow" role="region" aria-labelledby="searchTracksLabel">
         <div class="card-header bg-primary">
-          <h5 class="card-title mb-0 text-white">
-            <i class="bi bi-search me-2"></i>
+          <h5 id="searchTracksLabel" class="card-title mb-0 text-white">
+            <i class="bi bi-search me-2" aria-hidden="true"></i>
             Search Tracks
           </h5>
         </div>
@@ -44,11 +44,14 @@
               type="button"
               (click)="onSearch()"
               [disabled]="searchLoading() || searchQuery().length < 2"
+              aria-label="Search"
             >
               @if (searchLoading()) {
-                <span class="spinner-border spinner-border-sm" role="status"></span>
+                <span class="spinner-border spinner-border-sm" role="status" aria-live="polite">
+                  <span class="visually-hidden">Searching...</span>
+                </span>
               } @else {
-                <span class="bi bi-search"></span>
+                <span class="bi bi-search" aria-hidden="true"></span>
               }
             </button>
             <input
@@ -58,16 +61,17 @@
               [(ngModel)]="searchQuery"
               placeholder="Search tracks on iTunes..."
               (keydown.enter)="onSearch()"
+              aria-label="Search tracks"
             />
             @if (searchQuery()) {
-              <button class="btn btn-outline-primary" type="button" (click)="clearSearch()">
-                <i class="bi bi-x"></i>
+              <button class="btn btn-outline-primary" type="button" (click)="clearSearch()" aria-label="Clear search">
+                <i class="bi bi-x" aria-hidden="true"></i>
               </button>
             }
           </div>
 
           @if (searchLoading()) {
-            <div class="text-center py-3">
+            <div class="text-center py-3" role="status" aria-live="polite">
               <div class="spinner-border text-primary" role="status">
                 <span class="visually-hidden">Searching...</span>
               </div>
@@ -75,12 +79,13 @@
             </div>
           }
           @if (searchResults().length > 0 && !searchLoading()) {
-            <div style="max-height: 550px; overflow-y: auto">
+            <div style="max-height: 550px; overflow-y: auto" role="list" aria-label="Search results">
               <div class="list-group list-group-numbered">
                 @for (track of searchResults(); track track.trackId) {
                   <div
                     class="list-group-item d-grid align-items-center gap-2"
                     style="grid-template-columns: auto auto 1fr auto"
+                    role="listitem"
                   >
                     @if (track.artworkUrl60) {
                       <img
@@ -109,12 +114,17 @@
                           ? 'Remove from category'
                           : 'Add to category'
                       }}"
+                      aria-label="{{
+                        isTrackInCategory(track.trackId)
+                          ? 'Remove track from category'
+                          : 'Add track to category'
+                      }}"
                     >
                       @if (isTrackInCategory(track.trackId)) {
-                        <i class="bi bi-check-lg me-1"></i>
+                        <i class="bi bi-check-lg me-1" aria-hidden="true"></i>
                         Added
                       } @else {
-                        <i class="bi bi-plus-lg me-1"></i>
+                        <i class="bi bi-plus-lg me-1" aria-hidden="true"></i>
                         Add
                       }
                     </button>
@@ -125,9 +135,9 @@
           } @else if (
             searchResults().length === 0 && searchQuery() && isSearching() && !searchLoading()
           ) {
-            <div class="alert alert-warning text-center">
+            <div class="alert alert-warning text-center" role="alert">
               <p class="m-0">
-                <span class="bi bi-exclamation-octagon me-2"></span>
+                <span class="bi bi-exclamation-octagon me-2" aria-hidden="true"></span>
                 No tracks found for "{{ searchQuery() }}"
               </p>
             </div>
@@ -137,12 +147,12 @@
     </div>
 
     <div class="col-lg-6">
-      <div class="card shadow">
+      <div class="card shadow" role="region" aria-labelledby="categoryTracksLabel">
         <div
           class="card-header bg-primary text-white d-flex justify-content-between align-items-center py-3"
         >
-          <h5 class="card-title mb-0">
-            <i class="bi bi-list-check me-2"></i>
+          <h5 id="categoryTracksLabel" class="card-title mb-0">
+            <i class="bi bi-list-check me-2" aria-hidden="true"></i>
             Category Tracks ({{ categoryTracks().length }})
           </h5>
           <div class="d-flex gap-2">
@@ -150,16 +160,17 @@
               class="btn btn-success"
               (click)="updateCategory()"
               [disabled]="!categoryForm.valid || saving() || categoryTracks().length < 8"
+              aria-label="Update category"
             >
               @if (saving()) {
-                <span class="spinner-border spinner-border-sm me-1" role="status"></span>
+                <span class="spinner-border spinner-border-sm me-1" role="status" aria-live="polite"></span>
               } @else {
-                <i class="bi bi-check-circle me-1"></i>
+                <i class="bi bi-check-circle me-1" aria-hidden="true"></i>
               }
               Update
             </button>
-            <button class="btn btn-danger" (click)="categoryDelete()" [disabled]="saving()">
-              <i class="bi bi-trash me-1"></i>
+            <button class="btn btn-danger" (click)="categoryDelete()" [disabled]="saving()" aria-label="Delete category">
+              <i class="bi bi-trash me-1" aria-hidden="true"></i>
               Delete
             </button>
           </div>
@@ -167,7 +178,7 @@
 
         <div class="card-body pt-0">
           <div class="card-body">
-            <form [formGroup]="categoryForm">
+            <form [formGroup]="categoryForm" role="form" aria-label="Category form">
               <label for="categoryTitle" class="form-label">Category Name</label>
               <input
                 id="categoryTitle"
@@ -178,9 +189,10 @@
                 [class.is-invalid]="
                   categoryForm.get('title')?.invalid && categoryForm.get('title')?.touched
                 "
+                aria-required="true"
               />
               @if (categoryForm.get('title')?.invalid && categoryForm.get('title')?.touched) {
-                <div class="invalid-feedback">
+                <div class="invalid-feedback" role="alert">
                   @if (categoryForm.get('title')?.errors?.['required']) {
                     Category name is required
                   }
@@ -192,7 +204,7 @@
             </form>
           </div>
           @if (loading()) {
-            <div class="text-center py-3">
+            <div class="text-center py-3" role="status" aria-live="polite">
               <div class="spinner-border text-primary" role="status">
                 <span class="visually-hidden">Loading...</span>
               </div>
@@ -200,23 +212,26 @@
             </div>
           } @else {
             @if (categoryTracks().length === 0) {
-              <div class="alert alert-warning text-center">
-                <span class="bi bi-exclamation-triangle me-2"></span>
+              <div class="alert alert-warning text-center" role="alert">
+                <span class="bi bi-exclamation-triangle me-2" aria-hidden="true"></span>
                 No tracks in this category. Add at least 8 tracks.
               </div>
             } @else {
               @if (categoryTracks().length < 8) {
-                <p class="alert alert-info">Minimum 8 tracks required.</p>
+                <p class="alert alert-info" role="status">Minimum 8 tracks required.</p>
               }
 
               <div
                 class="list-group list-group-numbered"
                 style="max-height: 575px; overflow-y: auto"
+                role="list"
+                aria-label="Category tracks"
               >
                 @for (track of categoryTracks(); track track.trackId) {
                   <div
                     class="list-group-item d-grid align-items-center gap-2"
                     style="grid-template-columns: auto auto 1fr auto"
+                    role="listitem"
                   >
                     @if (track.artworkUrl60) {
                       <img
@@ -236,8 +251,9 @@
                       class="btn btn-outline-danger btn-sm"
                       (click)="removeTrackFromCategory(track.trackId)"
                       title="Remove from category"
+                      aria-label="Remove track from category"
                     >
-                      <i class="bi bi-trash"></i>
+                      <i class="bi bi-trash" aria-hidden="true"></i>
                     </button>
                   </div>
                 }
@@ -249,6 +265,7 @@
     </div>
   </div>
 </div>
+
 
 <app-category-confirm-delete-modal
   [showCategoryDeleteDialog]="showCategoryDeleteDialog()"

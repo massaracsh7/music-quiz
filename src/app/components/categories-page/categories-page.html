@@ -1,12 +1,16 @@
 <div class="container-fluid py-4">
   <div class="d-flex justify-content-between align-items-center mb-3">
     <h2 class="mb-0">
-      <i class="bi bi-collection me-2"></i>
+      <i class="bi bi-collection me-2" aria-hidden="true"></i>
       {{ 'CATEGORIES_PAGE.TITLE' | translate }}
     </h2>
     @if (usersService.canCreateCategories()) {
-      <button class="btn btn-primary" [routerLink]="['/categories/create-category']">
-        <i class="bi bi-plus-circle me-2"></i>
+      <button
+        class="btn btn-primary"
+        [routerLink]="['/categories/create-category']"
+        aria-label="{{ 'CATEGORIES_PAGE.CREATE_BUTTON' | translate }}"
+      >
+        <i class="bi bi-plus-circle me-2" aria-hidden="true"></i>
         {{ 'CATEGORIES_PAGE.CREATE_BUTTON' | translate }}
       </button>
     }
@@ -14,7 +18,7 @@
 
   <div class="row g-3">
     @if (loadingCategories()) {
-      <div class="d-flex justify-content-center my-5">
+      <div class="d-flex justify-content-center my-5" role="status" aria-live="polite">
         <div class="spinner-border text-primary" role="status">
           <span class="visually-hidden">Loading...</span>
         </div>
@@ -27,6 +31,9 @@
               class="position-relative"
               (mouseenter)="setHoveredCategory(category.id)"
               (mouseleave)="setHoveredCategory('')"
+              tabindex="0"
+              (focus)="setHoveredCategory(category.id)"
+              (blur)="setHoveredCategory('')"
             >
               @if (category.artworkUrl) {
                 <img
@@ -37,46 +44,51 @@
                 />
               } @else {
                 <div class="card-img bg-light d-flex align-items-center justify-content-center">
-                  <i class="bi bi-music-note-beamed display-4 text-muted"></i>
+                  <i class="bi bi-music-note-beamed display-4 text-muted" aria-hidden="true"></i>
                 </div>
               }
 
               @if (hoveredCategoryId() === category.id) {
-                <div
+                <a
                   class="position-absolute top-0 start-0 w-100 h-100 bg-black bg-opacity-50 d-flex align-items-center justify-content-center"
-                  style="cursor: pointer"
                   [routerLink]="['/game', category.id]"
+                  aria-label="{{ 'CATEGORIES_PAGE.PLAY_CATEGORY' | translate: { title: category.title } }}"
                 >
-                  <span class="text-white text-center bi bi-play-fill display-3"></span>
-                </div>
+                  <span class="text-white text-center bi bi-play-fill display-3" aria-hidden="true"></span>
+                </a>
               }
             </div>
 
             <div class="card-body">
-              <h5 class="card-title" appEllipsis>{{ category.title }}</h5>
+              <h5 class="card-title" appEllipsis title="{{ category.title }}">
+                {{ category.title }}
+              </h5>
               <p class="card-text text-muted">
-                <i class="bi bi-music-note-list me-1"></i>
+                <i class="bi bi-music-note-list me-1" aria-hidden="true"></i>
                 {{
                   'CATEGORIES_PAGE.TRACKS_COUNT' | translate: { count: category.tracks.length || 0 }
                 }}
               </p>
             </div>
+
             @if (usersService.canCreateCategories()) {
               <div class="d-flex gap-2 justify-content-between">
                 <button
                   class="btn btn-outline-primary w-100"
                   appEllipsis
                   [routerLink]="['/categories/', category.id]"
+                  aria-label="{{ 'CATEGORIES_PAGE.EDIT_BUTTON' | translate }} {{ category.title }}"
                 >
-                  <i class="bi bi-pencil me-1"></i>
+                  <i class="bi bi-pencil me-1" aria-hidden="true"></i>
                   {{ 'CATEGORIES_PAGE.EDIT_BUTTON' | translate }}
                 </button>
                 <button
                   class="btn btn-outline-danger w-100"
                   appEllipsis
                   (click)="categoryDelete(category.id)"
+                  aria-label="{{ 'CATEGORIES_PAGE.DELETE_BUTTON' | translate }} {{ category.title }}"
                 >
-                  <i class="bi bi-trash me-1"></i>
+                  <i class="bi bi-trash me-1" aria-hidden="true"></i>
                   {{ 'CATEGORIES_PAGE.DELETE_BUTTON' | translate }}
                 </button>
               </div>

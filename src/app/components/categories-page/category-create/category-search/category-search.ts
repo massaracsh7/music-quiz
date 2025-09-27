@@ -1,4 +1,4 @@
-import { Component, DestroyRef, inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, DestroyRef, effect, ElementRef, inject, OnDestroy, OnInit, viewChild } from '@angular/core';
 import { SearchService } from '../../../../core/services/search-service';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Subject, switchMap } from 'rxjs';
@@ -16,6 +16,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 })
 export class CategorySearch implements OnInit, OnDestroy {
   public searchState = inject(SearchStateService);
+  public searchInput = viewChild<ElementRef<HTMLInputElement>>('searchInput');
 
   public tracks = this.searchState.tracks;
   public selectedTracks = this.searchState.selectedTracks;
@@ -27,6 +28,13 @@ export class CategorySearch implements OnInit, OnDestroy {
   private searchSubject = new Subject<string>();
   private destroy$ = new Subject<void>();
   private destroyRef = inject(DestroyRef);
+
+  constructor() {
+    effect(() => {
+      const element = this.searchInput();
+      if (element) element.nativeElement.focus();
+    });
+  }
 
   public ngOnInit(): void {
     this.setupSearch();
