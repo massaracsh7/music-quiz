@@ -25,10 +25,10 @@
                 <thead>
                   <tr>
                     <th class="text-center">#</th>
-                    <th>Email</th>
-                    <th>Display Name</th>
+                    <th>{{ 'ADMIN.USERS.EMAIL' | translate }}</th>
+                    <th>{{ 'ADMIN.USERS.DISPLAY_NAME' | translate }}</th>
                     <th (click)="toggleSort()" style="cursor: pointer">
-                      Role
+                      {{ 'ADMIN.USERS.ROLE' | translate }}
                       @if (sortDirection() === 'asc') {
                         <span class="bi bi-sort-alpha-down"></span>
                       } @else {
@@ -62,8 +62,8 @@
                       <td colspan="4" class="text-center">
                         <div>
                           <span class="bi bi-people display-4 d-block mb-2"></span>
-                          <p class="h5">No users found</p>
-                          <p class="text-muted">Invite users to see them here</p>
+                          <p class="h5">{{ 'ADMIN.USERS.NO_USERS' | translate }}</p>
+                          <p class="text-muted">{{ 'ADMIN.USERS.INVITE_USERS' | translate }}</p>
                         </div>
                       </td>
                     </tr>
