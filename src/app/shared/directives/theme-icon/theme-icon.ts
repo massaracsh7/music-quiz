@@ -1,5 +1,5 @@
 import { Directive, HostBinding, inject, OnInit } from '@angular/core';
-import { Theme } from '../services/theme/theme';
+import { Theme } from '../../services/theme/theme';
 
 @Directive({
   selector: '[appThemeIcon]',

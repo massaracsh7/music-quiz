@@ -17,7 +17,7 @@ import {
   switchMap,
   tap,
 } from 'rxjs';
-import { AuthService } from '../auth-service';
+import { AuthService } from '../auth-service/auth-service';
 import { AppUser, UserRole } from '../../../models/user.model';
 import { ToastService } from '../../../shared/services/toast/toast';
 import { TranslateService } from '@ngx-translate/core';

@@ -19,7 +19,7 @@ import {
   ReactiveFormsModule,
 } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { SearchService } from '../../../core/services/search-service';
+import { SearchService } from '../../../core/services/search-service/search-service';
 import { CategoryService } from '../../../core/services/сategory-service/сategory-service';
 import { Category } from '../../../models/category.model';
 import { ITunesTrack } from '../../../models/itunes.model';

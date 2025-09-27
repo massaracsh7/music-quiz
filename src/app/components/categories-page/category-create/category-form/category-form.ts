@@ -1,7 +1,7 @@
 import { Component, DestroyRef, inject, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormGroup, FormControl, ReactiveFormsModule } from '@angular/forms';
-import { SearchStateService } from '../../../../core/services/search-state-service';
+import { SearchStateService } from '../../../../core/services/search-state-service/search-state-service';
 import { CategoryService } from '../../../../core/services/сategory-service/сategory-service';
 import { Category } from '../../../../models/category.model';
 import { ITunesTrack } from '../../../../models/itunes.model';

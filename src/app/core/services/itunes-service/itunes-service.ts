@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { doc, Firestore, getDoc, setDoc } from '@angular/fire/firestore';
 import { from, mergeMap, Observable, of, switchMap, tap } from 'rxjs';
-import { ITunesResponse } from '../../models/itunes.model';
+import { ITunesResponse } from '../../../models/itunes.model';
 
 @Injectable({
   providedIn: 'root',

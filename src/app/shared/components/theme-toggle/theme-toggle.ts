@@ -1,7 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { Theme } from '../../services/theme/theme';
 import { CommonModule } from '@angular/common';
-import { ThemeIcon } from '../../directives/theme-icon';
+import { ThemeIcon } from '../../directives/theme-icon/theme-icon';
 
 @Component({
   selector: 'app-theme-toggle',

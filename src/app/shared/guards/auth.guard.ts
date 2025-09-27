@@ -1,6 +1,6 @@
 import { inject } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
-import { AuthService } from '../../core/services/auth-service';
+import { AuthService } from '../../core/services/auth-service/auth-service';
 import { ToastService } from '../services/toast/toast';
 import { firstValueFrom } from 'rxjs';
 import { Auth, authState } from '@angular/fire/auth';

@@ -74,6 +74,8 @@ The application follows a layered architecture:
 
 ```bash
 
+src/app/
+│
 ├── app.ts / app.routes.ts / app.config.ts / firebase.ts / app.html / app.scss
 │
 ├── components/           # Feature Pages & child components
@@ -104,11 +106,11 @@ The application follows a layered architecture:
 │   └── services/
 │       ├── auth-service/
 │       ├── itunes-service/
+│       ├── language-service/
 │       ├── leaderboard-service/
+│       ├── score-counter/
 │       ├── search-service/
 │       ├── search-state-service/
-│       ├── language-service/
-│       ├── score-counter/
 │       ├── tracks-loader/
 │       ├── user-service/
 │       ├── wavesurfer/
@@ -126,7 +128,9 @@ The application follows a layered architecture:
 │   │   ├── toast/
 │   │   └── video/
 │   ├── directives/
-│   │   └── ellipsis/
+│   │   ├── ellipsis/
+│   │   ├── result-color/
+│   │   └── theme-icon/
 │   ├── guards/
 │   ├── helpers/
 │   ├── lang-switcher/
@@ -135,7 +139,6 @@ The application follows a layered architecture:
 │   ├── services/
 │   │   ├── theme/
 │   │   └── toast/
-│   ├── testing/
 │   └── utils/
 │
 └── models/               # Types / Interfaces
@@ -146,6 +149,7 @@ The application follows a layered architecture:
     └── types/
         ├── itunes-response.ts
         └── track.type.ts
+
 
 ```
 
