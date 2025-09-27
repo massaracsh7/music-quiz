@@ -72,42 +72,119 @@ Example content:
 
 The application follows a layered architecture:
 
-    src/app/
-    ├── components/       # Pages and child components
-    │   ├── home-page
-    │   ├── game-page (+ game-field)
-    │   ├── categories-page (+ category-create/edit/form/search)
-    │   ├── auth-page
-    │   ├── admin-page
-    │   ├── leaderboard-page
-    │   ├── about-us-page
-    │   ├── not-found-page
-    │   └── modals
-    ├── core/services/    # Business logic and API
-    ├── layout/           # header, footer, nav-menu, user-menu
-    ├── shared/           # Reusable components, utilities, guards, pipes
-    ├── models/           # Types and interfaces
-    ├── app.ts / app.routes.ts / app.config.ts
-    ├── firebase.ts
-    └── app.html / app.scss
+```bash
+
+├── app.ts / app.routes.ts / app.config.ts / firebase.ts / app.html / app.scss
+│
+├── components/           # Feature Pages & child components
+│   ├── about-us-page/
+│   ├── admin-page/
+│   ├── auth-page/
+│   ├── categories-page/
+│   │   ├── category-create/
+│   │   │   ├── category-form/
+│   │   │   └── category-search/
+│   │   └── category-edit/
+│   ├── forms/
+│   │   ├── input-password/
+│   │   ├── login-form/
+│   │   └── register-form/
+│   ├── game-field/
+│   ├── game-page/
+│   ├── home-page/
+│   ├── leaderboard-page/
+│   ├── modals/
+│   │   ├── category-confirm-delete-modal/
+│   │   ├── category-confirm-modal/
+│   │   ├── finish-modal/
+│   │   └── result-modal/
+│   └── not-found-page/
+│
+├── core/                 # Business logic / Services
+│   └── services/
+│       ├── auth-service/
+│       ├── itunes-service/
+│       ├── leaderboard-service/
+│       ├── search-service/
+│       ├── search-state-service/
+│       ├── language-service/
+│       ├── score-counter/
+│       ├── tracks-loader/
+│       ├── user-service/
+│       ├── wavesurfer/
+│       └── category-service/
+│
+├── layout/               # Layout Components
+│   ├── footer/
+│   ├── header/
+│   ├── nav-menu/
+│   └── user-menu/
+│
+├── shared/               # Reusable UI, directives, helpers, services
+│   ├── components/
+│   │   ├── theme-toggle/
+│   │   ├── toast/
+│   │   └── video/
+│   ├── directives/
+│   │   └── ellipsis/
+│   ├── guards/
+│   ├── helpers/
+│   ├── lang-switcher/
+│   ├── pipes/
+│   ├── resolvers/
+│   ├── services/
+│   │   ├── theme/
+│   │   └── toast/
+│   ├── testing/
+│   └── utils/
+│
+└── models/               # Types / Interfaces
+    ├── category.model.ts
+    ├── itunes.model.ts
+    ├── leaderboard.model.ts
+    ├── user.model.ts
+    └── types/
+        ├── itunes-response.ts
+        └── track.type.ts
+
+```
 
 ---
 
 ## 📊 Architecture Diagram
 
-    Components (pages & modals)
-           |
-           v
-    Layout (header, footer, nav-menu, user-menu)
-           |
-           v
-    Core/Services (auth, user, category, leaderboard, search, tracks-loader, wavesurfer, itunes)
-           |
-           v
-    Shared (components: Toast, Video, ThemeToggle; directives, pipes, guards, helpers, services)
-           |
-           v
-    Models/Types (interfaces and types)
+        ┌──────────────────────┐
+        │        Layout        │
+        │  (Header, Footer,    │
+        │   NavMenu, UserMenu) │
+        └─────────┬────────────┘
+                  │
+                  ▼
+        ┌──────────────────────┐
+        │     Components       │
+        │  (Pages, Feature     │
+        │   Components)        │
+        └─────────┬────────────┘
+                  │
+                  ▼
+        ┌──────────────────────┐
+        │        Shared        │
+        │  (UI, Directives,    │
+        │   Pipes, Helpers)    │
+        └─────────┬────────────┘
+                  │
+                  ▼
+        ┌──────────────────────┐
+        │   Core / Services    │
+        │  (API, Firebase,     │
+        │   Business Logic)    │
+        └─────────┬────────────┘
+                  │
+                  ▼
+        ┌──────────────────────┐
+        │        Models        │
+        │ (Types, Interfaces)  │
+        └──────────────────────┘
 
 ---
 
