@@ -31,6 +31,11 @@ export const routes: Routes = [
       import('./components/leaderboard-page/leaderboard-page').then((m) => m.LeaderboardPage),
   },
   {
+    path: 'leaderboard/:categoryId',
+    loadComponent: () =>
+      import('./components/leaderboard-page/leaderboard-page').then((m) => m.LeaderboardPage),
+  },
+  {
     path: 'about',
     loadComponent: () =>
       import('./components/about-us-page/about-us-page').then((m) => m.AboutUsPage),

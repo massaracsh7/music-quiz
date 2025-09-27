@@ -13,6 +13,7 @@ export class FinishModal {
   public showFinishDialog = input<boolean>();
   public categories = input<Category[]>([]);
   public score = input<number>();
+  public categoryId = input<string | null>(null);
   public closeDialog = output<void>();
   public onCategorySelected = output<Category>();
   private router = inject(Router);
@@ -24,6 +25,6 @@ export class FinishModal {
   }
 
   public onExit(): void {
-    this.router.navigate(['/leaderboard']);
+    this.router.navigate(['/leaderboard', this.categoryId()]);
   }
 }
