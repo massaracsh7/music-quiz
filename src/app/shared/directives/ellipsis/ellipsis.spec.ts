@@ -5,6 +5,7 @@ import { By } from '@angular/platform-browser';
 
 @Component({
   template: '<div appEllipsis>Test content that should be truncated</div>',
+  imports: [Ellipsis],
 })
 class TestComponent {}
 
