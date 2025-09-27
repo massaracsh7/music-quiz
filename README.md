@@ -1,27 +1,107 @@
-# Music Quiz
+# 🎵 Music Quiz
 
-## 📜 Scripts
+Music Quiz is an Angular application for music quizzes with categories, a leaderboard, user roles, dark mode, localization, and a notification system.
 
-The following npm scripts are available in this project:
+---
 
-### 🚀 Development & Build
+## 🚀 Run Steps
 
-- **`npm start`** — runs the app in development mode (`ng serve`).
-- **`npm run build`** — builds the project for production (`ng build`).
-- **`npm run watch`** — builds the project in development mode and rebuilds on file changes.
+1. Clone the repository:  
+```bash
+    git clone <repo-url>
+    cd music-quiz
+```
 
-### 🧪 Testing
+2. Install dependencies:  
+```bash
+    npm install
+```
 
-- **`npm test`** — runs unit tests using Angular CLI (`ng test`).
+3. Run the application in development mode:  
+```bash
+    npm start
+```
 
-### 🧹 Linting & Formatting
+4. Build the project for production:  
+```bash
+    npm run build
+```
 
-- **`npm run lint`** — checks the codebase with ESLint.
-- **`npm run format`** — automatically formats all files using Prettier.
-- **`npm run prettier-check`** — verifies that all `.ts` files follow Prettier rules.
-- **`npm run prettier-diff`** — lists `.ts` files that are not properly formatted.
-- **`npm run prettier-unknown`** — formats `.ts` files while ignoring unknown file types.
+5. Run tests:  
+```bash
+    npm test
+```
 
-### 🔧 Utility
+6. Lint and format code:  
+```bash
+    npm run lint
+    npm run format
+```
 
-- **`npm run ng`** — direct call to Angular CLI.
+---
+
+## ⚙️ Environment / Config
+
+Firebase configuration is stored in `src/app/firebase.ts`
+
+Example content:  
+```bash
+    export const firebaseConfig = {
+      apiKey: 'YOUR_API_KEY',
+      authDomain: 'YOUR_AUTH_DOMAIN',
+      projectId: 'YOUR_PROJECT_ID',
+      storageBucket: 'YOUR_STORAGE_BUCKET',
+      messagingSenderId: 'YOUR_MESSAGING_SENDER_ID',
+      appId: 'YOUR_APP_ID',
+    };
+```
+---
+
+## 🏗 Architecture
+
+The application follows a layered architecture:
+
+    src/app/
+    ├── components/       # Pages and child components
+    │   ├── home-page
+    │   ├── game-page (+ game-field)
+    │   ├── categories-page (+ category-create/edit/form/search)
+    │   ├── auth-page
+    │   ├── admin-page
+    │   ├── leaderboard-page
+    │   ├── about-us-page
+    │   ├── not-found-page
+    │   └── modals
+    ├── core/services/    # Business logic and API
+    ├── layout/           # header, footer, nav-menu, user-menu
+    ├── shared/           # Reusable components, utilities, guards, pipes
+    ├── models/           # Types and interfaces
+    ├── app.ts / app.routes.ts / app.config.ts
+    ├── firebase.ts
+    └── app.html / app.scss
+
+---
+
+## 📊 Architecture Diagram
+
+    Components (pages & modals)
+           |
+           v
+    Layout (header, footer, nav-menu, user-menu)
+           |
+           v
+    Core/Services (auth, user, category, leaderboard, search, tracks-loader, wavesurfer, itunes)
+           |
+           v
+    Shared (components: Toast, Video, ThemeToggle; directives, pipes, guards, helpers, services)
+           |
+           v
+    Models/Types (interfaces and types)
+
+---
+
+## ⚡ Signals vs RxJS
+
+We use **Signals** for all local UI state — modals, edit mode, form inputs, category management, and game state — because they are simple, update immediately, and keep templates readable.  
+**RxJS** is used for asynchronous data — HTTP requests, API streams, and effects — where stream management, operators, and cancellation are needed.  
+This approach ensures each tool is used where it works best, keeps the code clean, fast, and understandable, and makes maintaining the app easier.
