@@ -197,5 +197,46 @@
     "TITLE": "404 - Старонка не знойдзена",
     "MESSAGE": "Старонка, якую вы шукаеце, не існуе або была перанесена.",
     "HOME_BUTTON": "На галоўную"
-  }
+  },
+  "TOAST": {
+    "ROLE_CHANGED": "Роля карыстальніка \"{{email}}\" паспяхова зменена",
+    "ROLE_CHANGE_FAILED": "Не ўдалося змяніць ролю: {{message}}",
+
+    "CATEGORY_DELETED": "Катэгорыя паспяхова выдалена",
+    "CATEGORY_DELETE_FAILED": "Памылка пры выдаленні катэгорыі",
+
+    "CATEGORY_CREATED": "Катэгорыя \"{{title}}\" паспяхова створана",
+    "CATEGORY_CREATE_FAILED": "Адбылася памылка пры стварэнні катэгорыі",
+
+    "CATEGORY_LOAD_ERROR": "Памылка загрузкі катэгорыі",
+    "TRACKS_LOAD_ERROR": "Памылка загрузкі трэкаў",
+
+    "ITUNES_SEARCH_ERROR": "Памылка пошуку ў iTunes. Паспрабуйце зноў.",
+
+    "CATEGORY_UPDATED": "Катэгорыя паспяхова абноўлена",
+    "CATEGORY_UPDATE_FAILED": "Памылка пры абнаўленні катэгорыі",
+
+    "WELCOME": "Сардэчна запрашаем, {{name}}!",
+
+    "USERS_LOAD_FAILED": "Не ўдалося загрузіць карыстальнікаў: {{message}}",
+    "CATEGORIES_LOAD_FAILED": "Не ўдалося загрузіць катэгорыі: {{message}}",
+    "TRACKS_LOAD_FAILED": "Не ўдалося загрузіць трэкі: {{message}}",
+
+    "LOGIN_REQUIRED": "Увайдзіце або зарэгіструйцеся, каб гуляць",
+    "ACCESS_DENIED": "У вас няма правоў для доступу да гэтай старонкі"
+  },
+  "CATEGORY_TRACKS": {
+  "CATEGORY_TRACKS_TITLE": "Трэкi катэгорыі",
+  "UPDATE": "Абнавіць",
+  "DELETE": "Выдаліць",
+  "CATEGORY_NAME": "Назва катэгорыі",
+  "ENTER_CATEGORY_NAME": "Увядзіце назву катэгорыі",
+  "CATEGORY_NAME_REQUIRED": "Назва катэгорыі абавязковая",
+  "CATEGORY_NAME_MIN_LENGTH": "Назва катэгорыі павінна быць не менш за 3 сімвалы",
+  "LOADING_CATEGORY_TRACKS": "Загрузка трэкаў катэгорыі...",
+  "NO_TRACKS": "Няма трэкаў у гэтай катэгорыі. Дадайце як мінімум 8 трэкаў.",
+  "MIN_8_TRACKS": "Патрабуецца мінімум 8 трэкаў.",
+  "REMOVE_TRACK": "Выдаліць трэк з катэгорыі"
+}
+
 }

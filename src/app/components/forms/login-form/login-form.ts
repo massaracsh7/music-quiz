@@ -44,6 +44,7 @@ export class LoginForm {
       updateOn: 'blur',
     }),
   });
+  public getErrorMessage = getErrorMessage;
   private destroyRef = inject(DestroyRef);
 
   constructor() {
@@ -51,16 +52,6 @@ export class LoginForm {
       const input = this.emailFocus();
       if (input) input.nativeElement.focus();
     });
-  }
-
-  public getErrorMessage(control: FormControl, fieldName: string): string | null {
-    if (control.hasError('required')) {
-      return this.translate.instant('AUTH.LOGIN.ERRORS.REQUIRED');
-    }
-    if (control.hasError('email')) {
-      return this.translate.instant('AUTH.LOGIN.ERRORS.EMAIL');
-    }
-    return getErrorMessage(control, fieldName, this.translate);
   }
 
   public submit(): void {
@@ -81,7 +72,10 @@ export class LoginForm {
       )
       .subscribe((user) => {
         if (user) {
-          this.toast.show(`Welcome, ${user.displayName}!`, 'success');
+          this.toast.show(
+            this.translate.instant('TOAST.WELCOME', { name: user.displayName }),
+            'success',
+          );
           this.router.navigate(['/']);
         }
       });

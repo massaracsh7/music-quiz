@@ -197,5 +197,45 @@
     "TITLE": "404 - Page not found",
     "MESSAGE": "The page you are looking for doesn't exist or has been moved.",
     "HOME_BUTTON": "Go to Home"
+  },
+  "TOAST": {
+    "ROLE_CHANGED": "Role of \"{{email}}\" changed successfully",
+    "ROLE_CHANGE_FAILED": "Failed to change role: {{message}}",
+
+    "CATEGORY_DELETED": "Category deleted successfully",
+    "CATEGORY_DELETE_FAILED": "Error deleting category",
+
+    "CATEGORY_CREATED": "Category \"{{title}}\" has been successfully created",
+    "CATEGORY_CREATE_FAILED": "An error occurred when creating the category",
+
+    "CATEGORY_LOAD_ERROR": "Error loading category",
+    "TRACKS_LOAD_ERROR": "Error loading tracks",
+
+    "ITUNES_SEARCH_ERROR": "Error searching iTunes. Please try again.",
+
+    "CATEGORY_UPDATED": "Category updated successfully",
+    "CATEGORY_UPDATE_FAILED": "Error updating category",
+
+    "WELCOME": "Welcome, {{name}}!",
+
+    "USERS_LOAD_FAILED": "Failed to load users: {{message}}",
+    "CATEGORIES_LOAD_FAILED": "Failed to load categories: {{message}}",
+    "TRACKS_LOAD_FAILED": "Failed to load tracks: {{message}}",
+
+    "LOGIN_REQUIRED": "Login or register to play game",
+    "ACCESS_DENIED": "You need rights to access this page"
+  },
+  "CATEGORY_TRACKS": {
+    "CATEGORY_TRACKS_TITLE": "Category Tracks",
+    "UPDATE": "Update",
+    "DELETE": "Delete",
+    "CATEGORY_NAME": "Category Name",
+    "ENTER_CATEGORY_NAME": "Enter category name",
+    "CATEGORY_NAME_REQUIRED": "Category name is required",
+    "CATEGORY_NAME_MIN_LENGTH": "Category name must be at least 3 characters",
+    "LOADING_CATEGORY_TRACKS": "Loading category tracks...",
+    "NO_TRACKS": "No tracks in this category. Add at least 8 tracks.",
+    "MIN_8_TRACKS": "Minimum 8 tracks required.",
+    "REMOVE_TRACK": "Remove track from category"
   }
 }

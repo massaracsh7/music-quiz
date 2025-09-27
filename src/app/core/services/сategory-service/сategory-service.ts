@@ -14,15 +14,17 @@ import { catchError, from, map, Observable, switchMap, tap, of, throwError } fro
 import { Category } from '../../../models/category.model';
 import { LeaderboardCategory } from '../../../models/leaderboard.model';
 import { ItunesService } from '../itunes-service';
-import { TrackDocument, ITunesTrack } from '../../../models/i-tunes.model';
+import { TrackDocument, ITunesTrack } from '../../../models/itunes.model';
 import { resizeItunesArtworkUrl } from '../../../shared/helpers/image-helpers';
 import { ToastService } from '../../../shared/services/toast/toast';
+import { TranslateService } from '@ngx-translate/core';
 
 @Injectable({ providedIn: 'root' })
 export class CategoryService {
   public firestore = inject(Firestore);
   public itunesService = inject(ItunesService);
   public toast = inject(ToastService);
+  public translate = inject(TranslateService);
 
   public categories: Signal<Category[]>;
 
@@ -79,30 +81,44 @@ export class CategoryService {
   public loadCategories(): void {
     const categoriesCollection = collection(this.firestore, 'categories');
     this.loadingCategories.set(true);
-    onSnapshot(categoriesCollection, (snapshot) => {
-      const categoriesData = snapshot.docs.map((document) => document.data() as Category);
-      this.categoriesSignal.set(categoriesData);
-      this.loadingCategories.set(false);
-    }, (error) => {
-      this.toast.show('Failed to load categories: ' + error.message, 'error');
-      this.loadingCategories.set(false);
-    });
+    onSnapshot(
+      categoriesCollection,
+      (snapshot) => {
+        const categoriesData = snapshot.docs.map((document) => document.data() as Category);
+        this.categoriesSignal.set(categoriesData);
+        this.loadingCategories.set(false);
+      },
+      (error) => {
+        this.toast.show(
+          this.translate.instant('TOAST.CATEGORIES_LOAD_FAILED', { message: error.message }),
+          'error',
+        );
+        this.loadingCategories.set(false);
+      },
+    );
   }
 
   public loadAllTracks(): void {
     const tracksCollection = collection(this.firestore, 'itunesTracks');
     this.loadingTracks.set(true);
-    onSnapshot(tracksCollection, (snapshot) => {
-      const tracksData = snapshot.docs.map((document) => {
-        const trackDocument = document.data() as TrackDocument;
-        return trackDocument.track;
-      });
-      this.allTracksSignal.set(tracksData);
-      this.loadingTracks.set(false);
-    }, (error) => {
-      this.toast.show('Failed to load tracks: ' + error.message, 'error');
-      this.loadingTracks.set(false);
-    });
+    onSnapshot(
+      tracksCollection,
+      (snapshot) => {
+        const tracksData = snapshot.docs.map((document) => {
+          const trackDocument = document.data() as TrackDocument;
+          return trackDocument.track;
+        });
+        this.allTracksSignal.set(tracksData);
+        this.loadingTracks.set(false);
+      },
+      (error) => {
+        this.toast.show(
+          this.translate.instant('TOAST.TRACKS_LOAD_FAILED', { message: error.message }),
+          'error',
+        );
+        this.loadingTracks.set(false);
+      },
+    );
   }
 
   public getTracksByIds(trackIds: number[]): Observable<ITunesTrack[]> {

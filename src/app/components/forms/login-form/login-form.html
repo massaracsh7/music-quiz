@@ -15,7 +15,7 @@
     />
     @if (form.controls.email.touched && form.controls.email.invalid) {
       <div id="email-error" class="text-danger" role="alert">
-        {{ getErrorMessage(form.controls.email, 'AUTH.LOGIN.EMAIL') | translate }}
+        {{ getErrorMessage(form.controls.email, 'AUTH.REGISTER.EMAIL', translate) }}
       </div>
     }
   </div>

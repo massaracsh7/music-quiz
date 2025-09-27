@@ -39,6 +39,7 @@ export const routes: Routes = [
     path: 'categories',
     loadComponent: () =>
       import('./components/categories-page/categories-page').then((m) => m.CategoriesPage),
+    canActivate: [authGuard],
   },
   {
     path: 'categories/create-category',

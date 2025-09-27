@@ -1,10 +1,12 @@
 <section class="about-us-page">
   <div class="container">
     <h1 class="text-center mb-3 fw-bold">
-      <span class="bi bi-people-fill me-3"></span>{{ 'ABOUT_US.TITLE' | translate }}
+      <span class="bi bi-people-fill me-3"></span>
+      {{ 'ABOUT_US.TITLE' | translate }}
     </h1>
+
     <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
-      @for (student of translatedStudents; track student.name) {
+      @for (student of students; track student.name) {
         <div class="col">
           <div class="card h-100 border-0 shadow-sm">
             <div
@@ -13,25 +15,24 @@
               <div>
                 <img
                   [src]="student.img"
-                  [alt]="student.name"
+                  [alt]="student.name | translate"
                   class="rounded-circle"
                   style="width: 120px; height: 120px; object-fit: cover"
                   loading="lazy"
                 />
               </div>
+
               <h4
                 class="col-auto card-title fw-bold m-0 d-flex align-items-center"
                 style="height: 60px"
               >
-                {{ student.name }}
+                {{ student.name | translate }}
               </h4>
-              <p class="card-subtitle m-0">{{ student.role }}</p>
 
-              <p
-                class="col-auto card-text text-muted m-0 mb-3"
-                style="min-height: 250px"
-              >
-                {{ student.description }}
+              <p class="card-subtitle m-0">{{ student.role | translate }}</p>
+
+              <p class="col-auto card-text text-muted m-0 mb-3" style="min-height: 250px">
+                {{ student.description | translate }}
               </p>
 
               <div
@@ -40,7 +41,7 @@
               >
                 <div class="d-flex flex-wrap align-items-center justify-content-center gap-2">
                   @for (task of student.task; track $index) {
-                    <span class="badge bg-secondary"> {{ task }} </span>
+                    <span class="badge bg-secondary">{{ task | translate }}</span>
                   }
                 </div>
               </div>
@@ -51,7 +52,8 @@
                   target="_blank"
                   class="btn btn-outline-dark btn-sm d-flex gap-2"
                 >
-                  <span class="bi bi-github"></span>{{ 'ABOUT_US.GITHUB_PROFILE' | translate }}
+                  <span class="bi bi-github"></span>
+                  {{ 'ABOUT_US.GITHUB_PROFILE' | translate }}
                 </a>
               </div>
             </div>

@@ -63,15 +63,14 @@ export class RegisterForm {
       });
     }
 
-    this.form.valueChanges.pipe(
-      takeUntilDestroyed(this.destroyRef)).subscribe((value) => {
-        const { name, email } = value;
-        if (name || email) {
-          localStorage.setItem('registerFormDraft', JSON.stringify({ name, email }));
-        } else {
-          localStorage.removeItem('registerFormDraft');
-        }
-      });
+    this.form.valueChanges.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((value) => {
+      const { name, email } = value;
+      if (name || email) {
+        localStorage.setItem('registerFormDraft', JSON.stringify({ name, email }));
+      } else {
+        localStorage.removeItem('registerFormDraft');
+      }
+    });
   }
 
   public submit(): void {
@@ -94,7 +93,10 @@ export class RegisterForm {
       )
       .subscribe((user) => {
         if (user) {
-          this.toast.show(`Welcome, ${user.displayName}!`, 'success');
+          this.toast.show(
+            this.translate.instant('TOAST.WELCOME', { name: user.displayName }),
+            'success',
+          );
           localStorage.removeItem('registerFormDraft');
           this.router.navigate(['/']);
         }

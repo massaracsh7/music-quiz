@@ -7,16 +7,27 @@ import {
   docData,
   updateDoc,
 } from '@angular/fire/firestore';
-import { catchError, firstValueFrom, from, Observable, of, Subscription, switchMap, tap } from 'rxjs';
+import {
+  catchError,
+  firstValueFrom,
+  from,
+  Observable,
+  of,
+  Subscription,
+  switchMap,
+  tap,
+} from 'rxjs';
 import { AuthService } from '../auth-service';
 import { AppUser, UserRole } from '../../../models/user.model';
 import { ToastService } from '../../../shared/services/toast/toast';
+import { TranslateService } from '@ngx-translate/core';
 
 @Injectable({ providedIn: 'root' })
 export class UserService {
   public firestore = inject(Firestore);
   public auth = inject(AuthService);
   public toast = inject(ToastService);
+  public translate = inject(TranslateService);
 
   public users = signal<(AppUser & { uid: string })[]>([]);
 
@@ -62,7 +73,7 @@ export class UserService {
   }
 
   public loadUsers(): void {
-    this.loadingUsers.set(true)
+    this.loadingUsers.set(true);
     const usersCollection = collection(this.firestore, 'users');
     collectionData(usersCollection, { idField: 'uid' })
       .pipe(
@@ -71,14 +82,17 @@ export class UserService {
             (users as (AppUser & { uid: string; role?: UserRole })[]).map((u) => ({
               ...u,
               role: u.role ?? 'user',
-            }))
-          )
+            })),
+          ),
         ),
-        catchError((err) => {
-        this.toast.show('Failed to load users: ' + err.message, 'error');
+        catchError((error) => {
+          this.toast.show(
+            this.translate.instant('TOAST.USERS_LOAD_FAILED', { message: error.message }),
+            'error',
+          );
           return of([]);
         }),
-        tap(() => this.loadingUsers.set(false))
+        tap(() => this.loadingUsers.set(false)),
       )
       .subscribe();
   }
@@ -104,6 +118,6 @@ export class UserService {
           ),
         ),
       ),
-    ).then(() => { });
+    ).then(() => {});
   }
 }

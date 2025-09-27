@@ -8,6 +8,7 @@ export class Wavesurfer {
   public currentTime = signal<number>(0);
   public isPlaying = signal<boolean>(false);
   public isFinished = signal<boolean>(false);
+  public isLoading = signal<boolean>(false);
 
   private wavesurfer?: WaveSurfer;
 
@@ -15,6 +16,8 @@ export class Wavesurfer {
     if (this.wavesurfer) {
       this.wavesurfer.destroy();
     }
+
+    this.isLoading.set(true);
 
     this.wavesurfer = WaveSurfer.create({
       container,
@@ -28,6 +31,12 @@ export class Wavesurfer {
     this.wavesurfer.on('error', (error) => {
       console.error('Wavesurfer error:', error);
       this.isPlaying.set(false);
+      this.isLoading.set(false);
+    });
+
+    this.wavesurfer.on('ready', () => {
+      this.isLoading.set(false);
+      if (autoplay) this.play();
     });
 
     this.wavesurfer.on('audioprocess', (currentTime) => {
@@ -37,12 +46,6 @@ export class Wavesurfer {
     this.wavesurfer.on('finish', () => {
       this.isFinished.set(true);
     });
-
-    if (autoplay) {
-      this.wavesurfer.on('ready', () => {
-        this.play();
-      });
-    }
   }
 
   public play(): void {
@@ -60,5 +63,6 @@ export class Wavesurfer {
   public destroy(): void {
     this.wavesurfer?.destroy();
     this.wavesurfer = undefined;
+    this.isLoading.set(false);
   }
 }

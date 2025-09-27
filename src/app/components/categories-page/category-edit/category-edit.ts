@@ -2,31 +2,48 @@ import {
   AfterViewInit,
   Component,
   DestroyRef,
+  effect,
   ElementRef,
   inject,
   signal,
+  viewChild,
   ViewChild,
   WritableSignal,
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { FormGroup, FormControl, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {
+  FormGroup,
+  FormControl,
+  Validators,
+  FormsModule,
+  ReactiveFormsModule,
+} from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { SearchService } from '../../../core/services/search-service';
 import { CategoryService } from '../../../core/services/сategory-service/сategory-service';
 import { Category } from '../../../models/category.model';
-import { ITunesTrack } from '../../../models/i-tunes.model';
+import { ITunesTrack } from '../../../models/itunes.model';
 import { ToastService } from '../../../shared/services/toast/toast';
 import { Ellipsis } from '../../../shared/directives/ellipsis/ellipsis';
 import { CategoryConfirmDeleteModal } from '../../modals/category-confirm-delete-modal/category-confirm-delete-modal';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-category-edit',
-  imports: [Ellipsis, FormsModule, RouterLink, CategoryConfirmDeleteModal, ReactiveFormsModule],
+  imports: [
+    Ellipsis,
+    FormsModule,
+    RouterLink,
+    CategoryConfirmDeleteModal,
+    ReactiveFormsModule,
+    TranslatePipe,
+  ],
   templateUrl: './category-edit.html',
   styleUrl: './category-edit.scss',
 })
-export class CategoryEdit implements AfterViewInit {
-  @ViewChild('searchInput') public searchInput!: ElementRef<HTMLInputElement>;
+export class CategoryEdit {
+  public searchInput = viewChild<ElementRef<HTMLInputElement>>('searchInput');
+  public translate = inject(TranslateService);
 
   public category = signal<Category | null>(null);
   public loading = signal(true);
@@ -57,10 +74,11 @@ export class CategoryEdit implements AfterViewInit {
     if (categoryId) {
       this.loadCategory(categoryId);
     }
-  }
 
-  public ngAfterViewInit(): void {
-    this.searchInput.nativeElement.focus();
+    effect(() => {
+      const element = this.searchInput();
+      if (element) element.nativeElement.focus();
+    });
   }
 
   public loadCategory(id: string): void {
@@ -80,7 +98,7 @@ export class CategoryEdit implements AfterViewInit {
           this.loading.set(false);
         },
         error: () => {
-          this.toast.show('Error loading category', 'error');
+          this.toast.show(this.translate.instant('TOAST.CATEGORY_LOAD_ERROR'), 'error');
           this.loading.set(false);
         },
       });
@@ -102,7 +120,7 @@ export class CategoryEdit implements AfterViewInit {
           this.loading.set(false);
         },
         error: () => {
-          this.toast.show('Error loading tracks', 'error');
+          this.toast.show(this.translate.instant('TOAST.TRACKS_LOAD_ERROR'), 'error');
         },
       });
   }
@@ -126,7 +144,7 @@ export class CategoryEdit implements AfterViewInit {
         error: (error) => {
           this.searchLoading.set(false);
           this.searchResults.set([]);
-          this.toast.show('Error searching iTunes. Please try again.', 'error');
+          this.toast.show(this.translate.instant('TOAST.ITUNES_SEARCH_ERROR'), 'error');
           console.error('Search error:', error);
         },
       });
@@ -136,7 +154,6 @@ export class CategoryEdit implements AfterViewInit {
     this.searchQuery.set('');
     this.searchResults.set([]);
     this.isSearching.set(false);
-    this.searchInput.nativeElement.focus();
   }
 
   public isTrackInCategory(trackId: number): boolean {
@@ -166,12 +183,12 @@ export class CategoryEdit implements AfterViewInit {
         .pipe(takeUntilDestroyed(this.destroyRef))
         .subscribe({
           next: () => {
-            this.toast.show('Category updated successfully', 'success');
+            this.toast.show(this.translate.instant('TOAST.CATEGORY_UPDATED'), 'success');
             this.saving.set(false);
             void this.router.navigate(['/categories']);
           },
           error: () => {
-            this.toast.show('Error updating category', 'error');
+            this.toast.show(this.translate.instant('TOAST.CATEGORY_UPDATE_FAILED'), 'error');
             this.saving.set(false);
           },
         });
@@ -194,11 +211,11 @@ export class CategoryEdit implements AfterViewInit {
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: () => {
-          this.toast.show('Category deleted successfully', 'success');
+          this.toast.show(this.translate.instant('TOAST.CATEGORY_DELETED'), 'success');
           void this.router.navigate(['/categories']);
         },
         error: () => {
-          this.toast.show('Error deleting category', 'error');
+          this.toast.show(this.translate.instant('TOAST.CATEGORY_DELETE_FAILED'), 'error');
           this.saving.set(false);
         },
       });
