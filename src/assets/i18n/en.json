@@ -224,5 +224,18 @@
 
     "LOGIN_REQUIRED": "Login or register to play game",
     "ACCESS_DENIED": "You need rights to access this page"
+  },
+  "CATEGORY_TRACKS": {
+    "CATEGORY_TRACKS_TITLE": "Category Tracks",
+    "UPDATE": "Update",
+    "DELETE": "Delete",
+    "CATEGORY_NAME": "Category Name",
+    "ENTER_CATEGORY_NAME": "Enter category name",
+    "CATEGORY_NAME_REQUIRED": "Category name is required",
+    "CATEGORY_NAME_MIN_LENGTH": "Category name must be at least 3 characters",
+    "LOADING_CATEGORY_TRACKS": "Loading category tracks...",
+    "NO_TRACKS": "No tracks in this category. Add at least 8 tracks.",
+    "MIN_8_TRACKS": "Minimum 8 tracks required.",
+    "REMOVE_TRACK": "Remove track from category"
   }
 }

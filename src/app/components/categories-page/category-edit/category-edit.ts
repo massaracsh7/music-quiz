@@ -26,11 +26,11 @@ import { ITunesTrack } from '../../../models/i-tunes.model';
 import { ToastService } from '../../../shared/services/toast/toast';
 import { Ellipsis } from '../../../shared/directives/ellipsis/ellipsis';
 import { CategoryConfirmDeleteModal } from '../../modals/category-confirm-delete-modal/category-confirm-delete-modal';
-import { TranslateService } from '@ngx-translate/core';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-category-edit',
-  imports: [Ellipsis, FormsModule, RouterLink, CategoryConfirmDeleteModal, ReactiveFormsModule],
+  imports: [Ellipsis, FormsModule, RouterLink, CategoryConfirmDeleteModal, ReactiveFormsModule, TranslatePipe],
   templateUrl: './category-edit.html',
   styleUrl: './category-edit.scss',
 })

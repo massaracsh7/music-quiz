@@ -2,18 +2,27 @@
   <div class="d-flex justify-content-between align-items-center mb-4">
     <div class="d-flex gap-2">
       @if (loading()) {
-        <a class="text-decoration-none" [routerLink]="['/categories']" aria-label="Go to categories">
+        <a
+          class="text-decoration-none"
+          [routerLink]="['/categories']"
+          aria-label="Go to categories"
+        >
           <h2 class="mb-0">
             <i class="bi bi-collection me-2" aria-hidden="true"></i>
-            Categories /
+            {{ 'CATEGORIES_PAGE.BREADCRUMB' | translate }}
+            /
           </h2>
         </a>
       } @else if (category()) {
         <div class="d-flex gap-2">
-          <a class="text-decoration-none" [routerLink]="['/categories']" aria-label="Go to categories">
+          <a
+            class="text-decoration-none"
+            [routerLink]="['/categories']"
+            aria-label="Go to categories"
+          >
             <h2 class="mb-0">
               <i class="bi bi-collection me-2" aria-hidden="true"></i>
-              Categories
+              {{ 'CATEGORIES_PAGE.TITLE' | translate }}
             </h2>
           </a>
 
@@ -23,7 +32,7 @@
     </div>
     <button class="btn btn-primary" [routerLink]="['/categories']" aria-label="Back to categories">
       <i class="bi bi-arrow-left me-2" aria-hidden="true"></i>
-      Back to Categories
+      {{ 'CATEGORY_CREATE_PAGE.BACK_BUTTON' | translate }}
     </button>
   </div>
 
@@ -33,7 +42,7 @@
         <div class="card-header bg-primary">
           <h5 id="searchTracksLabel" class="card-title mb-0 text-white">
             <i class="bi bi-search me-2" aria-hidden="true"></i>
-            Search Tracks
+            {{ 'CATEGORY_SEARCH.TITLE' | translate }}
           </h5>
         </div>
 
@@ -48,7 +57,7 @@
             >
               @if (searchLoading()) {
                 <span class="spinner-border spinner-border-sm" role="status" aria-live="polite">
-                  <span class="visually-hidden">Searching...</span>
+                  <span class="visually-hidden">{{ 'CATEGORY_SEARCH.SEARCHING' | translate }}</span>
                 </span>
               } @else {
                 <span class="bi bi-search" aria-hidden="true"></span>
@@ -59,12 +68,17 @@
               type="text"
               class="form-control"
               [(ngModel)]="searchQuery"
-              placeholder="Search tracks on iTunes..."
+              placeholder="{{ 'CATEGORY_SEARCH.PLACEHOLDER' | translate }}"
               (keydown.enter)="onSearch()"
               aria-label="Search tracks"
             />
             @if (searchQuery()) {
-              <button class="btn btn-outline-primary" type="button" (click)="clearSearch()" aria-label="Clear search">
+              <button
+                class="btn btn-outline-primary"
+                type="button"
+                (click)="clearSearch()"
+                aria-label="Clear search"
+              >
                 <i class="bi bi-x" aria-hidden="true"></i>
               </button>
             }
@@ -73,13 +87,17 @@
           @if (searchLoading()) {
             <div class="text-center py-3" role="status" aria-live="polite">
               <div class="spinner-border text-primary" role="status">
-                <span class="visually-hidden">Searching...</span>
+                <span class="visually-hidden">{{ 'CATEGORY_SEARCH.SEARCHING' | translate }}</span>
               </div>
-              <p class="mt-2 text-muted">Searching iTunes...</p>
+              <p class="mt-2 text-muted">{{ 'CATEGORY_SEARCH.SEARCHING_ITUNES' | translate }}</p>
             </div>
           }
           @if (searchResults().length > 0 && !searchLoading()) {
-            <div style="max-height: 550px; overflow-y: auto" role="list" aria-label="Search results">
+            <div
+              style="max-height: 550px; overflow-y: auto"
+              role="list"
+              aria-label="Search results"
+            >
               <div class="list-group list-group-numbered">
                 @for (track of searchResults(); track track.trackId) {
                   <div
@@ -122,10 +140,10 @@
                     >
                       @if (isTrackInCategory(track.trackId)) {
                         <i class="bi bi-check-lg me-1" aria-hidden="true"></i>
-                        Added
+                        {{ 'CATEGORY_SEARCH.SELECTED_BUTTON' | translate }}
                       } @else {
                         <i class="bi bi-plus-lg me-1" aria-hidden="true"></i>
-                        Add
+                        {{ 'CATEGORY_SEARCH.ADD_BUTTON' | translate }}
                       }
                     </button>
                   </div>
@@ -138,7 +156,7 @@
             <div class="alert alert-warning text-center" role="alert">
               <p class="m-0">
                 <span class="bi bi-exclamation-octagon me-2" aria-hidden="true"></span>
-                No tracks found for "{{ searchQuery() }}"
+                {{ 'CATEGORY_SEARCH.NO_RESULTS' | translate: { query: searchQuery() } }}
               </p>
             </div>
           }
@@ -153,25 +171,36 @@
         >
           <h5 id="categoryTracksLabel" class="card-title mb-0">
             <i class="bi bi-list-check me-2" aria-hidden="true"></i>
-            Category Tracks ({{ categoryTracks().length }})
+            {{ 'CATEGORY_TRACKS.CATEGORY_TRACKS_TITLE' | translate }} ({{
+              categoryTracks().length
+            }})
           </h5>
           <div class="d-flex gap-2">
             <button
               class="btn btn-success"
               (click)="updateCategory()"
               [disabled]="!categoryForm.valid || saving() || categoryTracks().length < 8"
-              aria-label="Update category"
+              aria-label="{{ 'CATEGORY_TRACKS.UPDATE' | translate }}"
             >
               @if (saving()) {
-                <span class="spinner-border spinner-border-sm me-1" role="status" aria-live="polite"></span>
+                <span
+                  class="spinner-border spinner-border-sm me-1"
+                  role="status"
+                  aria-live="polite"
+                ></span>
               } @else {
                 <i class="bi bi-check-circle me-1" aria-hidden="true"></i>
               }
-              Update
+              {{ 'CATEGORY_TRACKS.UPDATE' | translate }}
             </button>
-            <button class="btn btn-danger" (click)="categoryDelete()" [disabled]="saving()" aria-label="Delete category">
+            <button
+              class="btn btn-danger"
+              (click)="categoryDelete()"
+              [disabled]="saving()"
+              aria-label="Delete category"
+            >
               <i class="bi bi-trash me-1" aria-hidden="true"></i>
-              Delete
+              {{ 'CATEGORY_TRACKS.DELETE' | translate }}
             </button>
           </div>
         </div>
@@ -179,13 +208,15 @@
         <div class="card-body pt-0">
           <div class="card-body">
             <form [formGroup]="categoryForm" role="form" aria-label="Category form">
-              <label for="categoryTitle" class="form-label">Category Name</label>
+              <label for="categoryTitle" class="form-label">
+                {{ 'CATEGORY_TRACKS.CATEGORY_NAME' | translate }}
+              </label>
               <input
                 id="categoryTitle"
                 type="text"
                 class="form-control"
                 formControlName="title"
-                placeholder="Enter category name"
+                placeholder="{{ 'CATEGORY_TRACKS.ENTER_CATEGORY_NAME' | translate }}"
                 [class.is-invalid]="
                   categoryForm.get('title')?.invalid && categoryForm.get('title')?.touched
                 "
@@ -194,10 +225,10 @@
               @if (categoryForm.get('title')?.invalid && categoryForm.get('title')?.touched) {
                 <div class="invalid-feedback" role="alert">
                   @if (categoryForm.get('title')?.errors?.['required']) {
-                    Category name is required
+                    {{ 'CATEGORY_TRACKS.CATEGORY_NAME_REQUIRED' | translate }}
                   }
                   @if (categoryForm.get('title')?.errors?.['minlength']) {
-                    Category name must be at least 3 characters
+                    {{ 'CATEGORY_TRACKS.CATEGORY_NAME_MIN_LENGTH' | translate }}
                   }
                 </div>
               }
@@ -208,24 +239,28 @@
               <div class="spinner-border text-primary" role="status">
                 <span class="visually-hidden">Loading...</span>
               </div>
-              <p class="mt-2 text-muted">Loading category tracks...</p>
+              <p class="mt-2 text-muted">
+                {{ 'CATEGORY_TRACKS.LOADING_CATEGORY_TRACKS' | translate }}
+              </p>
             </div>
           } @else {
             @if (categoryTracks().length === 0) {
               <div class="alert alert-warning text-center" role="alert">
                 <span class="bi bi-exclamation-triangle me-2" aria-hidden="true"></span>
-                No tracks in this category. Add at least 8 tracks.
+                {{ 'CATEGORY_TRACKS.NO_TRACKS' | translate }}
               </div>
             } @else {
               @if (categoryTracks().length < 8) {
-                <p class="alert alert-info" role="status">Minimum 8 tracks required.</p>
+                <p class="alert alert-info" role="status">
+                  {{ 'CATEGORY_TRACKS.MIN_8_TRACKS' | translate }}
+                </p>
               }
 
               <div
                 class="list-group list-group-numbered"
                 style="max-height: 575px; overflow-y: auto"
                 role="list"
-                aria-label="Category tracks"
+                aria-label="{{ 'CATEGORY_TRACKS.CATEGORY_TRACKS_TITLE' | translate }}"
               >
                 @for (track of categoryTracks(); track track.trackId) {
                   <div
@@ -250,8 +285,8 @@
                     <button
                       class="btn btn-outline-danger btn-sm"
                       (click)="removeTrackFromCategory(track.trackId)"
-                      title="Remove from category"
-                      aria-label="Remove track from category"
+                      title="{{ 'CATEGORY_TRACKS.REMOVE_TRACK' | translate }}"
+                      aria-label="{{ 'CATEGORY_TRACKS.REMOVE_TRACK' | translate }}"
                     >
                       <i class="bi bi-trash" aria-hidden="true"></i>
                     </button>
@@ -265,7 +300,6 @@
     </div>
   </div>
 </div>
-
 
 <app-category-confirm-delete-modal
   [showCategoryDeleteDialog]="showCategoryDeleteDialog()"
