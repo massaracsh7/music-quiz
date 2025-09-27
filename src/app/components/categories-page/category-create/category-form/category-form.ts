@@ -4,7 +4,7 @@ import { FormGroup, FormControl, ReactiveFormsModule } from '@angular/forms';
 import { SearchStateService } from '../../../../core/services/search-state-service';
 import { CategoryService } from '../../../../core/services/сategory-service/сategory-service';
 import { Category } from '../../../../models/category.model';
-import { ITunesTrack } from '../../../../models/i-tunes.model';
+import { ITunesTrack } from '../../../../models/itunes.model';
 import { LeaderboardCategory } from '../../../../models/leaderboard.model';
 import { slugHelpers } from '../../../../shared/helpers/slug-helpers';
 import { ToastService } from '../../../../shared/services/toast/toast';

@@ -44,6 +44,7 @@ export class LoginForm {
       updateOn: 'blur',
     }),
   });
+  public getErrorMessage = getErrorMessage;
   private destroyRef = inject(DestroyRef);
 
   constructor() {
@@ -52,8 +53,6 @@ export class LoginForm {
       if (input) input.nativeElement.focus();
     });
   }
-
-  public getErrorMessage = getErrorMessage;
 
   public submit(): void {
     if (this.form.invalid) return;

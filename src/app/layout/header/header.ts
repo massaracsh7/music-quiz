@@ -12,5 +12,4 @@ import { LangSwitcher } from '../../shared/lang-switcher/lang-switcher';
   styleUrl: './header.scss',
   standalone: true,
 })
-export class Header {
-}
+export class Header {}

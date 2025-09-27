@@ -22,7 +22,7 @@ import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { SearchService } from '../../../core/services/search-service';
 import { CategoryService } from '../../../core/services/сategory-service/сategory-service';
 import { Category } from '../../../models/category.model';
-import { ITunesTrack } from '../../../models/i-tunes.model';
+import { ITunesTrack } from '../../../models/itunes.model';
 import { ToastService } from '../../../shared/services/toast/toast';
 import { Ellipsis } from '../../../shared/directives/ellipsis/ellipsis';
 import { CategoryConfirmDeleteModal } from '../../modals/category-confirm-delete-modal/category-confirm-delete-modal';
@@ -30,7 +30,14 @@ import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-category-edit',
-  imports: [Ellipsis, FormsModule, RouterLink, CategoryConfirmDeleteModal, ReactiveFormsModule, TranslatePipe],
+  imports: [
+    Ellipsis,
+    FormsModule,
+    RouterLink,
+    CategoryConfirmDeleteModal,
+    ReactiveFormsModule,
+    TranslatePipe,
+  ],
   templateUrl: './category-edit.html',
   styleUrl: './category-edit.scss',
 })

@@ -14,7 +14,7 @@ import { catchError, from, map, Observable, switchMap, tap, of, throwError } fro
 import { Category } from '../../../models/category.model';
 import { LeaderboardCategory } from '../../../models/leaderboard.model';
 import { ItunesService } from '../itunes-service';
-import { TrackDocument, ITunesTrack } from '../../../models/i-tunes.model';
+import { TrackDocument, ITunesTrack } from '../../../models/itunes.model';
 import { resizeItunesArtworkUrl } from '../../../shared/helpers/image-helpers';
 import { ToastService } from '../../../shared/services/toast/toast';
 import { TranslateService } from '@ngx-translate/core';

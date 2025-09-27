@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { map, Observable } from 'rxjs';
-import { ITunesResponse, ITunesTrack } from '../../models/i-tunes.model';
+import { ITunesResponse, ITunesTrack } from '../../models/itunes.model';
 
 @Injectable({
   providedIn: 'root',

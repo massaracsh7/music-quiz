@@ -1,25 +1,27 @@
-      <div class="dropdown lang-switcher">
-        <button
-          class="btn dropdown-toggle"
-          type="button"
-          id="langDropdown"
-          data-bs-toggle="dropdown"
-          aria-haspopup="menu"
-          aria-expanded="false"
-        >
-          <i class="bi bi-globe2" aria-hidden="true"></i>
-          {{ currentLang() | uppercase }}
-        </button>
+<div class="dropdown lang-switcher">
+  <button
+    class="btn dropdown-toggle"
+    type="button"
+    id="langDropdown"
+    data-bs-toggle="dropdown"
+    aria-haspopup="menu"
+    aria-expanded="false"
+  >
+    <i class="bi bi-globe2" aria-hidden="true"></i>
+    {{ currentLang() | uppercase }}
+  </button>
 
-        <ul class="dropdown-menu" aria-labelledby="langDropdown" role="menu">
-          <li role="none">
-            <a class="dropdown-item cursor-pointer" (click)="switchLang('en')" role="menuitem">English</a>
-          </li>
-          <li role="none">
-            <a class="dropdown-item cursor-pointer" (click)="switchLang('be')" role="menuitem">Беларуская</a>
-          </li>
-          <li role="none">
-            <a class="dropdown-item cursor-pointer" (click)="switchLang('ru')" role="menuitem">Русский</a>
-          </li>
-        </ul>
-      </div>
+  <ul class="dropdown-menu" aria-labelledby="langDropdown" role="menu">
+    <li role="none">
+      <a class="dropdown-item cursor-pointer" (click)="switchLang('en')" role="menuitem">English</a>
+    </li>
+    <li role="none">
+      <a class="dropdown-item cursor-pointer" (click)="switchLang('be')" role="menuitem"
+        >Беларуская</a
+      >
+    </li>
+    <li role="none">
+      <a class="dropdown-item cursor-pointer" (click)="switchLang('ru')" role="menuitem">Русский</a>
+    </li>
+  </ul>
+</div>
