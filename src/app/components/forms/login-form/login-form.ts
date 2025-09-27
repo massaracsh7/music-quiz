@@ -9,7 +9,7 @@ import {
   effect,
 } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { AuthService } from '../../../core/services/auth-service';
+import { AuthService } from '../../../core/services/auth-service/auth-service';
 import { firebasePasswordValidator } from '../../../shared/utils/validators';
 import { getErrorMessage } from '../../../shared/utils/get-error-message';
 import { getAuthError } from '../../../shared/utils/get-auth-error';

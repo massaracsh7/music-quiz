@@ -13,7 +13,7 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { catchError, from, map, Observable, switchMap, tap, of, throwError } from 'rxjs';
 import { Category } from '../../../models/category.model';
 import { LeaderboardCategory } from '../../../models/leaderboard.model';
-import { ItunesService } from '../itunes-service';
+import { ItunesService } from '../itunes-service/itunes-service';
 import { TrackDocument, ITunesTrack } from '../../../models/itunes.model';
 import { resizeItunesArtworkUrl } from '../../../shared/helpers/image-helpers';
 import { ToastService } from '../../../shared/services/toast/toast';

@@ -18,8 +18,8 @@ import { ResultModal } from '../modals/result-modal/result-modal';
 import { ScoreCounter } from '../../core/services/score-counter/score-counter';
 import { FinishModal } from '../modals/finish-modal/finish-modal';
 import { CategoryConfirmModal } from '../modals/category-confirm-modal/category-confirm-modal';
-import { LeaderboardService } from '../../core/services/leaderboard-service';
-import { AuthService } from '../../core/services/auth-service';
+import { LeaderboardService } from '../../core/services/leaderboard-service/leaderboard-service';
+import { AuthService } from '../../core/services/auth-service/auth-service';
 import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({

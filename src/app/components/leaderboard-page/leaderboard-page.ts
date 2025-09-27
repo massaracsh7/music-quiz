@@ -1,6 +1,6 @@
 /* eslint-disable unicorn/no-nested-ternary */
 import { Component, computed, effect, inject, input, signal } from '@angular/core';
-import { LeaderboardService } from '../../core/services/leaderboard-service';
+import { LeaderboardService } from '../../core/services/leaderboard-service/leaderboard-service';
 import { LeaderboardUser } from '../../models/leaderboard.model';
 import { switchMap } from 'rxjs';
 import { takeUntilDestroyed, toObservable, toSignal } from '@angular/core/rxjs-interop';

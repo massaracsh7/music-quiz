@@ -1,7 +1,7 @@
 import { inject, Injectable, Signal } from '@angular/core';
 import { Firestore, collection, collectionData, doc, setDoc } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
-import { LeaderboardCategory, LeaderboardUser } from '../../models/leaderboard.model';
+import { LeaderboardCategory, LeaderboardUser } from '../../../models/leaderboard.model';
 import { toSignal } from '@angular/core/rxjs-interop';
 
 @Injectable({
