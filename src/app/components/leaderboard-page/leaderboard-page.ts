@@ -1,5 +1,5 @@
 /* eslint-disable unicorn/no-nested-ternary */
-import { Component, computed, effect, inject, signal } from '@angular/core';
+import { Component, computed, effect, inject, input, signal } from '@angular/core';
 import { LeaderboardService } from '../../core/services/leaderboard-service';
 import { LeaderboardUser } from '../../models/leaderboard.model';
 import { switchMap } from 'rxjs';
@@ -17,6 +17,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 export class LeaderboardPage {
   public leaderboardService = inject(LeaderboardService);
 
+  public categoryId = input<string | null>(null);
   public categories = this.leaderboardService.leaderboards;
   public sortField = signal<string>('score');
   public sortDirection = signal<'asc' | 'desc'>('asc');
@@ -80,6 +81,14 @@ export class LeaderboardPage {
     effect(() => {
       const categories = this.categories();
       if (categories.length > 0 && !this.selectedCategoryId() && !this.selectedCategoryTitle()) {
+        if (this.categoryId()) {
+          const category = categories.find((category) => category.id === this.categoryId());
+          if (category) {
+            this.selectedCategoryId.set(category.id);
+            this.selectedCategoryTitle.set(category.title);
+            return;
+          }
+        }
         this.selectedCategoryId.set(categories[0].id);
         this.selectedCategoryTitle.set(categories[0].title);
       }

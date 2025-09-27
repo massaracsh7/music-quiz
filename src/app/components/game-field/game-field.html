@@ -90,6 +90,7 @@
     <app-finish-modal
       [showFinishDialog]="showFinishDialog()"
       [categories]="categories()"
+      [categoryId]="categoryId()"
       (onCategorySelected)="onCategorySelected($event)"
       (closeDialog)="closeFinishDialog()"
       [score]="scoreCounter.score()"
