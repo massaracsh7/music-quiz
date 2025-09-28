@@ -15,7 +15,7 @@
 
 ##
 
-![Main Page](/music-quiz/src/assets/screenshots/main-page-screen.png)
+![Main Page](/src/assets/screenshots/main-page-screen.png)
 
 ---
 
@@ -227,4 +227,4 @@ The following performance metrics were measured with Lighthouse 12.8.2 on a prod
 ✅ All metrics meet or exceed the target performance budget.  
 🔗 [Full Lighthouse Report](https://pagespeed.web.dev/analysis/https-music-quiz-sable-vercel-app/9zubbp2h65?hl=en&form_factor=desktop)
 
-![Lighthouse Report](/music-quiz/src/assets/screenshots/lighthouse%20screen.png)
+![Lighthouse Report](/src/assets/screenshots/lighthouse-screen.png)
