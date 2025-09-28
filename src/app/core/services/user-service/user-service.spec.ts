@@ -9,7 +9,10 @@ import { AppUser, UserRole } from '../../../models/user.model';
 
 describe('UserService', () => {
   let service: UserService;
-  let firestoreSpy: jasmine.SpyObj<Firestore> & { doc: jasmine.Spy };
+  let firestoreSpy: jasmine.SpyObj<Firestore> & {
+    doc: jasmine.Spy;
+    collection: jasmine.Spy;
+  };
   let authServiceSpy: jasmine.SpyObj<AuthService>;
   let toastServiceSpy: jasmine.SpyObj<ToastService>;
   let translateServiceSpy: jasmine.SpyObj<TranslateService>;
@@ -28,41 +31,65 @@ describe('UserService', () => {
   ];
 
   beforeEach(() => {
-    const firestoreSpyObj = jasmine.createSpyObj('Firestore', ['collection', 'doc']);
+    const collectionSpy = jasmine.createSpy('collection');
+    const docSpy = jasmine.createSpy('doc');
 
-    const mockDoc = {
-      set: jasmine.createSpy('set').and.returnValue(Promise.resolve()),
-      update: jasmine.createSpy('update').and.returnValue(Promise.resolve()),
-      get: jasmine.createSpy('get').and.returnValue(
-        of({
-          data: () => mockUser,
-          id: '1',
+    collectionSpy.and.callFake((path) => ({
+      doc: (docId: string) => ({
+        get: () =>
+          Promise.resolve({
+            exists: true,
+            data: () => ({
+              ...(mockUsers.find((u) => u.uid === docId) || { role: 'user' }),
+            }),
+          }),
+        update: (data: any) => Promise.resolve(),
+        set: (data: any) => Promise.resolve(),
+      }),
+      valueChanges: () => of(mockUsers),
+      get: () =>
+        Promise.resolve({
+          docs: mockUsers.map((user) => ({
+            id: user.uid,
+            data: () => user,
+            exists: true,
+          })),
         }),
-      ),
-    };
+    }));
 
-    firestoreSpyObj.doc.and.returnValue(mockDoc);
-    firestoreSpyObj.collection.and.returnValue({
-      doc: jasmine.createSpy('collection.doc').and.returnValue(mockDoc),
-      valueChanges: jasmine.createSpy('valueChanges').and.returnValue(of(mockUsers)),
-      get: jasmine.createSpy('get').and.returnValue(of({ docs: [] })),
+    docSpy.and.callFake((path: string) => {
+      const docId = path.split('/').pop() || '';
+      return {
+        get: () =>
+          Promise.resolve({
+            exists: true,
+            data: () => mockUsers.find((u) => u.uid === docId) || { role: 'user' },
+          }),
+        update: (data: any) => Promise.resolve(),
+        set: (data: any) => Promise.resolve(),
+      };
     });
 
-    firestoreSpy = firestoreSpyObj as jasmine.SpyObj<Firestore> & {
-      doc: jasmine.Spy;
-    };
+    firestoreSpy = {
+      ...jasmine.createSpyObj('Firestore', ['collection', 'doc']),
+      doc: docSpy,
+      collection: collectionSpy,
+    } as any;
 
     const authServiceSpyObj = jasmine.createSpyObj('AuthService', [], {
       currentUser: { uid: '1' },
+      currentUser$: of({ uid: '1' }),
     });
+
     const toastServiceSpyObj = jasmine.createSpyObj('ToastService', ['show']);
     const translateServiceSpyObj = jasmine.createSpyObj('TranslateService', ['instant']);
+    translateServiceSpyObj.instant.and.returnValue('Test message');
 
     TestBed.configureTestingModule({
       imports: [TranslateModule.forRoot()],
       providers: [
         UserService,
-        { provide: Firestore, useValue: firestoreSpyObj },
+        { provide: Firestore, useValue: firestoreSpy },
         { provide: AuthService, useValue: authServiceSpyObj },
         { provide: ToastService, useValue: toastServiceSpyObj },
         { provide: TranslateService, useValue: translateServiceSpyObj },
@@ -73,8 +100,6 @@ describe('UserService', () => {
     authServiceSpy = TestBed.inject(AuthService) as jasmine.SpyObj<AuthService>;
     toastServiceSpy = TestBed.inject(ToastService) as jasmine.SpyObj<ToastService>;
     translateServiceSpy = TestBed.inject(TranslateService) as jasmine.SpyObj<TranslateService>;
-
-    translateServiceSpy.instant.and.returnValue('Translated text');
   });
 
   it('should be created', () => {
