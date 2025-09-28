@@ -13,6 +13,17 @@
 - 🌙 **Dark mode and localization**  
 - 🔔 **Notifications system**
 
+##
+
+![Main Page](/src/assets/screenshots/main-page-screen.png)
+
+---
+
+## 🚀 Deployed App
+
+You can try the live application here:  
+🔗 [Music Quiz on Vercel](https://music-quiz-sable-vercel-app.vercel.app)
+
 ---
 
 ## 🚀 Run Steps
@@ -200,3 +211,20 @@ src/app/
 We use **Signals** for all local UI state — modals, edit mode, form inputs, category management, and game state — because they are simple, update immediately, and keep templates readable.  
 **RxJS** is used for asynchronous data — HTTP requests, API streams, and effects — where stream management, operators, and cancellation are needed.  
 This approach ensures each tool is used where it works best, keeps the code clean, fast, and understandable, and makes maintaining the app easier.
+
+## ⚡ Performance Budget
+
+The following performance metrics were measured with Lighthouse 12.8.2 on a production build (desktop):
+
+| Metric | Budget | Measured |
+|--------|--------|----------|
+| First Contentful Paint (FCP) | < 2.0s | **0.6s** |
+| Largest Contentful Paint (LCP) | < 2.5s | **1.0s** |
+| Total Blocking Time (TBT) | < 200ms | **50ms** |
+| Cumulative Layout Shift (CLS) | < 0.1 | **0.004** |
+| Speed Index (SI) | < 2.5s | **1.1s** |
+
+✅ All metrics meet or exceed the target performance budget.  
+🔗 [Full Lighthouse Report](https://pagespeed.web.dev/analysis/https-music-quiz-sable-vercel-app/9zubbp2h65?hl=en&form_factor=desktop)
+
+![Lighthouse Report](/src/assets/screenshots/lighthouse-screen.png)
