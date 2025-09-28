@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { doc, Firestore, getDoc, setDoc } from '@angular/fire/firestore';
-import { from, mergeMap, Observable, of, switchMap, tap } from 'rxjs';
+import { from, mergeMap, Observable, of, reduce, switchMap } from 'rxjs';
 import { ITunesResponse } from '../../../models/itunes.model';
 
 @Injectable({
@@ -16,22 +16,23 @@ export class ItunesService {
         return from(getDoc(documentReference)).pipe(
           switchMap((snap) => {
             if (snap.exists()) {
-              console.log(`Track ${trackId} already cached`);
               return of(void 0);
+            } else {
+              return from(fetch(`https://itunes.apple.com/lookup?id=${trackId}`)).pipe(
+                switchMap((response) => from(response.json() as Promise<ITunesResponse>)),
+                switchMap((json) => {
+                  const trackData = json.results[0];
+                  if (trackData) {
+                    return from(setDoc(documentReference, { track: trackData }));
+                  }
+                  return of(void 0);
+                }),
+              );
             }
-            return from(fetch(`https://itunes.apple.com/lookup?id=${trackId}`)).pipe(
-              switchMap((response) => from(response.json() as Promise<ITunesResponse>)),
-              switchMap((json) => {
-                const trackData = json.results[0];
-                if (trackData) {
-                  return from(setDoc(documentReference, { track: trackData }));
-                }
-                return of(void 0);
-              }),
-            );
           }),
         );
       }),
+      reduce(() => void 0 as void)
     );
   }
 }
