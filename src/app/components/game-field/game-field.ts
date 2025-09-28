@@ -21,6 +21,7 @@ import { CategoryConfirmModal } from '../modals/category-confirm-modal/category-
 import { LeaderboardService } from '../../core/services/leaderboard-service';
 import { AuthService } from '../../core/services/auth-service';
 import { TranslatePipe } from '@ngx-translate/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-game-page-field',
@@ -99,12 +100,15 @@ export class GameField {
     effect(() => {
       const category = this.currentCategory();
       if (category) {
-        this.tracksLoader.getTracksByIds(category.tracks).subscribe((tracks) => {
-          this.currentTracks.set(tracks);
-          this.currentTrackIndex.set(0);
-          this.trackResults.set(Array.from<boolean | null>({ length: tracks.length }).fill(null));
-          this.initCurrentTrack(false);
-        });
+        this.tracksLoader
+          .getTracksByIds(category.tracks)
+          .pipe(takeUntilDestroyed(this.destroyRef))
+          .subscribe((tracks) => {
+            this.currentTracks.set(tracks);
+            this.currentTrackIndex.set(0);
+            this.trackResults.set(Array.from<boolean | null>({ length: tracks.length }).fill(null));
+            this.initCurrentTrack(false);
+          });
       }
     });
 

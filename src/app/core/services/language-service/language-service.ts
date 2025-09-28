@@ -1,4 +1,4 @@
-import { inject, Injectable, signal } from '@angular/core';
+import { DestroyRef, inject, Injectable, signal } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
@@ -9,6 +9,7 @@ export class LanguageService {
   public translateService: TranslateService = inject(TranslateService);
   public currentLang = signal('en');
   public languages = ['en', 'be', 'ru'];
+  public destroyRef = inject(DestroyRef);
 
   constructor() {
     this.translateService.addLangs(this.languages);
@@ -16,7 +17,7 @@ export class LanguageService {
     if (browserLang) this.translateService.use(browserLang);
 
     this.translateService.onLangChange
-      .pipe(takeUntilDestroyed())
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe((event) => this.currentLang.set(event.lang));
   }
 
