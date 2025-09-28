@@ -22,7 +22,7 @@
 ## 🚀 Deployed App
 
 You can try the live application here:  
-🔗 [Music Quiz on Vercel](https://music-quiz-sable-vercel-app.vercel.app)
+🔗 [Music Quiz on Vercel](https://music-quiz-sable.vercel.app)
 
 ---
 ## 🛠️ Tech Stack
