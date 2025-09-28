@@ -142,7 +142,7 @@
       },
       "EVGENIYA": {
         "NAME": "Evgeniya Tsel",
-        "DESCRIPTION": "Evgeniya has developed a leaderboard with dynamic data updates, sorting and visualization of user achievements. She also created an information page about the project developers. Implemented the functionality of creating categories, including API search in iTunes."
+        "DESCRIPTION": "Evgeniya has developed a leaderboard with dynamic data updates, sorting and visualization of user achievements. She also created an information page about the project developers. Implemented the functionality of the category page, including API search in iTunes."
       }
     }
   },
