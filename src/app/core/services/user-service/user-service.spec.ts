@@ -13,9 +13,6 @@ describe('UserService', () => {
     doc: jasmine.Spy;
     collection: jasmine.Spy;
   };
-  let authServiceSpy: jasmine.SpyObj<AuthService>;
-  let toastServiceSpy: jasmine.SpyObj<ToastService>;
-  let translateServiceSpy: jasmine.SpyObj<TranslateService>;
 
   const mockUser: AppUser & { uid: string } = {
     uid: '123',
@@ -30,76 +27,61 @@ describe('UserService', () => {
     { ...mockUser, uid: '3', role: 'super_user' as UserRole },
   ];
 
+  let authServiceSpy = jasmine.createSpyObj('AuthService', [], {
+    user$: of(mockUser),
+    user: mockUser,
+  });
+  let toastServiceSpy: jasmine.SpyObj<ToastService>;
+  let translateServiceSpy: jasmine.SpyObj<TranslateService>;
+
   beforeEach(() => {
-    const collectionSpy = jasmine.createSpy('collection');
-    const docSpy = jasmine.createSpy('doc');
-
-    collectionSpy.and.callFake((path) => ({
-      doc: (docId: string) => ({
-        get: () =>
-          Promise.resolve({
-            exists: true,
-            data: () => ({
-              ...(mockUsers.find((u) => u.uid === docId) || { role: 'user' }),
-            }),
-          }),
-        update: (data: any) => Promise.resolve(),
-        set: (data: any) => Promise.resolve(),
-      }),
-      valueChanges: () => of(mockUsers),
-      get: () =>
-        Promise.resolve({
-          docs: mockUsers.map((user) => ({
-            id: user.uid,
-            data: () => user,
-            exists: true,
-          })),
-        }),
-    }));
-
-    docSpy.and.callFake((path: string) => {
-      const docId = path.split('/').pop() || '';
-      return {
-        get: () =>
-          Promise.resolve({
-            exists: true,
-            data: () => mockUsers.find((u) => u.uid === docId) || { role: 'user' },
-          }),
-        update: (data: any) => Promise.resolve(),
-        set: (data: any) => Promise.resolve(),
-      };
+    const mockDoc = (data: any) => ({
+      data: jasmine.createSpy('data').and.returnValue(data),
+      exists: true,
+      id: '1',
     });
+
+    const mockCollection = (collectionName: string) => {
+      return {
+        valueChanges: jasmine.createSpy('valueChanges').and.returnValue(of(mockUsers)),
+        doc: (id: string) => ({
+          get: jasmine
+            .createSpy('get')
+            .and.returnValue(Promise.resolve(mockDoc(mockUsers.find((u) => u.uid === id) || {}))),
+          update: jasmine.createSpy('update').and.returnValue(Promise.resolve()),
+          set: jasmine.createSpy('set').and.returnValue(Promise.resolve()),
+        }),
+        add: jasmine.createSpy('add').and.returnValue(Promise.resolve({ id: 'new-id' })),
+      };
+    };
 
     firestoreSpy = {
-      ...jasmine.createSpyObj('Firestore', ['collection', 'doc']),
-      doc: docSpy,
-      collection: collectionSpy,
+      collection: jasmine.createSpy('collection').and.callFake(mockCollection),
+      doc: jasmine.createSpy('doc').and.callFake((path) => ({
+        get: jasmine.createSpy('get').and.returnValue(Promise.resolve(mockDoc(mockUser))),
+        update: jasmine.createSpy('update').and.returnValue(Promise.resolve()),
+      })),
     } as any;
 
-    const authServiceSpyObj = jasmine.createSpyObj('AuthService', [], {
-      currentUser: { uid: '1' },
-      currentUser$: of({ uid: '1' }),
-    });
+    authServiceSpy = jasmine.createSpyObj('AuthService', ['user$', 'user']);
+    authServiceSpy.user$ = of(mockUser);
+    authServiceSpy.user = mockUser;
 
-    const toastServiceSpyObj = jasmine.createSpyObj('ToastService', ['show']);
-    const translateServiceSpyObj = jasmine.createSpyObj('TranslateService', ['instant']);
-    translateServiceSpyObj.instant.and.returnValue('Test message');
+    toastServiceSpy = jasmine.createSpyObj('ToastService', ['success', 'error']);
+    translateServiceSpy = jasmine.createSpyObj('TranslateService', ['instant']);
 
     TestBed.configureTestingModule({
       imports: [TranslateModule.forRoot()],
       providers: [
         UserService,
         { provide: Firestore, useValue: firestoreSpy },
-        { provide: AuthService, useValue: authServiceSpyObj },
-        { provide: ToastService, useValue: toastServiceSpyObj },
-        { provide: TranslateService, useValue: translateServiceSpyObj },
+        { provide: AuthService, useValue: authServiceSpy },
+        { provide: ToastService, useValue: toastServiceSpy },
+        { provide: TranslateService, useValue: translateServiceSpy },
       ],
     });
 
     service = TestBed.inject(UserService);
-    authServiceSpy = TestBed.inject(AuthService) as jasmine.SpyObj<AuthService>;
-    toastServiceSpy = TestBed.inject(ToastService) as jasmine.SpyObj<ToastService>;
-    translateServiceSpy = TestBed.inject(TranslateService) as jasmine.SpyObj<TranslateService>;
   });
 
   it('should be created', () => {

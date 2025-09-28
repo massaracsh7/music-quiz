@@ -1,9 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { ItunesService } from './itunes-service';
-import { Firestore } from '@angular/fire/firestore';
-import * as firestoreModule from '@angular/fire/firestore';
-
-const mockFetch = (data: any) => Promise.resolve({ ok: true, json: () => Promise.resolve(data) });
+import { Firestore, doc, getDoc, setDoc } from '@angular/fire/firestore';
 
 const mockDoc = (exists: boolean, data: any = {}) => ({
   exists: exists,
@@ -12,7 +9,6 @@ const mockDoc = (exists: boolean, data: any = {}) => ({
 
 describe('ItunesService', () => {
   let service: ItunesService;
-  let firestoreSpy: jasmine.SpyObj<Firestore>;
   let getDocSpy: jasmine.Spy;
   let setDocSpy: jasmine.Spy;
   let fetchSpy: jasmine.Spy;
@@ -25,6 +21,12 @@ describe('ItunesService', () => {
     previewUrl: 'https://example.com/preview.mp3',
     artworkUrl100: 'https://example.com/artwork.jpg',
   };
+
+  const mockFetch = (data: any) =>
+    Promise.resolve({
+      ok: true,
+      json: () => Promise.resolve(data),
+    });
 
   beforeEach(() => {
     const mockDocInstance: any = {
@@ -47,24 +49,27 @@ describe('ItunesService', () => {
       isEqual: () => true,
     };
 
-    spyOn(firestoreModule, 'doc').and.returnValue(mockDocInstance);
-
     getDocSpy = jasmine.createSpy('getDoc').and.callFake(() => Promise.resolve(mockDoc(false)));
     setDocSpy = jasmine.createSpy('setDoc').and.returnValue(Promise.resolve());
+    fetchSpy = spyOn(window, 'fetch').and.callFake(() =>
+      Promise.resolve(new Response(JSON.stringify({ results: [mockTrackData] }))),
+    );
 
-    spyOn(firestoreModule, 'getDoc').and.callFake(getDocSpy);
-    spyOn(firestoreModule, 'setDoc').and.callFake(setDocSpy);
-
-    firestoreSpy = jasmine.createSpyObj('Firestore', {
-      doc: jasmine.createSpy('doc').and.returnValue(mockDocInstance),
-    });
-
-    fetchSpy = spyOn(window, 'fetch').and.returnValue(
+    spyOn(window, 'fetch').and.returnValue(
       mockFetch({
         resultCount: 1,
         results: [mockTrackData],
       }) as Promise<Response>,
     );
+
+    // Create Firestore spy
+    const firestoreSpy = jasmine.createSpyObj('Firestore', ['doc']);
+    firestoreSpy.doc.and.returnValue(mockDocInstance);
+
+    // Mock the Firestore functions
+    spyOn({ doc }, 'doc').and.callFake(() => mockDocInstance);
+    spyOn({ getDoc }, 'getDoc').and.callFake(() => getDocSpy());
+    spyOn({ setDoc }, 'setDoc').and.callFake(() => setDocSpy());
 
     TestBed.configureTestingModule({
       providers: [ItunesService, { provide: Firestore, useValue: firestoreSpy }],
