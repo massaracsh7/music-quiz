@@ -1,0 +1,59 @@
+<header
+  class="d-flex flex-wrap justify-content-between align-items-center py-3 mb-4 border-bottom gap-2 gap-md-4"
+  role="banner"
+>
+  <div class="d-flex align-items-center gap-2 gap-md-4">
+    <a
+      href="/"
+      [routerLink]="['/']"
+      class="d-flex align-items-center text-decoration-none link-body-emphasis"
+      aria-label="Home"
+    >
+      <span class="fs-4">Music Quiz</span>
+    </a>
+    <div class="d-none d-lg-flex align-items-center">
+      <div><app-theme-toggle></app-theme-toggle></div>
+      <app-lang-switcher></app-lang-switcher>
+    </div>
+  </div>
+
+  <button
+    class="btn d-lg-none"
+    type="button"
+    data-bs-toggle="offcanvas"
+    data-bs-target="#offcanvasMenu"
+    aria-controls="offcanvasMenu"
+    aria-label="Toggle menu"
+  >
+    <span class="bi bi-list fs-1" aria-hidden="true"></span>
+  </button>
+
+  <div class="d-none d-lg-flex gap-3">
+    <app-nav-menu></app-nav-menu>
+    <app-user-menu></app-user-menu>
+  </div>
+</header>
+
+<div
+  class="offcanvas offcanvas-start"
+  tabindex="-1"
+  id="offcanvasMenu"
+  aria-labelledby="offcanvasMenuLabel"
+>
+  <div class="offcanvas-header gap-4">
+    <h5 class="offcanvas-title" id="offcanvasMenuLabel">Music Quiz</h5>
+    <app-user-menu data-bs-dismiss="offcanvas"></app-user-menu>
+    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+  </div>
+
+  <div class="offcanvas-body d-flex gap-4">
+    <div class="flex-fill">
+      <app-nav-menu data-bs-dismiss="offcanvas"></app-nav-menu>
+    </div>
+
+    <div class="d-flex flex-column gap-3 pt-2">
+      <app-theme-toggle></app-theme-toggle>
+      <app-lang-switcher></app-lang-switcher>
+    </div>
+  </div>
+</div>

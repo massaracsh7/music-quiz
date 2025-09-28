@@ -1,0 +1,143 @@
+<div class="container-fluid">
+  <div class="row">
+    <div>
+      <div class="d-flex justify-content-center align-items-center gap-5 mb-3">
+        <h1>
+          <span class="bi bi-trophy-fill"></span>
+          {{ 'LEADERBOARD.TITLE' | translate }}
+        </h1>
+        <span class="badge bg-light text-dark fs-6 m-0">
+          <span class="bi bi-person-arms-up me-1"></span>
+          {{ 'LEADERBOARD.PLAYERS_COUNT' | translate: { count: statistics().totalPlayers } }}
+        </span>
+      </div>
+      @if (isLoading()) {
+        <div class="text-center py-4">
+          <span class="spinner-border"></span>
+          <p class="">{{ 'LEADERBOARD.LOADING.TEXT' | translate }}</p>
+        </div>
+      } @else {
+        <div class="d-flex flex-wrap gap-2 mb-3">
+          @for (category of categories(); track category.id) {
+            <button
+              class="btn btn-outline-primary"
+              [class.active]="currentCategoryId() === category.id"
+              (click)="changeFilterCategory(category.id, category.title)"
+            >
+              {{ category.title }}
+            </button>
+          }
+        </div>
+
+        <div class="card mb-3">
+          <div class="card-body">
+            <div class="table-responsive">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th class="text-center">{{ 'LEADERBOARD.COLUMNS.RANK' | translate }}</th>
+                    <th (click)="toggleSort('username')">
+                      {{ 'LEADERBOARD.COLUMNS.PLAYER' | translate }}
+                      @if (sortField() === 'username') {
+                        <span
+                          [class.bi-sort-alpha-down-alt]="sortDirection() === 'desc'"
+                          [class.bi-sort-alpha-up]="sortDirection() === 'asc'"
+                        >
+                        </span>
+                      } @else {
+                        <span class="bi bi-arrow-down-up"></span>
+                      }
+                    </th>
+                    <th style="width: 50%" (click)="toggleSort('score')">
+                      {{ 'LEADERBOARD.COLUMNS.SCORE' | translate }}
+                      @if (sortField() === 'score') {
+                        <span
+                          [class.bi-sort-numeric-down]="sortDirection() === 'asc'"
+                          [class.bi-sort-numeric-up-alt]="sortDirection() === 'desc'"
+                        >
+                        </span>
+                      } @else {
+                        <span class="bi bi-arrow-down-up"></span>
+                      }
+                    </th>
+                  </tr>
+                </thead>
+
+                <tbody>
+                  @if (filteredLeaderboard().length > 0) {
+                    @for (entry of filteredLeaderboard(); track entry.email; let i = $index) {
+                      <tr>
+                        <td class="text-center">
+                          {{ i + 1 }}
+                        </td>
+                        <td>
+                          {{ entry.email }}
+                        </td>
+                        <td>{{ entry.score }}s</td>
+                      </tr>
+                    }
+                  } @else {
+                    <tr>
+                      <td colspan="5" class="text-center">
+                        <div>
+                          <span class="bi bi-universal-access display-4 d-block mb-2"></span>
+                          <p class="h5">
+                            {{
+                              'LEADERBOARD.NO_DATA.TITLE'
+                                | translate: { category: currentCategoryTitle() }
+                            }}
+                          </p>
+                          <p class="text-muted">{{ 'LEADERBOARD.NO_DATA.SUBTITLE' | translate }}</p>
+                        </div>
+                      </td>
+                    </tr>
+                  }
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        @if (filteredLeaderboard().length > 0) {
+          <div class="row">
+            <div class="col-md-4">
+              <div class="card bg-primary text-white">
+                <div class="card-body text-center">
+                  <h3 class="card-title display-5 fw-bold">
+                    {{ statistics().currentDataCount }}
+                  </h3>
+                  <p class="card-text fs-5">
+                    {{ 'LEADERBOARD.STATS.PLAYERS_IN_CATEGORY' | translate }}
+                  </p>
+                  <i class="bi bi-people-fill display-2"></i>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-4">
+              <div class="card bg-success text-white">
+                <div class="card-body text-center">
+                  <h3 class="card-title display-5 fw-bold">{{ statistics().successRate }}%</h3>
+                  <p class="card-text fs-5">{{ 'LEADERBOARD.STATS.SUCCESS_RATE' | translate }}</p>
+                  <i class="bi bi-graph-up display-2"></i>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-4">
+              <div class="card bg-info text-white">
+                <div class="card-body text-center">
+                  <h3 class="card-title display-5 fw-bold">
+                    {{ statistics().currentAverage }} / {{ maxScore }}
+                  </h3>
+                  <p class="card-text fs-5">{{ 'LEADERBOARD.STATS.AVERAGE_SCORE' | translate }}</p>
+                  <i class="bi bi-bar-chart-fill display-2"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+        }
+      }
+    </div>
+  </div>
+</div>

@@ -1,0 +1,13 @@
+import { Component } from '@angular/core';
+import { RouterLink } from '@angular/router';
+import { CategoryForm } from './category-form/category-form';
+import { CategorySearch } from './category-search/category-search';
+import { TranslatePipe } from '@ngx-translate/core';
+
+@Component({
+  selector: 'app-category-create',
+  imports: [RouterLink, CategoryForm, CategorySearch, TranslatePipe],
+  templateUrl: './category-create.html',
+  styleUrl: './category-create.scss',
+})
+export class CategoryCreate {}

@@ -1,0 +1,10 @@
+<div class="form-check form-switch d-flex justify-content-lg-center align-items-center gap-2">
+  <input
+    class="form-check-input theme-toggle"
+    type="checkbox"
+    role="switch"
+    [checked]="theme.theme() === 'dark'"
+    (change)="theme.toggleTheme()"
+  />
+  <i appThemeIcon></i>
+</div>

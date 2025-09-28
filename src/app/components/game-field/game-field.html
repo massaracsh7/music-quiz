@@ -1,0 +1,108 @@
+<div class="container py-4" role="main">
+  <div class="d-flex justify-content-between gap-2 flex-wrap">
+    @if (currentCategory()) {
+      <h5>
+        <span>{{ 'GAME_FIELD.CATEGORY_TITLE' | translate }} </span>
+        <span aria-live="polite">{{ currentCategory()?.title }}</span>
+      </h5>
+    }
+    <h5 class="text-center mb-3">
+      <span>{{ 'GAME_FIELD.SONG' | translate }}: </span>
+      <span aria-live="polite">
+        <span>{{ currentTrackIndex() + 1 }}</span> / <span>{{ currentTracks().length }}</span>
+      </span>
+    </h5>
+    <h5 class="text-center mb-3">
+      <span>{{ 'GAME_FIELD.SCORE' | translate }}: </span>
+      <span aria-live="polite">{{ scoreCounter.score() }}</span>
+    </h5>
+  </div>
+
+  <div id="waveform" class="waveform" aria-label="Waveform visualization">
+    @if (wavesurfer.isLoading()) {
+      <div class="waveform-placeholder">
+        <div class="waveform-placeholder__line"></div>
+        <div class="waveform-placeholder__line"></div>
+        <div class="waveform-placeholder__line"></div>
+        <div class="waveform-placeholder__line"></div>
+        <div class="waveform-placeholder__line"></div>
+      </div>
+    }
+  </div>
+
+  <div class="text-center mb-3">
+    <div class="text-center mb-3">
+      <span>{{ 'GAME_FIELD.CURRENT_TIME' | translate }}:</span>
+      <span aria-live="polite"> {{ wavesurfer.currentTime() }}s</span>
+    </div>
+
+    @if (currentTrackIndex() === 0) {
+      <div class="mt-4 text-center">
+        <button
+          class="btn btn-success btn-lg me-2"
+          (click)="onPlay()"
+          aria-label="{{ 'GAME_FIELD.PLAY' | translate }}"
+        >
+          {{ 'GAME_FIELD.PLAY' | translate }}
+        </button>
+      </div>
+    }
+
+    <div class="mt-4 text-center">
+      <h6>{{ 'GAME_FIELD.SONG_QUESTION' | translate }}</h6>
+      <div
+        class="d-flex justify-content-center gap-2 flex-wrap"
+        role="list"
+        aria-label="Answer options"
+      >
+        @for (track of trackNames(); track track.id) {
+          <button
+            class="btn btn-outline-primary"
+            (click)="onAnswerSelected(track.name || '')"
+            [disabled]="isBeforeFirstRound()"
+            role="listitem"
+            aria-label="{{ track.name }}"
+          >
+            {{ track.name }}
+          </button>
+        }
+      </div>
+    </div>
+
+    <div class="mt-4 text-center">
+      <button
+        class="btn btn-danger"
+        (click)="onDontKnowClick()"
+        aria-label="{{ 'GAME_FIELD.DONT_KNOW' | translate }}"
+      >
+        {{ 'GAME_FIELD.DONT_KNOW' | translate }}
+      </button>
+    </div>
+    <app-result-modal
+      [showResultDialog]="showResultDialog()"
+      [isCorrectSignal]="isCorrect()"
+      [currentTrack]="currentTrack()"
+      [currentTrackNumber]="currentTrackIndex()"
+      [totalTracks]="currentTracks().length"
+      (closeDialog)="closeDialog()"
+      [trackResults]="trackResults()"
+    ></app-result-modal>
+    <app-finish-modal
+      [showFinishDialog]="showFinishDialog()"
+      [categories]="categories()"
+      [categoryId]="categoryId()"
+      (onCategorySelected)="onCategorySelected($event)"
+      (closeDialog)="closeFinishDialog()"
+      [score]="scoreCounter.score()"
+    ></app-finish-modal>
+    <app-category-confirm-modal
+      [showCategoryDialog]="showCategoryDialog()"
+      [selectedCategory]="selectedCategory()"
+      (onCategorySelectDialogClose)="onCategorySelectDialogClose($event)"
+      (closeCategoryDialog)="closeCategoryDialog()"
+    ></app-category-confirm-modal>
+  </div>
+</div>
+@if (showResultDialog() || showFinishDialog() || showCategoryDialog()) {
+  <div class="modal-backdrop fade show"></div>
+}

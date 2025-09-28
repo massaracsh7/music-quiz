@@ -1,0 +1,83 @@
+@let isCorrect = isCorrectSignal();
+@let selectedTrack = currentTrack();
+@let artworkUrl = selectedTrack?.artworkUrl100;
+@let tracks = totalTracks();
+
+<div
+  class="modal fade"
+  #resultModal
+  tabindex="-1"
+  role="dialog"
+  aria-modal="true"
+  [attr.aria-labelledby]="'result-modal-title'"
+  [class.show]="showResultDialog()"
+  [ngClass]="showResultDialog() ? 'd-block' : 'd-none'"
+>
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5
+          class="modal-title"
+          id="result-modal-title"
+          [ngClass]="isCorrect ? 'text-success' : 'text-danger'"
+          aria-live="polite"
+        >
+          {{
+            isCorrect
+              ? ('GAME_FIELD.RESULT_MODAL.TITLE_CORRECT' | translate)
+              : ('GAME_FIELD.RESULT_MODAL.TITLE_INCORRECT' | translate)
+          }}
+        </h5>
+      </div>
+
+      <div class="modal-body d-flex flex-column gap-3 justify-content-center align-items-center">
+        <div aria-live="polite">
+          {{ !isCorrect ? ('GAME_FIELD.RESULT_MODAL.CORRECT_ANSWER' | translate) : '' }}
+          <div class="fs-3">{{ selectedTrack?.artistName }} - {{ selectedTrack?.trackName }}</div>
+        </div>
+
+        @if (artworkUrl) {
+          <img
+            class="img-fluid border border-5 rounded"
+            [ngClass]="isCorrect ? 'border-success' : 'border-danger'"
+            [src]="artworkUrl.replace('100x100', '600x600')"
+            width="300"
+            height="300"
+            [alt]="selectedTrack?.trackName + ' artwork'"
+          />
+        }
+
+        <div class="progress-stacked w-100" role="group" aria-label="Progress of answered tracks">
+          @if (tracks) {
+            @for (result of trackResults(); track $index) {
+              <div
+                class="progress"
+                role="progressbar"
+                [attr.aria-valuemin]="0"
+                [attr.aria-valuemax]="tracks"
+                [attr.aria-valuenow]="result === true ? 1 : 0"
+                [ngClass]="{
+                  'bg-success': result === true,
+                  'bg-danger': result === false,
+                  'bg-secondary': result === null,
+                }"
+                [style.width.%]="100 / tracks"
+              ></div>
+            }
+          }
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-primary"
+          (click)="closeDialog.emit()"
+          aria-label="{{ 'GAME_FIELD.RESULT_MODAL.OK_BUTTON' | translate }}"
+        >
+          {{ 'GAME_FIELD.RESULT_MODAL.OK_BUTTON' | translate }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

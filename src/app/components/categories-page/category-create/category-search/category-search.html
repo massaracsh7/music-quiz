@@ -1,0 +1,100 @@
+<div class="card shadow" style="height: 695px">
+  <div class="card-header bg-primary">
+    <h5 class="card-title m-0 text-white">
+      <i class="bi bi-search me-2"></i>
+      {{ 'CATEGORY_SEARCH.TITLE' | translate }}
+    </h5>
+  </div>
+  <div class="card-body">
+    <div class="input-group mb-3">
+      <button
+        class="btn btn-primary input-group-text"
+        type="button"
+        (click)="onSearchInput()"
+        [disabled]="isLoading() || searchQuery().length < 2"
+      >
+        @if (isLoading()) {
+          <span class="spinner-border spinner-border-sm" role="status"></span>
+        } @else {
+          <span class="bi bi-search"></span>
+        }
+      </button>
+      <input
+        #searchInput
+        type="text"
+        class="form-control"
+        [(ngModel)]="searchQuery"
+        [placeholder]="'CATEGORY_SEARCH.PLACEHOLDER' | translate"
+        (keydown.enter)="onSearchInput()"
+      />
+      @if (searchQuery()) {
+        <button
+          class="btn btn-outline-primary"
+          type="button"
+          (click)="clearSearch()"
+          [disabled]="isLoading()"
+        >
+          <span class="bi bi-x"></span>
+        </button>
+      }
+    </div>
+
+    @if (isLoading()) {
+      <div class="text-center py-3">
+        <div class="spinner-border text-primary" role="status">
+          <span class="visually-hidden">{{ 'CATEGORY_SEARCH.SEARCHING' | translate }}</span>
+        </div>
+        <p class="mt-2 text-muted">{{ 'CATEGORY_SEARCH.SEARCHING_ITUNES' | translate }}</p>
+      </div>
+    }
+
+    @if (tracks().length > 0 && !isLoading()) {
+      <div class="list-group list-group-numbered" style="max-height: 550px; overflow-y: auto">
+        @for (track of tracks(); track track.trackId) {
+          <div
+            class="list-group-item d-grid align-items-center gap-2"
+            style="grid-template-columns: auto auto 1fr auto"
+          >
+            @if (track.artworkUrl60) {
+              <img
+                [src]="track.artworkUrl60"
+                [alt]="track.trackName"
+                class="rounded-3"
+                style="width: 40px; height: 40px"
+              />
+            }
+            <div style="min-width: 0">
+              <p class="mb-0 text-muted small" appEllipsis>{{ track.artistName }}</p>
+              <h6 class="m-0" appEllipsis>{{ track.trackName }}</h6>
+            </div>
+            <button
+              type="button"
+              class="btn btn-sm"
+              (click)="onTrackSelect(track)"
+              [class.btn-success]="track.isSelected"
+              [class.btn-primary]="!track.isSelected"
+              title="{{ track.isSelected ? 'Remove from category' : 'Add to category' }}"
+            >
+              @if (track.isSelected) {
+                <i class="bi bi-check-lg me-1"></i>
+                {{ 'CATEGORY_SEARCH.SELECTED_BUTTON' | translate }}
+              } @else {
+                <i class="bi bi-plus-lg me-1"></i>
+                {{ 'CATEGORY_SEARCH.ADD_BUTTON' | translate }}
+              }
+            </button>
+          </div>
+        }
+      </div>
+    }
+
+    @if (tracks().length === 0 && searchQuery() && !isLoading() && isSearching()) {
+      <div class="alert alert-warning text-center">
+        <p class="m-0">
+          <span class="bi bi-exclamation-octagon me-2"></span>
+          {{ 'CATEGORY_SEARCH.NO_RESULTS' | translate: { query: searchQuery() } }}
+        </p>
+      </div>
+    }
+  </div>
+</div>

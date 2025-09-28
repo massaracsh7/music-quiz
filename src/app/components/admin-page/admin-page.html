@@ -1,0 +1,79 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-12">
+      <div class="d-flex justify-content-center align-items-center gap-4 mb-3">
+        <h1>
+          <span class="bi bi-people-fill me-2"></span>
+          {{ 'ADMIN.USERS.TITLE' | translate }}
+        </h1>
+        <span class="badge bg-light text-dark fs-6 m-0">
+          <span class="bi bi-person-check-fill me-1"></span>
+          {{ 'ADMIN.USERS.TOTAL' | translate }}: {{ users().length }}
+        </span>
+      </div>
+      <div class="card mb-3">
+        <div class="card-body">
+          @if (loadingUsers()) {
+            <div class="d-flex justify-content-center my-5">
+              <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Loading...</span>
+              </div>
+            </div>
+          } @else {
+            <div class="table-responsive">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th class="text-center">#</th>
+                    <th>{{ 'ADMIN.USERS.EMAIL' | translate }}</th>
+                    <th>{{ 'ADMIN.USERS.DISPLAY_NAME' | translate }}</th>
+                    <th (click)="toggleSort()" style="cursor: pointer">
+                      {{ 'ADMIN.USERS.ROLE' | translate }}
+                      @if (sortDirection() === 'asc') {
+                        <span class="bi bi-sort-alpha-down"></span>
+                      } @else {
+                        <span class="bi bi-sort-alpha-up"></span>
+                      }
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @if (users().length > 0) {
+                    @for (user of sortedUsers(); track user.email; let i = $index) {
+                      <tr>
+                        <td class="text-center">{{ i + 1 }}</td>
+                        <td>{{ user.email }}</td>
+                        <td>{{ user.displayName }}</td>
+                        <td>
+                          <select
+                            class="form-select form-select-sm"
+                            [ngModel]="user.role"
+                            (ngModelChange)="changeRole(user, $event)"
+                          >
+                            @for (option of options; track option.value) {
+                              <option [value]="option.value">{{ option.label }}</option>
+                            }
+                          </select>
+                        </td>
+                      </tr>
+                    }
+                  } @else {
+                    <tr>
+                      <td colspan="4" class="text-center">
+                        <div>
+                          <span class="bi bi-people display-4 d-block mb-2"></span>
+                          <p class="h5">{{ 'ADMIN.USERS.NO_USERS' | translate }}</p>
+                          <p class="text-muted">{{ 'ADMIN.USERS.INVITE_USERS' | translate }}</p>
+                        </div>
+                      </td>
+                    </tr>
+                  }
+                </tbody>
+              </table>
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

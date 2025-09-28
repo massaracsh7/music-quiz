@@ -1,0 +1,32 @@
+.nav {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.nav-item {
+  flex: 0 0 auto;
+  position: relative;
+}
+
+.nav-link {
+  padding-bottom: 4px;
+  color: var(--bs-highlight-color);
+  border-bottom: 2px solid transparent;
+  white-space: nowrap;
+  text-align: center;
+  transition: border-color 0.8s ease-in-out;
+}
+
+.nav-link.active {
+  border-color: var(--bs-highlight-color);
+}
+
+@media (max-width: 991px) {
+  .nav-link,
+  .nav-link {
+    font-size: 1.4rem;
+    font-weight: 700;
+    width: 70%;
+  }
+}

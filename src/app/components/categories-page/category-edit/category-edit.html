@@ -1,0 +1,310 @@
+<div class="container-fluid py-4">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <div class="d-flex gap-2">
+      @if (loading()) {
+        <a
+          class="text-decoration-none"
+          [routerLink]="['/categories']"
+          aria-label="Go to categories"
+        >
+          <h2 class="mb-0">
+            <i class="bi bi-collection me-2" aria-hidden="true"></i>
+            {{ 'CATEGORIES_PAGE.BREADCRUMB' | translate }}
+            /
+          </h2>
+        </a>
+      } @else if (category()) {
+        <div class="d-flex gap-2">
+          <a
+            class="text-decoration-none"
+            [routerLink]="['/categories']"
+            aria-label="Go to categories"
+          >
+            <h2 class="mb-0">
+              <i class="bi bi-collection me-2" aria-hidden="true"></i>
+              {{ 'CATEGORIES_PAGE.TITLE' | translate }}
+            </h2>
+          </a>
+
+          <h2 class="mb-0" aria-current="page">/ {{ category()?.title }}</h2>
+        </div>
+      }
+    </div>
+    <button class="btn btn-primary" [routerLink]="['/categories']" aria-label="Back to categories">
+      <i class="bi bi-arrow-left me-2" aria-hidden="true"></i>
+      {{ 'CATEGORY_CREATE_PAGE.BACK_BUTTON' | translate }}
+    </button>
+  </div>
+
+  <div class="row">
+    <div class="col-lg-6">
+      <div class="card shadow" role="region" aria-labelledby="searchTracksLabel">
+        <div class="card-header bg-primary">
+          <h5 id="searchTracksLabel" class="card-title mb-0 text-white">
+            <i class="bi bi-search me-2" aria-hidden="true"></i>
+            {{ 'CATEGORY_SEARCH.TITLE' | translate }}
+          </h5>
+        </div>
+
+        <div class="card-body">
+          <div class="input-group mb-3">
+            <button
+              class="btn btn-primary input-group-text"
+              type="button"
+              (click)="onSearch()"
+              [disabled]="searchLoading() || searchQuery().length < 2"
+              aria-label="Search"
+            >
+              @if (searchLoading()) {
+                <span class="spinner-border spinner-border-sm" role="status" aria-live="polite">
+                  <span class="visually-hidden">{{ 'CATEGORY_SEARCH.SEARCHING' | translate }}</span>
+                </span>
+              } @else {
+                <span class="bi bi-search" aria-hidden="true"></span>
+              }
+            </button>
+            <input
+              #searchInput
+              type="text"
+              class="form-control"
+              [(ngModel)]="searchQuery"
+              placeholder="{{ 'CATEGORY_SEARCH.PLACEHOLDER' | translate }}"
+              (keydown.enter)="onSearch()"
+              aria-label="Search tracks"
+            />
+            @if (searchQuery()) {
+              <button
+                class="btn btn-outline-primary"
+                type="button"
+                (click)="clearSearch()"
+                aria-label="Clear search"
+              >
+                <i class="bi bi-x" aria-hidden="true"></i>
+              </button>
+            }
+          </div>
+
+          @if (searchLoading()) {
+            <div class="text-center py-3" role="status" aria-live="polite">
+              <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">{{ 'CATEGORY_SEARCH.SEARCHING' | translate }}</span>
+              </div>
+              <p class="mt-2 text-muted">{{ 'CATEGORY_SEARCH.SEARCHING_ITUNES' | translate }}</p>
+            </div>
+          }
+          @if (searchResults().length > 0 && !searchLoading()) {
+            <div
+              style="max-height: 550px; overflow-y: auto"
+              role="list"
+              aria-label="Search results"
+            >
+              <div class="list-group list-group-numbered">
+                @for (track of searchResults(); track track.trackId) {
+                  <div
+                    class="list-group-item d-grid align-items-center gap-2"
+                    style="grid-template-columns: auto auto 1fr auto"
+                    role="listitem"
+                  >
+                    @if (track.artworkUrl60) {
+                      <img
+                        [src]="track.artworkUrl60"
+                        [alt]="track.trackName"
+                        class="rounded-3"
+                        style="width: 40px; height: 40px"
+                      />
+                    }
+                    <div style="min-width: 0">
+                      <p class="mb-0 text-muted small" appEllipsis>{{ track.artistName }}</p>
+                      <h6 class="m-0" appEllipsis>{{ track.trackName }}</h6>
+                    </div>
+                    <button
+                      type="button"
+                      class="btn btn-sm"
+                      (click)="
+                        isTrackInCategory(track.trackId)
+                          ? removeTrackFromCategory(track.trackId)
+                          : addTrackToCategory(track)
+                      "
+                      [class.btn-success]="isTrackInCategory(track.trackId)"
+                      [class.btn-primary]="!isTrackInCategory(track.trackId)"
+                      title="{{
+                        isTrackInCategory(track.trackId)
+                          ? 'Remove from category'
+                          : 'Add to category'
+                      }}"
+                      aria-label="{{
+                        isTrackInCategory(track.trackId)
+                          ? 'Remove track from category'
+                          : 'Add track to category'
+                      }}"
+                    >
+                      @if (isTrackInCategory(track.trackId)) {
+                        <i class="bi bi-check-lg me-1" aria-hidden="true"></i>
+                        {{ 'CATEGORY_SEARCH.SELECTED_BUTTON' | translate }}
+                      } @else {
+                        <i class="bi bi-plus-lg me-1" aria-hidden="true"></i>
+                        {{ 'CATEGORY_SEARCH.ADD_BUTTON' | translate }}
+                      }
+                    </button>
+                  </div>
+                }
+              </div>
+            </div>
+          } @else if (
+            searchResults().length === 0 && searchQuery() && isSearching() && !searchLoading()
+          ) {
+            <div class="alert alert-warning text-center" role="alert">
+              <p class="m-0">
+                <span class="bi bi-exclamation-octagon me-2" aria-hidden="true"></span>
+                {{ 'CATEGORY_SEARCH.NO_RESULTS' | translate: { query: searchQuery() } }}
+              </p>
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-6">
+      <div class="card shadow" role="region" aria-labelledby="categoryTracksLabel">
+        <div
+          class="card-header bg-primary text-white d-flex justify-content-between align-items-center py-3"
+        >
+          <h5 id="categoryTracksLabel" class="card-title mb-0">
+            <i class="bi bi-list-check me-2" aria-hidden="true"></i>
+            {{ 'CATEGORY_TRACKS.CATEGORY_TRACKS_TITLE' | translate }} ({{
+              categoryTracks().length
+            }})
+          </h5>
+          <div class="d-flex gap-2">
+            <button
+              class="btn btn-success"
+              (click)="updateCategory()"
+              [disabled]="!categoryForm.valid || saving() || categoryTracks().length < 8"
+              aria-label="{{ 'CATEGORY_TRACKS.UPDATE' | translate }}"
+            >
+              @if (saving()) {
+                <span
+                  class="spinner-border spinner-border-sm me-1"
+                  role="status"
+                  aria-live="polite"
+                ></span>
+              } @else {
+                <i class="bi bi-check-circle me-1" aria-hidden="true"></i>
+              }
+              {{ 'CATEGORY_TRACKS.UPDATE' | translate }}
+            </button>
+            <button
+              class="btn btn-danger"
+              (click)="categoryDelete()"
+              [disabled]="saving()"
+              aria-label="Delete category"
+            >
+              <i class="bi bi-trash me-1" aria-hidden="true"></i>
+              {{ 'CATEGORY_TRACKS.DELETE' | translate }}
+            </button>
+          </div>
+        </div>
+
+        <div class="card-body pt-0">
+          <div class="card-body">
+            <form [formGroup]="categoryForm" role="form" aria-label="Category form">
+              <label for="categoryTitle" class="form-label">
+                {{ 'CATEGORY_TRACKS.CATEGORY_NAME' | translate }}
+              </label>
+              <input
+                id="categoryTitle"
+                type="text"
+                class="form-control"
+                formControlName="title"
+                placeholder="{{ 'CATEGORY_TRACKS.ENTER_CATEGORY_NAME' | translate }}"
+                [class.is-invalid]="
+                  categoryForm.get('title')?.invalid && categoryForm.get('title')?.touched
+                "
+                aria-required="true"
+              />
+              @if (categoryForm.get('title')?.invalid && categoryForm.get('title')?.touched) {
+                <div class="invalid-feedback" role="alert">
+                  @if (categoryForm.get('title')?.errors?.['required']) {
+                    {{ 'CATEGORY_TRACKS.CATEGORY_NAME_REQUIRED' | translate }}
+                  }
+                  @if (categoryForm.get('title')?.errors?.['minlength']) {
+                    {{ 'CATEGORY_TRACKS.CATEGORY_NAME_MIN_LENGTH' | translate }}
+                  }
+                </div>
+              }
+            </form>
+          </div>
+          @if (loading()) {
+            <div class="text-center py-3" role="status" aria-live="polite">
+              <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Loading...</span>
+              </div>
+              <p class="mt-2 text-muted">
+                {{ 'CATEGORY_TRACKS.LOADING_CATEGORY_TRACKS' | translate }}
+              </p>
+            </div>
+          } @else {
+            @if (categoryTracks().length === 0) {
+              <div class="alert alert-warning text-center" role="alert">
+                <span class="bi bi-exclamation-triangle me-2" aria-hidden="true"></span>
+                {{ 'CATEGORY_TRACKS.NO_TRACKS' | translate }}
+              </div>
+            } @else {
+              @if (categoryTracks().length < 8) {
+                <p class="alert alert-info" role="status">
+                  {{ 'CATEGORY_TRACKS.MIN_8_TRACKS' | translate }}
+                </p>
+              }
+
+              <div
+                class="list-group list-group-numbered"
+                style="max-height: 575px; overflow-y: auto"
+                role="list"
+                aria-label="{{ 'CATEGORY_TRACKS.CATEGORY_TRACKS_TITLE' | translate }}"
+              >
+                @for (track of categoryTracks(); track track.trackId) {
+                  <div
+                    class="list-group-item d-grid align-items-center gap-2"
+                    style="grid-template-columns: auto auto 1fr auto"
+                    role="listitem"
+                  >
+                    @if (track.artworkUrl60) {
+                      <img
+                        [src]="track.artworkUrl60"
+                        [alt]="track.trackName"
+                        class="rounded-3"
+                        style="width: 50px; height: 50px"
+                      />
+                    }
+                    <div style="min-width: 0">
+                      <p class="mb-0 text-muted small" appEllipsis>
+                        {{ track.artistName }}
+                      </p>
+                      <h6 class="m-0" appEllipsis>{{ track.trackName }}</h6>
+                    </div>
+                    <button
+                      class="btn btn-outline-danger btn-sm"
+                      (click)="removeTrackFromCategory(track.trackId)"
+                      title="{{ 'CATEGORY_TRACKS.REMOVE_TRACK' | translate }}"
+                      aria-label="{{ 'CATEGORY_TRACKS.REMOVE_TRACK' | translate }}"
+                    >
+                      <i class="bi bi-trash" aria-hidden="true"></i>
+                    </button>
+                  </div>
+                }
+              </div>
+            }
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-category-confirm-delete-modal
+  [showCategoryDeleteDialog]="showCategoryDeleteDialog()"
+  [selectedCategory]="currentCategory()"
+  (onCategorySelectDelete)="onCategorySelectDelete($event)"
+  (closeCategoryDialog)="closeCategoryDialog()"
+>
+</app-category-confirm-delete-modal>

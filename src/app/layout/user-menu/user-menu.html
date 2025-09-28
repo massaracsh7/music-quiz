@@ -1,0 +1,32 @@
+<div class="d-flex align-items-center" aria-label="User menu">
+  @if (auth.isLoggedIn()) {
+    <span class="me-2" aria-live="polite">
+      {{ 'AUTH.USER_MENU.GREETING' | translate: { username: auth.currentUserName() } }}
+    </span>
+    <button
+      type="button"
+      class="btn btn-outline-danger"
+      (click)="logout()"
+      aria-label="{{ 'AUTH.USER_MENU.LOGOUT' | translate }}"
+    >
+      {{ 'AUTH.USER_MENU.LOGOUT' | translate }}
+    </button>
+  } @else {
+    <button
+      type="button"
+      class="btn btn-outline-primary me-2"
+      routerLink="/login"
+      aria-label="{{ 'AUTH.USER_MENU.LOGIN' | translate }}"
+    >
+      {{ 'AUTH.USER_MENU.LOGIN' | translate }}
+    </button>
+    <button
+      type="button"
+      class="btn btn-primary"
+      routerLink="/register"
+      aria-label="{{ 'AUTH.USER_MENU.SIGN_UP' | translate }}"
+    >
+      {{ 'AUTH.USER_MENU.SIGN_UP' | translate }}
+    </button>
+  }
+</div>
