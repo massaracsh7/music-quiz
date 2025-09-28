@@ -25,6 +25,15 @@ You can try the live application here:
 🔗 [Music Quiz on Vercel](https://music-quiz-sable-vercel-app.vercel.app)
 
 ---
+## 🛠️ Tech Stack
+
+- ⚡ **Frontend:** Angular (with Signals-first approach and OnPush change detection)  
+- 🔥 **Backend & Database:** Firebase (Authentication + Firestore)  
+- 🎧 **API:** iTunes Search API (track metadata & 30s previews)  
+- 🎨 **UI & Styling:** Bootstrap (Festava Live + Sketchy themes)  
+- 🌐 **Deployment:** Vercel  
+- 🧪 **Testing & Quality:** Jest + ESLint + Prettier  
+---
 
 ## 🚀 Run Steps
 
