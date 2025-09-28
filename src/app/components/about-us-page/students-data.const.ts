@@ -22,7 +22,7 @@ export const students: StudentInterface[] = [
     name: 'ABOUT_US.STUDENTS.EVGENIYA.NAME',
     role: 'ABOUT_US.STUDENT_ROLE',
     description: 'ABOUT_US.STUDENTS.EVGENIYA.DESCRIPTION',
-    task: ['LeaderBoard', 'About Us Page', 'Create category'],
+    task: ['LeaderBoard', 'About Us Page', 'Category Page'],
     linGit: 'https://github.com/jnuka',
   },
 ];
